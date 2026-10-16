@@ -161,6 +161,26 @@ th,td{padding:5px 10px; border-bottom:1px solid var(--line); text-align:right; w
 th:first-child,td:first-child{text-align:left}
 th{font-weight:600; color:var(--ink-2)}
 
+/* Alle Laute (Heatmap) */
+.heat{width:auto; min-width:100%; border-collapse:separate; border-spacing:0}
+.heat th, .heat td{border-bottom:0; padding:2px 3px; text-align:center}
+.heat thead th{font-family:var(--mono); font-size:12px; font-weight:400; color:var(--muted); padding-bottom:6px}
+.heat thead th:first-child, .heat tbody th{text-align:left}
+.heat thead th.sel{color:var(--ink); font-weight:600}
+.heat thead button{border:0; background:none; font:inherit; color:inherit; cursor:pointer; padding:2px 4px; border-radius:4px}
+.heat thead button:hover{background:var(--paper)}
+.heat tbody th{font-weight:500; font-size:13px; color:var(--ink); padding-right:14px; white-space:nowrap}
+.heat .famrow th{padding-top:14px; padding-bottom:4px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); font-weight:700}
+.heat .famrow th .sw{margin-right:8px; vertical-align:-1px}
+.heat .famrow .tot{padding-top:14px; color:var(--ink-2)}
+.heat td{font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums; min-width:34px}
+.heat td.sel{background:var(--paper)}
+.heat .v{display:block; border-radius:4px; padding:3px 0; color:var(--ink); font-weight:600}
+.heat .z{color:var(--line)}
+.heat .tot{font-weight:600; padding-left:12px; text-align:right}
+.heat .off{opacity:.4}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+
 /* Buttons + Formulare */
 .btn{
   display:inline-flex; align-items:center; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:7px 14px;

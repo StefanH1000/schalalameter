@@ -59,7 +59,7 @@ $('reload-pub').addEventListener('click', async () => {
 let candList = [];
 function renderCands(){
   candList = SM.candidates(data);
-  const snds = SM.sounds(data), full = snds.length >= SM.MAX_SOUNDS;
+  const snds = SM.sounds(data), full = false;
   $('cands').innerHTML = candList.length ? candList.map((c, i) => {
     const note = SM.candidateEntry(data, c.ph)?.notiz;
     return `<li>

@@ -4,250 +4,279 @@
     {
       "id": "piu",
       "name": "Piu piu",
-      "status": "freigegeben"
+      "status": "freigegeben",
+      "familie": "piu"
     },
     {
       "id": "shalala",
       "name": "Shalala",
-      "status": "freigegeben"
+      "status": "freigegeben",
+      "familie": "shalala"
     },
     {
       "id": "lalala",
       "name": "Lalala",
-      "status": "freigegeben"
+      "status": "freigegeben",
+      "familie": "silben"
     },
     {
       "id": "nanana",
       "name": "Nanana",
-      "status": "freigegeben"
+      "status": "freigegeben",
+      "familie": "silben"
     },
     {
       "id": "ohoho",
       "name": "Oh-oh-oh",
-      "status": "freigegeben"
+      "status": "freigegeben",
+      "familie": "rufe"
     },
     {
       "id": "ah-ah",
-      "name": "ah-ah",
-      "status": "kandidat",
+      "name": "Ah-ah",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ah-ah",
       "lieder": [
         "glitzerfummel-moonboots"
-      ]
+      ],
+      "familie": "rufe"
     },
     {
       "id": "ah-ah-ah",
-      "name": "ah-ah-ah",
-      "status": "kandidat",
+      "name": "Ah-ah-ah",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ah-ah-ah",
       "lieder": [
         "das-imperium-rudert-zuruck"
-      ]
+      ],
+      "familie": "rufe"
     },
     {
       "id": "ah-ah-oh-ah-ah",
-      "name": "ah-ah-oh-ah-ah",
-      "status": "kandidat",
+      "name": "Ah-ah-oh-ah-ah",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ah-ah-oh-ah-ah",
       "lieder": [
         "glitzerfummel-moonboots"
-      ]
+      ],
+      "familie": "rufe"
     },
     {
       "id": "ah-uh",
-      "name": "ah-uh",
-      "status": "kandidat",
+      "name": "Ah-uh",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ah-uh",
       "lieder": [
         "die-ruckkehr-zur-normalitat"
-      ]
+      ],
+      "familie": "rufe"
     },
     {
       "id": "ba-ba-ba",
-      "name": "ba-ba-ba",
-      "status": "kandidat",
+      "name": "Ba-ba-ba",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ba-ba-ba",
       "lieder": [
         "san-francisco-candy-boy"
-      ]
+      ],
+      "familie": "silben"
     },
     {
       "id": "boom-laboom",
-      "name": "boom laboom",
-      "status": "kandidat",
+      "name": "Boom laboom",
+      "status": "freigegeben",
       "schreibweise_in_daten": "boom laboom",
       "lieder": [
         "der-ablativ-von-bumm"
       ],
-      "notiz": "Nur in einer Zweitquelle (songtexte.com)."
+      "notiz": "Nur in einer Zweitquelle (songtexte.com).",
+      "familie": "knall"
     },
     {
       "id": "bumm",
-      "name": "bumm",
-      "status": "kandidat",
+      "name": "Bumm",
+      "status": "freigegeben",
       "schreibweise_in_daten": "bumm",
       "lieder": [
         "alles-explodiert",
         "der-ablativ-von-bumm"
-      ]
+      ],
+      "familie": "knall"
     },
     {
       "id": "da-da",
-      "name": "da-da",
-      "status": "kandidat",
+      "name": "Da-da",
+      "status": "freigegeben",
       "schreibweise_in_daten": "da-da",
       "lieder": [
         "sanktpankpaul"
-      ]
+      ],
+      "familie": "silben"
     },
     {
       "id": "da-da-da",
-      "name": "da-da-da",
-      "status": "kandidat",
+      "name": "Da-da-da",
+      "status": "freigegeben",
       "schreibweise_in_daten": "da-da-da",
       "lieder": [
         "tequila"
-      ]
+      ],
+      "familie": "silben"
     },
     {
       "id": "dudeldudeldudel",
-      "name": "dudeldudeldudel",
-      "status": "kandidat",
+      "name": "Dudeldudeldudel",
+      "status": "freigegeben",
       "schreibweise_in_daten": "dudeldudeldudel",
       "lieder": [
         "wilde-jahre"
-      ]
+      ],
+      "familie": "instrumente"
     },
     {
       "id": "dum-didi-dum",
-      "name": "dum-didi-dum",
-      "status": "kandidat",
+      "name": "Dum-didi-dum",
+      "status": "freigegeben",
       "schreibweise_in_daten": "dum-didi-dum",
       "lieder": [
         "penn-konn"
-      ]
+      ],
+      "familie": "instrumente"
     },
     {
       "id": "fuzzi-fuzzi-fuzz",
-      "name": "fuzzi fuzzi fuzz",
-      "status": "kandidat",
+      "name": "Fuzzi fuzzi fuzz",
+      "status": "freigegeben",
       "schreibweise_in_daten": "fuzzi fuzzi fuzz",
       "lieder": [
         "fuzzi-fuzzi-cowboy"
       ],
-      "notiz": "Grenzfall: enthält das Titelwort."
+      "notiz": "Grenzfall: enthält das Titelwort.",
+      "familie": "instrumente"
     },
     {
       "id": "hey-hey-hey",
-      "name": "hey hey hey",
-      "status": "kandidat",
+      "name": "Hey hey hey",
+      "status": "freigegeben",
       "schreibweise_in_daten": "hey hey hey",
       "lieder": [
         "life-at-the-hollywood-bowl"
-      ]
+      ],
+      "familie": "jubel"
     },
     {
       "id": "hooray-hooray",
-      "name": "hooray hooray",
-      "status": "kandidat",
+      "name": "Hooray hooray",
+      "status": "freigegeben",
       "schreibweise_in_daten": "hooray hooray",
       "lieder": [
         "hooray-hooray"
       ],
-      "notiz": "Grenzfall: echtes Wort und Titelwort."
+      "notiz": "Grenzfall: echtes Wort und Titelwort.",
+      "familie": "jubel"
     },
     {
       "id": "humpe-tateraa",
-      "name": "humpe täterää",
-      "status": "kandidat",
+      "name": "Humpe täterää",
+      "status": "freigegeben",
       "schreibweise_in_daten": "humpe täterää",
       "lieder": [
         "wir-sitzen-hier-und-schlabbern-aperol",
         "rotze-auf-hawaii"
-      ]
+      ],
+      "familie": "instrumente"
     },
     {
       "id": "kawumm",
-      "name": "kawumm",
-      "status": "kandidat",
+      "name": "Kawumm",
+      "status": "freigegeben",
       "schreibweise_in_daten": "kawumm",
       "lieder": [
         "alles-explodiert"
-      ]
+      ],
+      "familie": "knall"
     },
     {
       "id": "ladi-dadi-dai",
-      "name": "ladi dadi dai",
-      "status": "kandidat",
+      "name": "Ladi dadi dai",
+      "status": "freigegeben",
       "schreibweise_in_daten": "ladi dadi dai",
       "lieder": [
         "ray-of-fukin-sunshine"
-      ]
+      ],
+      "familie": "silben"
     },
     {
       "id": "lo-lo-lo",
-      "name": "lo-lo-lo",
-      "status": "kandidat",
+      "name": "Lo-lo-lo",
+      "status": "freigegeben",
       "schreibweise_in_daten": "lo-lo-lo",
       "lieder": [
         "die-panamoralische-liebe"
-      ]
+      ],
+      "familie": "silben"
     },
     {
       "id": "mh-mh-mh-hm",
-      "name": "mh-mh-mh-hm",
-      "status": "kandidat",
+      "name": "Mh-mh-mh-hm",
+      "status": "freigegeben",
       "schreibweise_in_daten": "mh-mh-mh-hm",
       "lieder": [
         "grazie-de-la-kotze"
-      ]
+      ],
+      "familie": "rufe"
     },
     {
       "id": "ole",
-      "name": "olé",
-      "status": "kandidat",
+      "name": "Olé",
+      "status": "freigegeben",
       "schreibweise_in_daten": "olé",
       "lieder": [
         "alles-explodiert"
       ],
-      "notiz": "Grenzfall: Ausruf, echtes Wort."
+      "notiz": "Grenzfall: Ausruf, echtes Wort.",
+      "familie": "jubel"
     },
     {
       "id": "ta-ta-ra-ta-ta",
-      "name": "tä-tä-rä-tä-tä",
-      "status": "kandidat",
+      "name": "Tä-tä-rä-tä-tä",
+      "status": "freigegeben",
       "schreibweise_in_daten": "tä-tä-rä-tä-tä",
       "lieder": [
         "tequila"
-      ]
+      ],
+      "familie": "instrumente"
     },
     {
       "id": "uh-uh-uh",
-      "name": "uh, uh, uh",
-      "status": "kandidat",
+      "name": "Uh, uh, uh",
+      "status": "freigegeben",
       "schreibweise_in_daten": "uh, uh, uh",
       "lieder": [
         "ciao-kakao"
       ],
-      "notiz": "Grenzfall: durch Kommas getrennt, daher nicht als ohoho gezählt."
+      "notiz": "Grenzfall: durch Kommas getrennt, daher nicht als ohoho gezählt.",
+      "familie": "rufe"
     },
     {
       "id": "whoopie-whoopie",
-      "name": "whoopie whoopie",
-      "status": "kandidat",
+      "name": "Whoopie whoopie",
+      "status": "freigegeben",
       "schreibweise_in_daten": "whoopie whoopie",
       "lieder": [
         "ciao-kakao"
-      ]
+      ],
+      "familie": "jubel"
     },
     {
       "id": "yeah-yeah-yeah",
-      "name": "yeah yeah yeah",
-      "status": "kandidat",
+      "name": "Yeah yeah yeah",
+      "status": "freigegeben",
       "schreibweise_in_daten": "yeah yeah yeah",
       "lieder": [
         "ray-of-fukin-sunshine"
-      ]
+      ],
+      "familie": "jubel"
     }
   ],
   "lieder": [
@@ -2186,15 +2215,14 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "bumm": 9,
+        "kawumm": 3,
+        "ole": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "kawumm": 3,
-        "bumm": 9,
-        "olé": 1
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "bumm in 3 Blöcken je 3x; Ausrufskette als Kandidat (Grenzfall)."
     },
@@ -2211,15 +2239,14 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "bumm": 9,
+        "kawumm": 3,
+        "ole": 3
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "kawumm": 3,
-        "bumm": 9,
-        "olé": 3
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -3462,7 +3489,8 @@
         "shalala": 9,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "dum-didi-dum": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -3478,9 +3506,7 @@
           "Scha-la-la-la-la-la-la-la-la-la-la"
         ]
       },
-      "kandidaten": {
-        "dum-didi-dum": 4
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -3497,7 +3523,8 @@
         "shalala": 9,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "dum-didi-dum": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -3513,9 +3540,7 @@
           "Schalalalalalalalalala"
         ]
       },
-      "kandidaten": {
-        "dum-didi-dum": 4
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "Live-Fassung (Kölner Philharmonie); Schala-Zeilen ausgeschrieben."
     },
@@ -4189,7 +4214,8 @@
         "shalala": 3,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "hooray-hooray": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -4199,9 +4225,7 @@
           "Schalalala Schalalala"
         ]
       },
-      "kandidaten": {
-        "hooray hooray": 1
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": "Je Zeile zwei Schalalala ohne Trennzeichen als eine Folge gezählt; streng getrennt wären es 6."
     },
@@ -4646,13 +4670,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "bumm": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "bumm": 1
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -4690,13 +4713,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "boom-laboom": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "boom laboom": 1
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -4755,13 +4777,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "da-da": 48
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "da-da": 48
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "16 Zeilen mit je drei durch Komma getrennten da-da."
     },
@@ -4799,14 +4820,13 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "da-da-da": 4,
+        "ta-ta-ra-ta-ta": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "tä-tä-rä-tä-tä": 4,
-        "da-da-da": 4
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -5768,13 +5788,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "lo-lo-lo": 3
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "lo-lo-lo": 3
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "Lautfolge dreimal ausgeschrieben."
     },
@@ -5791,13 +5810,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "lo-lo-lo": 3
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "lo-lo-lo": 3
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -5835,13 +5853,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "ah-ah-ah": 3
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "ah-ah-ah": 3
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": ""
     },
@@ -6222,7 +6239,8 @@
         "shalala": 8,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 2
+        "ohoho": 2,
+        "ah-uh": 8
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -6241,9 +6259,7 @@
           "uh-uh-uh-uh"
         ]
       },
-      "kandidaten": {
-        "ah-uh": 8
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -6365,7 +6381,9 @@
         "shalala": 3,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "ah-ah": 5,
+        "ah-ah-oh-ah-ah": 15
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -6375,10 +6393,7 @@
           "Shalali-shalala"
         ]
       },
-      "kandidaten": {
-        "ah-ah-oh-ah-ah": 15,
-        "ah-ah": 5
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -6437,13 +6452,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "mh-mh-mh-hm": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "mh-mh-mh-hm": 4
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -8217,7 +8231,8 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 4
+        "ohoho": 4,
+        "ba-ba-ba": 6
       },
       "anzahl_aufgeloest": null,
       "belege": {
@@ -8228,9 +8243,7 @@
           "oh-oh-oh"
         ]
       },
-      "kandidaten": {
-        "ba-ba-ba": 6
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": "ba-ba-ba teils direkt an ein Wort angehängt."
     },
@@ -8268,13 +8281,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "humpe-tateraa": 2
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "humpe täterää": 2
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -8831,13 +8843,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "fuzzi-fuzzi-fuzz": 3
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "fuzzi fuzzi fuzz": 3
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": "Kandidat enthält Titelwort; als Lautspiel geführt, Grenzfall."
     },
@@ -9106,13 +9117,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "humpe-tateraa": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "humpe täterää": 1
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -9423,13 +9433,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "dudeldudeldudel": 2
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "dudeldudeldudel": 2
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -9845,13 +9854,12 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "hey-hey-hey": 2
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "hey hey hey": 2
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -10015,14 +10023,13 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "ladi-dadi-dai": 3,
+        "yeah-yeah-yeah": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "yeah yeah yeah": 4,
-        "ladi dadi dai": 3
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": ""
     },
@@ -10186,14 +10193,13 @@
         "shalala": 0,
         "lalala": 0,
         "nanana": 0,
-        "ohoho": 0
+        "ohoho": 0,
+        "uh-uh-uh": 1,
+        "whoopie-whoopie": 4
       },
       "anzahl_aufgeloest": null,
       "belege": {},
-      "kandidaten": {
-        "whoopie whoopie": 4,
-        "uh, uh, uh": 1
-      },
+      "kandidaten": {},
       "sicherheit": "mittel",
       "notiz": "Eine Folge Uh, uh, uh ist durch Kommas getrennt und wurde nach der Zählregel nicht als ohoho gezählt (sonst ohoho 1)."
     },
@@ -10343,6 +10349,37 @@
       "kandidaten": {},
       "sicherheit": null,
       "notiz": "Seite ohne Liedtext."
+    }
+  ],
+  "kandidaten_verworfen": [],
+  "familien": [
+    {
+      "id": "piu",
+      "name": "Piu piu"
+    },
+    {
+      "id": "shalala",
+      "name": "Shalala"
+    },
+    {
+      "id": "silben",
+      "name": "La-la, Da-da & Co."
+    },
+    {
+      "id": "knall",
+      "name": "Bumm & Kawumm"
+    },
+    {
+      "id": "rufe",
+      "name": "Oh, Ah, Uh"
+    },
+    {
+      "id": "instrumente",
+      "name": "Dudeln & Tröten"
+    },
+    {
+      "id": "jubel",
+      "name": "Hey, Yeah, Olé"
     }
   ]
 }

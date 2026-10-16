@@ -134,6 +134,19 @@ test('Kandidat aus der Laute-Liste wird freigegeben statt doppelt angelegt', () 
   assert.strictEqual(data.zaehlungen[0].werte.bumm, 9);
 });
 
+test('Familien bestimmen die Farbe, neue Laute landen in „Weitere Laute“', () => {
+  const data = SM.normalize({
+    familien: [{id: 'x', name: 'X'}, {id: 'y', name: 'Y'}],
+    laute: [{id: 'a', name: 'A', status: 'freigegeben', familie: 'y'}, {id: 'b', name: 'B', status: 'freigegeben', familie: 'y'}],
+    lieder: [{id: '1'}],
+    zaehlungen: [{lied_id: '1', werte: {a: 1}, kandidaten: {'peng peng': 2}}],
+  });
+  assert.deepStrictEqual(SM.families(data).map(f => [f.id, f.slot]), [['y', 2]]);
+  assert.deepStrictEqual(SM.sounds(data).map(s => s.slot), [2, 2]);
+  SM.approveCandidate(data, 'peng peng', '__neu');
+  assert.deepStrictEqual(SM.families(data).map(f => f.id), ['y', 'weitere']);
+});
+
 test('Kurven schwingen nicht unter null', () => {
   const f = SM.monotone([0, 5, 0, 0, 7]);
   for (let t = 0; t <= 4; t += 0.05) assert.ok(f(t) >= 0);

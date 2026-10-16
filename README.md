@@ -41,6 +41,8 @@ Der Entwurf der Werkstatt liegt nur im jeweiligen Browser. Veröffentlicht ist e
 }
 ```
 
+Laute gehören zu Familien (`familien: [{id, name}]`, je Laut `familie`). Die Kurven zeigen Familien, eine Farbe pro Familie in fester Reihenfolge (höchstens 8); die Übersicht „Alle Laute“ zeigt jeden Laut einzeln. Neu freigegebene Laute landen in „Weitere Laute“ und lassen sich in der Datei umhängen.
+
 Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Booklet vor Gehör vor Online-Text, dann Sicherheit, dann die neueste. Höchstens 8 Laute gleichzeitig, eine Farbe pro Laut in fester Reihenfolge.
 
 Zählregel: eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („shalala, shalala“ = 2).

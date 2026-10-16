@@ -1,10 +1,10 @@
-// Shalalameter – öffentliche Seite: Kurven-Diagramm, Filter, gewählter Zeitabschnitt.
+// Shalalameter – öffentliche Seite: Kurven nach Lautfamilien, Übersicht aller Laute, gewählter Zeitabschnitt.
 (() => {
 const {esc, fmt} = SM;
 const $ = id => document.getElementById(id);
 
 let data = null;
-let hidden = new Set();
+let hidden = new Set();          // ausgeblendete Familien
 let mode = 'sum';
 let typeOn = new Set(SM.TYPES.filter(t => t.on).map(t => t.id));
 let minSicher = 1;
@@ -14,9 +14,13 @@ let hoverIdx = null;
 let geo = null;
 
 const color = slot => `var(--c${slot})`;
+const fams = () => SM.families(data);
+const visFams = () => fams().filter(f => !hidden.has(f.id));
 const sounds = () => SM.sounds(data);
-const visible = () => sounds().filter(s => !hidden.has(s.id));
+const visible = () => sounds().filter(s => !hidden.has(s.familie));
 const total = s => visible().reduce((t, x) => t + (s.values[x.id] || 0), 0);
+const famValue = (counts, f) => sounds().filter(s => s.familie === f.id).reduce((t, s) => t + (counts[s.id] || 0), 0);
+const num = v => fmt(+v.toFixed(1));
 
 /* ---------- Daten laden ---------- */
 async function loadData(){
@@ -60,16 +64,19 @@ function renderStats(songs){
   const low = shown.filter(s => s.lowConf).length;
   const hiddenTyp = songs.filter(s => !typeOn.has(s.typ)).length;
   $('stats').innerHTML = `<span><b>${shown.length}</b> Lieder</span><span><b>${counted}</b> gezählt</span><span><b>${noText}</b> ohne Text</span>`
+    + `<span><b>${sounds().length}</b> Laute in ${fams().length} Familien</span>`
     + (low ? `<span><b>${low}</b> unter Sicherheitsschwelle</span>` : '')
     + (hiddenTyp ? `<span class="muted">${hiddenTyp} ausgeblendet (Typ)</span>` : '');
 }
 
-/* ---------- Legende ---------- */
+/* ---------- Legende (Familien) ---------- */
 function renderLegend(songs){
-  $('legend').innerHTML = sounds().map(s => {
-    const t = songs.filter(x => x.shown && x.counted).reduce((a, x) => a + (x.values[s.id] || 0), 0);
-    return `<button type="button" data-id="${esc(s.id)}" aria-pressed="${!hidden.has(s.id)}" title="${esc(s.name)} ein- oder ausblenden">
-      <span class="sw" style="background:${color(s.slot)}"></span>${esc(s.name)} <span class="n">${t}</span></button>`;
+  const counted = songs.filter(x => x.shown && x.counted);
+  $('legend').innerHTML = fams().map(f => {
+    const members = sounds().filter(s => s.familie === f.id);
+    const t = counted.reduce((a, x) => a + members.reduce((b, s) => b + (x.values[s.id] || 0), 0), 0);
+    return `<button type="button" data-id="${esc(f.id)}" aria-pressed="${!hidden.has(f.id)}" title="${esc(members.map(s => s.name).join(', '))}">
+      <span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)} <span class="n">${t}</span></button>`;
   }).join('');
 }
 $('legend').addEventListener('click', e => {
@@ -77,7 +84,7 @@ $('legend').addEventListener('click', e => {
   const id = b.dataset.id; hidden.has(id) ? hidden.delete(id) : hidden.add(id); render();
 });
 
-/* ---------- Gestapelte Kurven ---------- */
+/* ---------- Gestapelte Kurven (Familien) ---------- */
 function renderChart(cols){
   const svg = $('chart'), wrap = $('chart-wrap');
   wrap.querySelector('.empty-chart')?.remove();
@@ -86,7 +93,7 @@ function renderChart(cols){
     wrap.insertAdjacentHTML('beforeend', '<div class="empty-chart">Keine Lieder für diese Auswahl. Ändere die Filter.</div>');
     return;
   }
-  const vis = visible();
+  const vis = visFams();
   const cw = wrap.clientWidth - 8;
   const M = {t: 18, r: 28, b: 46, l: 40};
   const H = cw < 600 ? 310 : 430;
@@ -96,11 +103,11 @@ function renderChart(cols){
   const xs = t => n === 1 ? M.l + iw / 2 : M.l + (t / (n - 1)) * iw;
 
   // Jede Schicht wird einzeln geglättet und dann gestapelt, so kreuzen sich die Kurven nie.
-  const fns = vis.map(s => SM.monotone(cols.map(c => c.counts[s.id])));
+  const fns = vis.map(f => SM.monotone(cols.map(c => famValue(c.counts, f))));
   const SUB = 24, ts = [];
   if (n === 1) ts.push(-0.5, 0.5);
   else for (let k = 0; k <= (n - 1) * SUB; k++) ts.push(k / SUB);
-  const stacks = ts.map(t => { let acc = 0; return fns.map(f => (acc += f(n === 1 ? 0 : t))); });
+  const stacks = ts.map(t => { let acc = 0; return fns.map(fn => (acc += fn(n === 1 ? 0 : t))); });
   const maxT = Math.max(1e-9, ...stacks.map(st => st.length ? st[st.length - 1] : 0));
   const step = SM.niceStep(Math.max(maxT, mode === 'avg' ? 1 : 4)), top = Math.ceil(maxT / step) * step || step;
   const y = v => M.t + ih - (v / top) * ih;
@@ -117,29 +124,28 @@ function renderChart(cols){
     const x0 = Math.max(M.l, xs(si) - half), x1 = Math.min(W - M.r, xs(si) + half);
     out += `<rect class="selband" x="${x0}" y="${M.t}" width="${x1 - x0}" height="${ih}"/>`;
   }
-  vis.forEach((s, k) => {
+  vis.forEach((f, k) => {
     const upper = ts.map((t, j) => `${xt(t).toFixed(1)},${y(stacks[j][k]).toFixed(1)}`);
     const lower = ts.map((t, j) => `${xt(t).toFixed(1)},${y(k ? stacks[j][k - 1] : 0).toFixed(1)}`).reverse();
-    out += `<path class="layer" fill="${color(s.slot)}" d="M${upper.join('L')}L${lower.join('L')}Z"/>`;
+    out += `<path class="layer" fill="${color(f.slot)}" d="M${upper.join('L')}L${lower.join('L')}Z"/>`;
   });
   // Direkte Beschriftung an der dicksten Stelle jeder Schicht
-  vis.forEach((s, k) => {
+  vis.forEach((f, k) => {
     let best = -1, bj = 0;
     stacks.forEach((st, j) => { const th = st[k] - (k ? st[k - 1] : 0); if (th > best) { best = th; bj = j; } });
     if ((best / top) * ih < 20) return;
-    const x = Math.min(W - M.r - 40, Math.max(M.l + 40, xt(ts[bj])));
-    out += `<text class="lbl" x="${x}" y="${y(stacks[bj][k] - best / 2) + 4}" text-anchor="middle">${esc(s.name)}</text>`;
+    const x = Math.min(W - M.r - 60, Math.max(M.l + 60, xt(ts[bj])));
+    out += `<text class="lbl" x="${x}" y="${y(stacks[bj][k] - best / 2) + 4}" text-anchor="middle">${esc(f.name)}</text>`;
   });
   if (si >= 0) {
     out += `<line class="selline" x1="${xs(si)}" x2="${xs(si)}" y1="${M.t}" y2="${M.t + ih}"/>`;
     let acc = 0;
-    vis.forEach(s => { const v = cols[si].counts[s.id]; acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(acc)}" r="4.5" fill="${color(s.slot)}"/>`; });
+    vis.forEach(f => { const v = famValue(cols[si].counts, f); acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(acc)}" r="4.5" fill="${color(f.slot)}"/>`; });
   }
   const every = Math.max(1, Math.ceil(40 / (n === 1 ? 999 : iw / (n - 1))));
   cols.forEach((c, i) => {
     if (i % every && i !== si) return;
     out += `<text class="yr${i === si ? ' sel' : ''}" x="${xs(i)}" y="${H - M.b + 18}" text-anchor="middle">${c.year}</text>`;
-    // Abdeckung: gezählte / alle Lieder des Jahres
     if (c.songs.length) out += `<text class="cov" x="${xs(i)}" y="${H - M.b + 32}" text-anchor="middle">${c.counted.length}/${c.songs.length}</text>`;
   });
   cols.forEach((c, i) => {
@@ -155,8 +161,8 @@ function showTip(i){
   const tip = $('tip');
   if (i == null || !geo) { tip.hidden = true; return; }
   const c = geo.cols[i];
-  const rows = visible().map(s =>
-    `<div class="row"><span class="sw" style="background:${color(s.slot)}"></span><span>${esc(s.name)}</span><span>${fmt(+c.counts[s.id].toFixed(1))}</span></div>`).join('');
+  const rows = visFams().map(f =>
+    `<div class="row"><span class="sw" style="background:${color(f.slot)}"></span><span>${esc(f.name)}</span><span>${num(famValue(c.counts, f))}</span></div>`).join('');
   const meta = c.songs.length ? `${c.counted.length} von ${c.songs.length} Liedern gezählt${mode === 'avg' ? ' · Ø je Lied' : ''}` : 'keine Lieder';
   tip.innerHTML = `<b>${c.year}</b><div class="meta">${meta}</div>${rows}`;
   tip.hidden = false;
@@ -180,39 +186,70 @@ function setHover(i){
   }
   showTip(i);
 }
-function select(i){
-  if (!geo || !geo.cols[i]) return;
-  selYear = geo.cols[i].year;
-  history.replaceState(null, '', '#' + selYear);
+function selectYear(year, focus){
+  selYear = year;
+  history.replaceState(null, '', '#' + year);
   render();
-  $('chart').querySelector(`.hit[data-i="${i}"]`)?.focus({preventScroll: true});
+  if (focus && geo) $('chart').querySelector(`.hit[data-i="${geo.cols.findIndex(c => c.year === year)}"]`)?.focus({preventScroll: true});
 }
 const chart = $('chart');
 chart.addEventListener('pointermove', e => { const h = e.target.closest('.hit'); setHover(h ? +h.dataset.i : null); });
 chart.addEventListener('pointerleave', () => setHover(null));
-chart.addEventListener('click', e => { const h = e.target.closest('.hit'); if (h) select(+h.dataset.i); });
+chart.addEventListener('click', e => { const h = e.target.closest('.hit'); if (h) selectYear(geo.cols[+h.dataset.i].year, true); });
 chart.addEventListener('keydown', e => {
   const h = e.target.closest('.hit'); if (!h) return;
-  const i = +h.dataset.i;
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(i); }
-  else if (e.key === 'ArrowRight') { e.preventDefault(); select(Math.min(geo.cols.length - 1, i + 1)); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); select(Math.max(0, i - 1)); }
+  const i = +h.dataset.i, last = geo.cols.length - 1;
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectYear(geo.cols[i].year, true); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); selectYear(geo.cols[Math.min(last, i + 1)].year, true); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); selectYear(geo.cols[Math.max(0, i - 1)].year, true); }
+});
+
+/* ---------- Alle Laute (Heatmap) ---------- */
+function renderGrid(cols){
+  const box = $('grid');
+  if (!cols.length) { box.innerHTML = ''; return; }
+  const snds = sounds();
+  const sumOf = s => cols.reduce((t, c) => t + (c.counts[s.id] || 0), 0);
+  let max = 0;
+  for (const c of cols) for (const s of snds) max = Math.max(max, c.counts[s.id] || 0);
+  const cell = (v, slot, sel) => {
+    const cls = sel ? ' class="sel"' : '';
+    if (!(v > 0)) return `<td${cls}><span class="z">·</span></td>`;
+    const p = Math.round(18 + 62 * Math.sqrt(v / (max || 1)));
+    return `<td${cls}><span class="v" style="background:color-mix(in oklab, var(--c${slot}) ${p}%, var(--surface))">${num(v)}</span></td>`;
+  };
+  let html = `<table class="heat"><thead><tr><th scope="col">Laut</th>${cols.map(c =>
+    `<th scope="col" class="${c.year === selYear ? 'sel' : ''}"><button type="button" data-year="${c.year}" aria-pressed="${c.year === selYear}">${String(c.year).slice(2)}<span class="sr">${c.year}</span></button></th>`).join('')}<th scope="col">Σ</th></tr></thead>`;
+  for (const f of fams()) {
+    const members = snds.filter(s => s.familie === f.id).map(s => ({s, t: sumOf(s)})).sort((a, b) => b.t - a.t || a.s.name.localeCompare(b.s.name, 'de'));
+    const ft = members.reduce((t, m) => t + m.t, 0);
+    const off = hidden.has(f.id) ? ' off' : '';
+    html += `<tbody class="fam${off}"><tr class="famrow"><th scope="rowgroup" colspan="${cols.length + 1}"><span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)}</th><td class="tot">${num(ft)}</td></tr>`;
+    for (const {s, t} of members) {
+      html += `<tr><th scope="row">${esc(s.name)}</th>${cols.map(c => cell(c.counts[s.id], f.slot, c.year === selYear)).join('')}<td class="tot">${t > 0 ? num(t) : '<span class="z">0</span>'}</td></tr>`;
+    }
+    html += '</tbody>';
+  }
+  box.innerHTML = html + '</table>';
+}
+$('grid').addEventListener('click', e => {
+  const b = e.target.closest('button[data-year]'); if (b) selectYear(+b.dataset.year, false);
 });
 
 /* ---------- Zeitabschnitt ---------- */
 function countRow(z){
-  const snds = sounds();
-  const w = SM.countable(z) ? snds.map(s => `<td>${SM.value(z, s.id, aufl)}</td>`).join('')
-    : `<td colspan="${snds.length}" style="text-align:left">${z.status === 'kein_text_gefunden' ? 'kein Text gefunden' : esc(z.status)}</td>`;
+  const ids = new Set(Object.keys(z.werte || {}).filter(k => +z.werte[k] > 0));
+  const found = sounds().filter(s => ids.has(s.id)).map(s => `${esc(s.name)} ${SM.value(z, s.id, aufl)}`).join(', ');
+  const w = SM.countable(z) ? (found || '<span class="muted">keine Laute</span>') : (z.status === 'kein_text_gefunden' ? 'kein Text gefunden' : esc(z.status));
   const src = SM.isHttp(z.quelle_url) ? `<a href="${esc(z.quelle_url)}" target="_blank" rel="noopener">Link</a>` : esc(z.quelle_url || '–');
-  return `<tr><td>${esc(SM.GRUND_LABEL[z.grundlage] || z.grundlage)}</td><td>${esc(z.gezaehlt_von || '–')}</td><td>${esc(z.sicherheit || '–')}</td>${w}<td style="text-align:left">${src}</td></tr>`;
+  return `<tr><td>${esc(SM.GRUND_LABEL[z.grundlage] || z.grundlage)}</td><td>${esc(z.sicherheit || '–')}</td><td style="text-align:left; white-space:normal">${w}</td><td style="text-align:left">${src}</td></tr>`;
 }
 function renderPeriod(cols){
   const c = cols.find(x => x.year === selYear);
   const uc = $('uncounted');
   renderTable(cols);
   if (!c) { $('period-h').textContent = '–'; $('period-sum').textContent = ''; $('rank').innerHTML = ''; uc.hidden = true; return; }
-  const vis = visible(), snds = sounds();
+  const vf = visFams(), vis = visible();
   const all = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || a.s.l.titel.localeCompare(b.s.l.titel, 'de'));
   const list = all.filter(x => x.tot > 0), silent = all.filter(x => x.tot === 0);
   const sumAll = list.reduce((t, x) => t + x.tot, 0);
@@ -220,15 +257,17 @@ function renderPeriod(cols){
   $('period-h').textContent = String(c.year);
   $('period-sum').textContent = c.songs.length ? `${c.counted.length} von ${c.songs.length} Liedern gezählt · ${sumAll} Laute · sortiert nach Anzahl` : '';
   $('rank').innerHTML = list.length ? list.map((x, i) => {
-    const s = x.s, segs = vis.filter(v => s.values[v.id] > 0), b = s.best;
+    const s = x.s, b = s.best;
+    const segs = vf.map(f => ({f, v: famValue(s.values, f)})).filter(g => g.v > 0);
+    const found = vis.filter(v => s.values[v.id] > 0);
     const link = SM.isHttp(b.quelle_url) ? `<a href="${esc(b.quelle_url)}" target="_blank" rel="noopener">Quelle</a>` : '';
     const gekuerzt = b.anzahl_aufgeloest && typeof b.anzahl_aufgeloest === 'object' && !aufl;
     return `<li>
       <span class="pos">${i + 1}</span>
       <span><span class="t">${esc(s.l.titel)}</span><br><span class="m">${esc(s.l.erstveroeffentlichung)}${s.l.veroeffentlichung ? ' · ' + esc(s.l.veroeffentlichung) : ''}</span></span>
       <span class="viz">
-        <span class="bar" style="width:${(x.tot / maxTot) * 100}%">${segs.map(v => `<span style="flex:${s.values[v.id]};background:${color(v.slot)}"></span>`).join('')}</span>
-        <span class="chips">${segs.map(v => `<span class="chip"><i style="background:${color(v.slot)}"></i>${esc(v.name)} ${s.values[v.id]}</span>`).join('') || '<span class="muted">keine Laute</span>'}</span>
+        <span class="bar" style="width:${(x.tot / maxTot) * 100}%">${segs.map(g => `<span style="flex:${g.v};background:${color(g.f.slot)}"></span>`).join('')}</span>
+        <span class="chips">${found.map(v => `<span class="chip"><i style="background:${color(v.slot)}"></i>${esc(v.name)} ${s.values[v.id]}</span>`).join('')}</span>
       </span>
       <span class="tot">${x.tot}</span>
       <span class="src">
@@ -239,7 +278,7 @@ function renderPeriod(cols){
         ${gekuerzt ? '<span class="muted">Refrain im Text gekürzt</span>' : ''}
         ${b.notiz ? `<span class="muted">${esc(b.notiz)}</span>` : ''}
       </span>
-      ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Von</th><th>Sicherheit</th>${snds.map(v => `<th>${esc(v.name)}</th>`).join('')}<th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
+      ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Sicherheit</th><th style="text-align:left">Laute</th><th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
     </li>`;
   }).join('') : `<li class="empty muted">${c.counted.length ? `In den gezählten Liedern aus ${c.year} kommen keine dieser Laute vor.` : `Aus ${c.year} gibt es keine gezählten Lieder für diese Auswahl.`}</li>`;
   const rest = c.songs.filter(s => !s.counted);
@@ -251,9 +290,9 @@ function renderPeriod(cols){
   uc.innerHTML = lines.join('<br>');
 }
 function renderTable(cols){
-  const snds = sounds();
-  $('table').innerHTML = `<table><thead><tr><th>Jahr</th><th>Gezählt</th>${snds.map(s => `<th>${esc(s.name)}</th>`).join('')}</tr></thead><tbody>${
-    cols.map(c => `<tr><td>${c.year}</td><td>${c.counted.length}/${c.songs.length}</td>${snds.map(s => `<td>${fmt(+c.counts[s.id].toFixed(1))}</td>`).join('')}</tr>`).join('')
+  const fs = fams();
+  $('table').innerHTML = `<table><thead><tr><th>Jahr</th><th>Gezählt</th>${fs.map(f => `<th>${esc(f.name)}</th>`).join('')}</tr></thead><tbody>${
+    cols.map(c => `<tr><td>${c.year}</td><td>${c.counted.length}/${c.songs.length}</td>${fs.map(f => `<td>${num(famValue(c.counts, f))}</td>`).join('')}</tr>`).join('')
   }</tbody></table>`;
 }
 
@@ -267,7 +306,7 @@ function render(){
     selYear = best;
   }
   hoverIdx = null; $('tip').hidden = true;
-  renderStats(songs); renderLegend(songs); renderChart(cols); renderPeriod(cols);
+  renderStats(songs); renderLegend(songs); renderChart(cols); renderGrid(cols); renderPeriod(cols);
 }
 
 renderTypeFilter();

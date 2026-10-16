@@ -43,9 +43,28 @@
     return d;
   }
 
-  // Farbe folgt dem Laut (Position in data.laute), nicht dem Rang.
+  // Laute sind in Familien gruppiert; die Farbe folgt der Familie (Position in data.familien), nicht dem Rang.
+  // Ohne data.familien bildet jeder Laut seine eigene Familie (ältere Datendateien).
+  function familyId(data, l) {
+    return l.familie || (Array.isArray(data.familien) && data.familien.length ? 'weitere' : l.id);
+  }
+  function families(data) {
+    const released = data.laute.filter(l => l.status === 'freigegeben');
+    const declared = Array.isArray(data.familien) ? data.familien : [];
+    const all = declared.slice();
+    for (const l of released) {
+      const id = familyId(data, l);
+      if (!all.some(f => f.id === id)) all.push({id, name: id === 'weitere' ? 'Weitere Laute' : l.name});
+    }
+    const used = new Set(released.map(l => familyId(data, l)));
+    return all.map((f, i) => ({...f, slot: Math.min(i + 1, MAX_SOUNDS)})).filter(f => used.has(f.id));
+  }
   function sounds(data) {
-    return data.laute.filter(l => l.status === 'freigegeben').slice(0, MAX_SOUNDS).map((l, i) => ({...l, slot: i + 1}));
+    const slot = new Map(families(data).map(f => [f.id, f.slot]));
+    return data.laute.filter(l => l.status === 'freigegeben').map(l => {
+      const familie = familyId(data, l);
+      return {...l, familie, slot: slot.get(familie) || MAX_SOUNDS};
+    });
   }
   function yearOf(lied) {
     const m = /^(\d{4})/.exec(lied.erstveroeffentlichung || '');
@@ -155,7 +174,12 @@
         id = base;
         let k = 2;
         while (data.laute.some(l => l.id === id)) id = base + '-' + k++;
-        data.laute.push({id, name: ph.charAt(0).toUpperCase() + ph.slice(1), status: 'freigegeben'});
+        const neu = {id, name: ph.charAt(0).toUpperCase() + ph.slice(1), status: 'freigegeben'};
+        if (Array.isArray(data.familien) && data.familien.length) {
+          neu.familie = 'weitere';
+          if (!data.familien.some(f => f.id === 'weitere')) data.familien.push({id: 'weitere', name: 'Weitere Laute'});
+        }
+        data.laute.push(neu);
       }
     }
     for (const z of data.zaehlungen) {
@@ -213,7 +237,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, sounds, yearOf, countable, bestOf, value, derive, yearCols,
+    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, yearCols,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };
