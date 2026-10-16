@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fortuna Ehrenfeld Shalalameter</title>
+<meta name="description" content="Wie oft singen Fortuna Ehrenfeld Piu piu, Shalala und Lalala? Die Laute aller Lieder auf einer Zeitleiste.">
+<meta property="og:title" content="Fortuna Ehrenfeld Shalalameter">
+<meta property="og:description" content="Piu piu, Shalala & Co.: die Laute aller Fortuna-Ehrenfeld-Lieder auf einer Zeitleiste.">
+<link rel="preload" href="assets/fonts/shrikhand-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero-top">
+      <div>
+        <div class="eyebrow">Piu piu, Shalala &amp; Co. · Lautmalerei über die Jahre</div>
+        <h1 id="h1">Fortuna Ehrenfeld <em>Shalalameter</em></h1>
+        <p class="lede">Wie oft kommen die Laute in den Liedern eines Jahres vor? Klicke auf ein Jahr, um die Lieder dieses Jahres zu sehen.</p>
+      </div>
+      <div class="seg" role="group" aria-label="Wert">
+        <button type="button" id="mode-sum" aria-pressed="true">Summe</button>
+        <button type="button" id="mode-avg" aria-pressed="false">Ø je Lied</button>
+      </div>
+    </div>
+    <div class="legend" id="legend" aria-label="Laute ein- und ausblenden"></div>
+    <div class="chart-scroll" id="chart-wrap">
+      <svg id="chart" role="group" aria-label="Gestapelte Kurven: Vorkommen der Laute pro Jahr"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <div class="notice" id="notice" hidden></div>
+  </section>
+
+  <div class="dataline">
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <div class="filters">
+      <fieldset id="typ-filter"><legend>Zeigen</legend></fieldset>
+      <label class="inline-label">Sicherheit
+        <select id="f-sicher">
+          <option value="1">alle</option>
+          <option value="2">ab mittel</option>
+          <option value="3">nur hoch</option>
+        </select>
+      </label>
+      <label class="pill" title="Wo ein Text nur „(2x)“ oder „Refrain“ enthält, die ausgeschriebene Zahl verwenden"><input type="checkbox" id="f-aufl"> Refrains ausgeschrieben</label>
+    </div>
+  </div>
+
+  <section class="panel period" aria-live="polite" aria-labelledby="period-h">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">Gewählter Zeitabschnitt</div>
+        <h2 id="period-h">–</h2>
+      </div>
+      <span class="sum" id="period-sum"></span>
+    </div>
+    <ol class="rank" id="rank"></ol>
+    <p class="uncounted" id="uncounted" hidden></p>
+    <details class="table-view" style="margin-top:14px">
+      <summary>Alle Jahre als Tabelle</summary>
+      <div class="tbl-scroll" id="table"></div>
+    </details>
+  </section>
+
+  <section class="panel" aria-labelledby="how-h">
+    <h2 id="how-h" style="font-size:18px; margin-bottom:8px">So wird gezählt</h2>
+    <p>Gezählt wird pro Lautfolge: „piu piu piu“ ist ein Vorkommen, „shalala, shalala“ sind zwei. Jedes Lied zählt einmal, im Jahr seiner ersten Veröffentlichung. Grundlage sind zunächst online verfügbare Liedtexte. Wo es eine Zählung nach Booklet oder nach Gehör gibt, hat sie Vorrang. Die Zahl unter jedem Jahr zeigt, wie viele Lieder dieses Jahres schon gezählt sind.</p>
+  </section>
+
+  <footer class="site-foot">
+    <span>Fanprojekt mit Einverständnis von Fortuna Ehrenfeld. Gespeichert werden nur Zählungen, keine Liedtexte.</span>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+  </footer>
+</div>
+<script src="assets/core.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

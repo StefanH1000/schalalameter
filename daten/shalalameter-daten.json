@@ -1,0 +1,1583 @@
+{
+  "version": 1,
+  "beispiel": true,
+  "laute": [
+    {
+      "id": "piu",
+      "name": "Piu piu",
+      "status": "freigegeben"
+    },
+    {
+      "id": "shalala",
+      "name": "Shalala",
+      "status": "freigegeben"
+    },
+    {
+      "id": "lalala",
+      "name": "Lalala",
+      "status": "freigegeben"
+    },
+    {
+      "id": "nanana",
+      "name": "Nanana",
+      "status": "freigegeben"
+    },
+    {
+      "id": "ohoho",
+      "name": "Oh-oh-oh",
+      "status": "freigegeben"
+    }
+  ],
+  "lieder": [
+    {
+      "id": "beispiel-1",
+      "titel": "Beispiellied 1",
+      "erstveroeffentlichung": "2016-01-01",
+      "veroeffentlichung": "Beispielalbum 2016",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-2",
+      "titel": "Beispiellied 2",
+      "erstveroeffentlichung": "2016-04-01",
+      "veroeffentlichung": "Beispielalbum 2016",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-3",
+      "titel": "Beispiellied 3",
+      "erstveroeffentlichung": "2016-09-01",
+      "veroeffentlichung": "Beispielalbum 2016",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-4",
+      "titel": "Beispiellied 4",
+      "erstveroeffentlichung": "2016-08-01",
+      "veroeffentlichung": "Beispielalbum 2016",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-5",
+      "titel": "Beispiellied 5",
+      "erstveroeffentlichung": "2017-09-01",
+      "veroeffentlichung": "Beispielalbum 2017",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-6",
+      "titel": "Beispiellied 6",
+      "erstveroeffentlichung": "2017-11-01",
+      "veroeffentlichung": "Beispielalbum 2017",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-7",
+      "titel": "Beispiellied 7",
+      "erstveroeffentlichung": "2017-09-01",
+      "veroeffentlichung": "Beispielalbum 2017",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-8",
+      "titel": "Beispiellied 8",
+      "erstveroeffentlichung": "2017-05-01",
+      "veroeffentlichung": "Beispielalbum 2017",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-9",
+      "titel": "Beispiellied 9",
+      "erstveroeffentlichung": "2017-06-01",
+      "veroeffentlichung": "Beispielalbum 2017",
+      "auch_auf": [],
+      "typ": "cover",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-10",
+      "titel": "Beispiellied 10",
+      "erstveroeffentlichung": "2018-02-01",
+      "veroeffentlichung": "Beispielalbum 2018",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-11",
+      "titel": "Beispiellied 11",
+      "erstveroeffentlichung": "2018-05-01",
+      "veroeffentlichung": "Beispielalbum 2018",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-12",
+      "titel": "Beispiellied 12",
+      "erstveroeffentlichung": "2019-12-01",
+      "veroeffentlichung": "Beispielalbum 2019",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-13",
+      "titel": "Beispiellied 13",
+      "erstveroeffentlichung": "2019-07-01",
+      "veroeffentlichung": "Beispielalbum 2019",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-14",
+      "titel": "Beispiellied 14",
+      "erstveroeffentlichung": "2019-09-01",
+      "veroeffentlichung": "Beispielalbum 2019",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-15",
+      "titel": "Beispiellied 15",
+      "erstveroeffentlichung": "2019-11-01",
+      "veroeffentlichung": "Beispielalbum 2019",
+      "auch_auf": [],
+      "typ": "uebersetzung",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-16",
+      "titel": "Beispiellied 16",
+      "erstveroeffentlichung": "2019-04-01",
+      "veroeffentlichung": "Beispielalbum 2019",
+      "auch_auf": [],
+      "typ": "uebersetzung",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-17",
+      "titel": "Beispiellied 17",
+      "erstveroeffentlichung": "2020-06-01",
+      "veroeffentlichung": "Beispielalbum 2020",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-18",
+      "titel": "Beispiellied 18",
+      "erstveroeffentlichung": "2020-03-01",
+      "veroeffentlichung": "Beispielalbum 2020",
+      "auch_auf": [],
+      "typ": "cover",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-19",
+      "titel": "Beispiellied 19",
+      "erstveroeffentlichung": "2021-10-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-20",
+      "titel": "Beispiellied 20",
+      "erstveroeffentlichung": "2021-03-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-21",
+      "titel": "Beispiellied 21",
+      "erstveroeffentlichung": "2021-03-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-22",
+      "titel": "Beispiellied 22",
+      "erstveroeffentlichung": "2021-01-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-23",
+      "titel": "Beispiellied 23",
+      "erstveroeffentlichung": "2021-12-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-24",
+      "titel": "Beispiellied 24",
+      "erstveroeffentlichung": "2021-03-01",
+      "veroeffentlichung": "Beispielalbum 2021",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-25",
+      "titel": "Beispiellied 25",
+      "erstveroeffentlichung": "2022-07-01",
+      "veroeffentlichung": "Beispielalbum 2022",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-26",
+      "titel": "Beispiellied 26",
+      "erstveroeffentlichung": "2022-09-01",
+      "veroeffentlichung": "Beispielalbum 2022",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-27",
+      "titel": "Beispiellied 27",
+      "erstveroeffentlichung": "2022-05-01",
+      "veroeffentlichung": "Beispielalbum 2022",
+      "auch_auf": [],
+      "typ": "cover",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-28",
+      "titel": "Beispiellied 28",
+      "erstveroeffentlichung": "2022-09-01",
+      "veroeffentlichung": "Beispielalbum 2022",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-29",
+      "titel": "Beispiellied 29",
+      "erstveroeffentlichung": "2023-07-01",
+      "veroeffentlichung": "Beispielalbum 2023",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-30",
+      "titel": "Beispiellied 30",
+      "erstveroeffentlichung": "2023-09-01",
+      "veroeffentlichung": "Beispielalbum 2023",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-31",
+      "titel": "Beispiellied 31",
+      "erstveroeffentlichung": "2023-01-01",
+      "veroeffentlichung": "Beispielalbum 2023",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-32",
+      "titel": "Beispiellied 32",
+      "erstveroeffentlichung": "2023-01-01",
+      "veroeffentlichung": "Beispielalbum 2023",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-33",
+      "titel": "Beispiellied 33",
+      "erstveroeffentlichung": "2024-11-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-34",
+      "titel": "Beispiellied 34",
+      "erstveroeffentlichung": "2024-08-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-35",
+      "titel": "Beispiellied 35",
+      "erstveroeffentlichung": "2024-01-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-36",
+      "titel": "Beispiellied 36",
+      "erstveroeffentlichung": "2024-02-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "cover",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-37",
+      "titel": "Beispiellied 37",
+      "erstveroeffentlichung": "2024-07-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-38",
+      "titel": "Beispiellied 38",
+      "erstveroeffentlichung": "2024-09-01",
+      "veroeffentlichung": "Beispielalbum 2024",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-39",
+      "titel": "Beispiellied 39",
+      "erstveroeffentlichung": "2025-07-01",
+      "veroeffentlichung": "Beispielalbum 2025",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-40",
+      "titel": "Beispiellied 40",
+      "erstveroeffentlichung": "2025-06-01",
+      "veroeffentlichung": "Beispielalbum 2025",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-41",
+      "titel": "Beispiellied 41",
+      "erstveroeffentlichung": "2025-01-01",
+      "veroeffentlichung": "Beispielalbum 2025",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-42",
+      "titel": "Beispiellied 42",
+      "erstveroeffentlichung": "2025-01-01",
+      "veroeffentlichung": "Beispielalbum 2025",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    },
+    {
+      "id": "beispiel-43",
+      "titel": "Beispiellied 43",
+      "erstveroeffentlichung": "2025-10-01",
+      "veroeffentlichung": "Beispielalbum 2025",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": ""
+    }
+  ],
+  "zaehlungen": [
+    {
+      "lied_id": "beispiel-1",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/1",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 0,
+        "lalala": 0,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-1",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 1,
+        "lalala": 0,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-2",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/2",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 1
+      },
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-3",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-4",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/4",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 0,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 0,
+        "shalala": 0,
+        "lalala": 2,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-5",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/5",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 1,
+        "lalala": 4,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-6",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/6",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 1,
+        "lalala": 4,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-6",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 2,
+        "lalala": 4,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-7",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/7",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 5,
+        "shalala": 2,
+        "lalala": 2,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-8",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/8",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 0,
+        "lalala": 3,
+        "nanana": 2,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-9",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/9",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 5,
+        "lalala": 2,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": {
+        "piu": 2,
+        "shalala": 10,
+        "lalala": 2,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 3
+      },
+      "sicherheit": "hoch",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-10",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-11",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/11",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 1,
+        "lalala": 2,
+        "nanana": 0,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-11",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 2,
+        "lalala": 2,
+        "nanana": 0,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-12",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/12",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 0,
+        "shalala": 5,
+        "lalala": 6,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "dubidu": 3
+      },
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-13",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/13",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 2,
+        "lalala": 1,
+        "nanana": 3,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 1,
+        "shalala": 2,
+        "lalala": 1,
+        "nanana": 6,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 3
+      },
+      "sicherheit": "niedrig",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-14",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/14",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 3,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 1,
+        "shalala": 6,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 3
+      },
+      "sicherheit": "mittel",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-15",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/15",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 2,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": {
+        "piu": 1,
+        "shalala": 4,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 2
+      },
+      "sicherheit": "hoch",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-16",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/16",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 1,
+        "lalala": 2,
+        "nanana": 3,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 2,
+        "shalala": 1,
+        "lalala": 2,
+        "nanana": 6,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "niedrig",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-16",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 2,
+        "lalala": 2,
+        "nanana": 3,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-17",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-18",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/18",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 2,
+        "lalala": 2,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 2
+      },
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-19",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/19",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 5,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-20",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/20",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 2,
+        "shalala": 8,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 1
+      },
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-21",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/21",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 8,
+        "lalala": 2,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-21",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 9,
+        "lalala": 2,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-22",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/22",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 6,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 3,
+        "shalala": 12,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-23",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/23",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 3,
+        "lalala": 0,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-24",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-25",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/25",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 6,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 2
+      },
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-26",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/26",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 2,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": {
+        "piu": 8,
+        "shalala": 2,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 2
+      },
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-26",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 3,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-27",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/27",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 3,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 1
+      },
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-28",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/28",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 0,
+        "lalala": 2,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 1
+      },
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-29",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/29",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 5,
+        "lalala": 1,
+        "nanana": 3,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-30",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/30",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 0,
+        "lalala": 2,
+        "nanana": 0,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-31",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-32",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/32",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 0,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 6,
+        "shalala": 0,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 3,
+        "bumm": 1
+      },
+      "sicherheit": "mittel",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-33",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/33",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 3,
+        "lalala": 0,
+        "nanana": 0,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "bumm": 4
+      },
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-34",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/34",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": {
+        "piu": 2,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 3
+      },
+      "sicherheit": "hoch",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-35",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/35",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-36",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/36",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 4,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-36",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 5,
+        "lalala": 1,
+        "nanana": 1,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-37",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/37",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "anzahl_aufgeloest": {
+        "piu": 6,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 0,
+        "ohoho": 1
+      },
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "niedrig",
+      "notiz": "Refrain im Text nur einmal ausgeschrieben"
+    },
+    {
+      "lied_id": "beispiel-38",
+      "grundlage": "online_text",
+      "quelle_url": "",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "kein_text_gefunden",
+      "werte": null,
+      "sicherheit": "niedrig",
+      "notiz": "Kein Text gefunden"
+    },
+    {
+      "lied_id": "beispiel-39",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/39",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 5,
+        "shalala": 0,
+        "lalala": 0,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-40",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/40",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 3,
+        "shalala": 1,
+        "lalala": 1,
+        "nanana": 2,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 1,
+        "bumm": 4
+      },
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-41",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/41",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 5,
+        "shalala": 0,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {
+        "hey hey hey": 2
+      },
+      "sicherheit": "niedrig",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-41",
+      "grundlage": "booklet",
+      "quelle_url": "",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel-fan",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 5,
+        "shalala": 1,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": "Beispiel: zweite Zählung nach Booklet"
+    },
+    {
+      "lied_id": "beispiel-42",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/42",
+      "quelle_art": "community",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 4,
+        "shalala": 0,
+        "lalala": 0,
+        "nanana": 1,
+        "ohoho": 2
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "mittel",
+      "notiz": ""
+    },
+    {
+      "lied_id": "beispiel-43",
+      "grundlage": "online_text",
+      "quelle_url": "https://example.org/beispiel/43",
+      "quelle_art": "offiziell",
+      "gezaehlt_von": "beispiel",
+      "gezaehlt_am": "2026-10-16",
+      "status": "gezaehlt",
+      "werte": {
+        "piu": 1,
+        "shalala": 0,
+        "lalala": 0,
+        "nanana": 0,
+        "ohoho": 0
+      },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
+      "sicherheit": "hoch",
+      "notiz": ""
+    }
+  ],
+  "kandidaten_verworfen": []
+}

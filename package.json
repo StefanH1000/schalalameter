@@ -1,0 +1,10 @@
+{
+  "name": "shalalameter",
+  "private": true,
+  "description": "Fortuna Ehrenfeld Shalalameter: Laute wie Piu piu und Shalala über die Jahre",
+  "scripts": {
+    "start": "node tools/serve.js",
+    "test": "node --test \"tests/*.test.js\"",
+    "beispieldaten": "node tools/beispieldaten.js"
+  }
+}
