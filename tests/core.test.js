@@ -122,6 +122,18 @@ test('Kandidat freigeben überträgt die Zahlen', () => {
   assert.strictEqual(SM.sounds(data).length, 2);
 });
 
+test('Kandidat aus der Laute-Liste wird freigegeben statt doppelt angelegt', () => {
+  const data = SM.normalize({
+    laute: [{id: 'a', name: 'A', status: 'freigegeben'}, {id: 'bumm', name: 'bumm', status: 'kandidat', schreibweise_in_daten: 'bumm'}],
+    lieder: [{id: '1'}],
+    zaehlungen: [{lied_id: '1', werte: {a: 0}, kandidaten: {bumm: 9}}],
+  });
+  assert.strictEqual(SM.approveCandidate(data, 'bumm', '__neu'), 'bumm');
+  assert.strictEqual(data.laute.length, 2);
+  assert.deepStrictEqual(SM.sounds(data).map(s => s.name), ['A', 'Bumm']);
+  assert.strictEqual(data.zaehlungen[0].werte.bumm, 9);
+});
+
 test('Kurven schwingen nicht unter null', () => {
   const f = SM.monotone([0, 5, 0, 0, 7]);
   for (let t = 0; t <= 4; t += 0.05) assert.ok(f(t) >= 0);

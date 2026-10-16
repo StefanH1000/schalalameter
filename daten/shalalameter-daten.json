@@ -25,6 +25,229 @@
       "id": "ohoho",
       "name": "Oh-oh-oh",
       "status": "freigegeben"
+    },
+    {
+      "id": "ah-ah",
+      "name": "ah-ah",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ah-ah",
+      "lieder": [
+        "glitzerfummel-moonboots"
+      ]
+    },
+    {
+      "id": "ah-ah-ah",
+      "name": "ah-ah-ah",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ah-ah-ah",
+      "lieder": [
+        "das-imperium-rudert-zuruck"
+      ]
+    },
+    {
+      "id": "ah-ah-oh-ah-ah",
+      "name": "ah-ah-oh-ah-ah",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ah-ah-oh-ah-ah",
+      "lieder": [
+        "glitzerfummel-moonboots"
+      ]
+    },
+    {
+      "id": "ah-uh",
+      "name": "ah-uh",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ah-uh",
+      "lieder": [
+        "die-ruckkehr-zur-normalitat"
+      ]
+    },
+    {
+      "id": "ba-ba-ba",
+      "name": "ba-ba-ba",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ba-ba-ba",
+      "lieder": [
+        "san-francisco-candy-boy"
+      ]
+    },
+    {
+      "id": "boom-laboom",
+      "name": "boom laboom",
+      "status": "kandidat",
+      "schreibweise_in_daten": "boom laboom",
+      "lieder": [
+        "der-ablativ-von-bumm"
+      ],
+      "notiz": "Nur in einer Zweitquelle (songtexte.com)."
+    },
+    {
+      "id": "bumm",
+      "name": "bumm",
+      "status": "kandidat",
+      "schreibweise_in_daten": "bumm",
+      "lieder": [
+        "alles-explodiert",
+        "der-ablativ-von-bumm"
+      ]
+    },
+    {
+      "id": "da-da",
+      "name": "da-da",
+      "status": "kandidat",
+      "schreibweise_in_daten": "da-da",
+      "lieder": [
+        "sanktpankpaul"
+      ]
+    },
+    {
+      "id": "da-da-da",
+      "name": "da-da-da",
+      "status": "kandidat",
+      "schreibweise_in_daten": "da-da-da",
+      "lieder": [
+        "tequila"
+      ]
+    },
+    {
+      "id": "dudeldudeldudel",
+      "name": "dudeldudeldudel",
+      "status": "kandidat",
+      "schreibweise_in_daten": "dudeldudeldudel",
+      "lieder": [
+        "wilde-jahre"
+      ]
+    },
+    {
+      "id": "dum-didi-dum",
+      "name": "dum-didi-dum",
+      "status": "kandidat",
+      "schreibweise_in_daten": "dum-didi-dum",
+      "lieder": [
+        "penn-konn"
+      ]
+    },
+    {
+      "id": "fuzzi-fuzzi-fuzz",
+      "name": "fuzzi fuzzi fuzz",
+      "status": "kandidat",
+      "schreibweise_in_daten": "fuzzi fuzzi fuzz",
+      "lieder": [
+        "fuzzi-fuzzi-cowboy"
+      ],
+      "notiz": "Grenzfall: enthält das Titelwort."
+    },
+    {
+      "id": "hey-hey-hey",
+      "name": "hey hey hey",
+      "status": "kandidat",
+      "schreibweise_in_daten": "hey hey hey",
+      "lieder": [
+        "life-at-the-hollywood-bowl"
+      ]
+    },
+    {
+      "id": "hooray-hooray",
+      "name": "hooray hooray",
+      "status": "kandidat",
+      "schreibweise_in_daten": "hooray hooray",
+      "lieder": [
+        "hooray-hooray"
+      ],
+      "notiz": "Grenzfall: echtes Wort und Titelwort."
+    },
+    {
+      "id": "humpe-tateraa",
+      "name": "humpe täterää",
+      "status": "kandidat",
+      "schreibweise_in_daten": "humpe täterää",
+      "lieder": [
+        "wir-sitzen-hier-und-schlabbern-aperol",
+        "rotze-auf-hawaii"
+      ]
+    },
+    {
+      "id": "kawumm",
+      "name": "kawumm",
+      "status": "kandidat",
+      "schreibweise_in_daten": "kawumm",
+      "lieder": [
+        "alles-explodiert"
+      ]
+    },
+    {
+      "id": "ladi-dadi-dai",
+      "name": "ladi dadi dai",
+      "status": "kandidat",
+      "schreibweise_in_daten": "ladi dadi dai",
+      "lieder": [
+        "ray-of-fukin-sunshine"
+      ]
+    },
+    {
+      "id": "lo-lo-lo",
+      "name": "lo-lo-lo",
+      "status": "kandidat",
+      "schreibweise_in_daten": "lo-lo-lo",
+      "lieder": [
+        "die-panamoralische-liebe"
+      ]
+    },
+    {
+      "id": "mh-mh-mh-hm",
+      "name": "mh-mh-mh-hm",
+      "status": "kandidat",
+      "schreibweise_in_daten": "mh-mh-mh-hm",
+      "lieder": [
+        "grazie-de-la-kotze"
+      ]
+    },
+    {
+      "id": "ole",
+      "name": "olé",
+      "status": "kandidat",
+      "schreibweise_in_daten": "olé",
+      "lieder": [
+        "alles-explodiert"
+      ],
+      "notiz": "Grenzfall: Ausruf, echtes Wort."
+    },
+    {
+      "id": "ta-ta-ra-ta-ta",
+      "name": "tä-tä-rä-tä-tä",
+      "status": "kandidat",
+      "schreibweise_in_daten": "tä-tä-rä-tä-tä",
+      "lieder": [
+        "tequila"
+      ]
+    },
+    {
+      "id": "uh-uh-uh",
+      "name": "uh, uh, uh",
+      "status": "kandidat",
+      "schreibweise_in_daten": "uh, uh, uh",
+      "lieder": [
+        "ciao-kakao"
+      ],
+      "notiz": "Grenzfall: durch Kommas getrennt, daher nicht als ohoho gezählt."
+    },
+    {
+      "id": "whoopie-whoopie",
+      "name": "whoopie whoopie",
+      "status": "kandidat",
+      "schreibweise_in_daten": "whoopie whoopie",
+      "lieder": [
+        "ciao-kakao"
+      ]
+    },
+    {
+      "id": "yeah-yeah-yeah",
+      "name": "yeah yeah yeah",
+      "status": "kandidat",
+      "schreibweise_in_daten": "yeah yeah yeah",
+      "lieder": [
+        "ray-of-fukin-sunshine"
+      ]
     }
   ],
   "lieder": [
@@ -1970,7 +2193,7 @@
       "kandidaten": {
         "kawumm": 3,
         "bumm": 9,
-        "olé olé olé": 1
+        "olé": 1
       },
       "sicherheit": "hoch",
       "notiz": "bumm in 3 Blöcken je 3x; Ausrufskette als Kandidat (Grenzfall)."
@@ -3291,7 +3514,7 @@
         ]
       },
       "kandidaten": {
-        "dumdididumdumdum": 4
+        "dum-didi-dum": 4
       },
       "sicherheit": "hoch",
       "notiz": "Live-Fassung (Kölner Philharmonie); Schala-Zeilen ausgeschrieben."
@@ -5550,7 +5773,7 @@
       "anzahl_aufgeloest": null,
       "belege": {},
       "kandidaten": {
-        "lo-lo-lo-lo-lo-lo-lo-lo-lo-lo-lo-lo": 3
+        "lo-lo-lo": 3
       },
       "sicherheit": "hoch",
       "notiz": "Lautfolge dreimal ausgeschrieben."

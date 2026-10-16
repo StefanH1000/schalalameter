@@ -60,8 +60,10 @@ let candList = [];
 function renderCands(){
   candList = SM.candidates(data);
   const snds = SM.sounds(data), full = snds.length >= SM.MAX_SOUNDS;
-  $('cands').innerHTML = candList.length ? candList.map((c, i) => `<li>
-    <span><span class="ph">${esc(c.ph)}</span><br><span class="ct">${c.total}× in ${c.songs.size} ${c.songs.size === 1 ? 'Lied' : 'Liedern'}</span></span>
+  $('cands').innerHTML = candList.length ? candList.map((c, i) => {
+    const note = SM.candidateEntry(data, c.ph)?.notiz;
+    return `<li>
+    <span><span class="ph">${esc(c.ph)}</span><br><span class="ct">${c.total}× in ${c.songs.size} ${c.songs.size === 1 ? 'Lied' : 'Liedern'}${note ? ' · ' + esc(note) : ''}</span></span>
     <span class="act">
       <select id="cand-${i}" aria-label="Ziel für ${esc(c.ph)}">
         ${full ? '' : '<option value="__neu">als neuer Laut</option>'}
@@ -69,7 +71,8 @@ function renderCands(){
       </select>
       <button type="button" class="btn small" data-approve="${i}">Übernehmen</button>
       <button type="button" class="btn small" data-drop="${i}">Verwerfen</button>
-    </span></li>`).join('') : '<li class="empty muted">Keine offenen Kandidaten.</li>';
+    </span></li>`;
+  }).join('') : '<li class="empty muted">Keine offenen Kandidaten.</li>';
 }
 $('cands').addEventListener('click', e => {
   const ai = e.target.dataset.approve, di = e.target.dataset.drop;

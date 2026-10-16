@@ -136,15 +136,27 @@
     return [...map.values()].sort((a, b) => b.total - a.total || a.ph.localeCompare(b.ph));
   }
 
+  function candidateEntry(data, ph) {
+    return data.laute.find(l => l.status !== 'freigegeben' && (l.schreibweise_in_daten === ph || l.id === slug(ph))) || null;
+  }
+
   // Kandidat einem Laut zuschlagen; target '__neu' legt einen neuen Laut an. Gibt die Laut-id zurück.
   function approveCandidate(data, ph, target) {
     let id = target;
     if (target === '__neu') {
-      const base = slug(ph);
-      id = base;
-      let k = 2;
-      while (data.laute.some(l => l.id === id)) id = base + '-' + k++;
-      data.laute.push({id, name: ph.charAt(0).toUpperCase() + ph.slice(1), status: 'freigegeben'});
+      // Steht der Kandidat schon in data.laute (Status „kandidat“), wird dieser Eintrag freigegeben.
+      const known = candidateEntry(data, ph);
+      if (known) {
+        known.status = 'freigegeben';
+        known.name = known.name.charAt(0).toUpperCase() + known.name.slice(1);
+        id = known.id;
+      } else {
+        const base = slug(ph);
+        id = base;
+        let k = 2;
+        while (data.laute.some(l => l.id === id)) id = base + '-' + k++;
+        data.laute.push({id, name: ph.charAt(0).toUpperCase() + ph.slice(1), status: 'freigegeben'});
+      }
     }
     for (const z of data.zaehlungen) {
       if (!z.kandidaten || !(ph in z.kandidaten)) continue;
@@ -202,7 +214,7 @@
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
     esc, fmt, slug, isHttp, normalize, sounds, yearOf, countable, bestOf, value, derive, yearCols,
-    candidates, approveCandidate, patternFor, countText, monotone, niceStep,
+    candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };
   root.SM = SM;
