@@ -58,6 +58,25 @@ test('beste Zählung: Booklet vor Online-Text, dann Sicherheit', () => {
   assert.strictEqual(SM.bestOf(zs).werte.a, 3);
 });
 
+test('Gleichstand zwischen Quellen: mehr Laute gewinnen', () => {
+  const zs = [
+    {grundlage: 'online_text', sicherheit: 'mittel', quelle_art: 'lizenziert', status: 'gezaehlt', werte: {a: 0}},
+    {grundlage: 'online_text', sicherheit: 'mittel', quelle_art: 'lizenziert', status: 'gezaehlt', werte: {a: 5}},
+  ];
+  assert.strictEqual(SM.bestOf(zs).werte.a, 5);
+});
+
+test('Kandidaten nur aus der besten Zählung je Lied', () => {
+  const data = SM.normalize({
+    laute: [{id: 'a', name: 'A', status: 'freigegeben'}], lieder: [{id: '1'}],
+    zaehlungen: [
+      {lied_id: '1', status: 'gezaehlt', sicherheit: 'hoch', werte: {a: 0}, kandidaten: {bumm: 9}},
+      {lied_id: '1', status: 'gezaehlt', sicherheit: 'mittel', werte: {a: 0}, kandidaten: {bumm: 9, kawumm: 3}},
+    ],
+  });
+  assert.deepStrictEqual(SM.candidates(data).map(c => [c.ph, c.total]), [['bumm', 9]]);
+});
+
 test('aufgelöste Refrains nur auf Wunsch', () => {
   const z = {werte: {a: 2}, anzahl_aufgeloest: {a: 6}};
   assert.strictEqual(SM.value(z, 'a', false), 2);

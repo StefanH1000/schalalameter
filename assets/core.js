@@ -54,11 +54,20 @@
   function countable(z) {
     return z.status !== 'kein_text_gefunden' && !!z.werte && typeof z.werte === 'object';
   }
-  // Verlässlichste Zählung: Booklet > Gehör > Online-Text, dann Sicherheit, dann neueste.
+  // Verlässlichste Zählung: Booklet > Gehör > Online-Text, dann Sicherheit, dann Quellenart.
+  // Bei Gleichstand gewinnt die Zählung mit mehr Lauten: Online-Texte kürzen Laute eher weg, als dass sie welche erfinden.
+  const QUELLE_RANK = {offiziell: 3, lizenziert: 2, community: 1};
+  function sumOf(z) {
+    const kand = z.kandidaten && typeof z.kandidaten === 'object' ? Object.values(z.kandidaten) : [];
+    // Feste Laute zählen vor Kandidaten; Kandidaten entscheiden nur bei sonst gleichem Stand.
+    return Object.values(z.werte).reduce((t, v) => t + (+v || 0), 0) * 1000 + kand.reduce((t, v) => t + (+v || 0), 0);
+  }
   function bestOf(zs) {
     return zs.filter(countable).sort((a, b) =>
       (GRUND_RANK[b.grundlage] || 0) - (GRUND_RANK[a.grundlage] || 0) ||
       (SICHER_RANK[b.sicherheit] || 0) - (SICHER_RANK[a.sicherheit] || 0) ||
+      (QUELLE_RANK[b.quelle_art] || 0) - (QUELLE_RANK[a.quelle_art] || 0) ||
+      sumOf(b) - sumOf(a) ||
       String(b.gezaehlt_am || '').localeCompare(String(a.gezaehlt_am || '')))[0] || null;
   }
   function value(z, id, aufl) {
@@ -105,10 +114,17 @@
     return cols;
   }
 
+  // Nur aus der besten Zählung je Lied, sonst zählt ein Laut bei mehreren Quellen mehrfach.
   function candidates(data) {
-    const map = new Map();
+    const byLied = new Map();
     for (const z of data.zaehlungen) {
-      if (!z.kandidaten || typeof z.kandidaten !== 'object') continue;
+      if (!byLied.has(z.lied_id)) byLied.set(z.lied_id, []);
+      byLied.get(z.lied_id).push(z);
+    }
+    const map = new Map();
+    for (const zs of byLied.values()) {
+      const z = bestOf(zs);
+      if (!z || !z.kandidaten || typeof z.kandidaten !== 'object') continue;
       for (const [ph, v] of Object.entries(z.kandidaten)) {
         if (data.kandidaten_verworfen.includes(ph)) continue;
         const e = map.get(ph) || {ph, total: 0, songs: new Set()};

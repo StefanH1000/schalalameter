@@ -213,7 +213,8 @@ function renderPeriod(cols){
   renderTable(cols);
   if (!c) { $('period-h').textContent = '–'; $('period-sum').textContent = ''; $('rank').innerHTML = ''; uc.hidden = true; return; }
   const vis = visible(), snds = sounds();
-  const list = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || a.s.l.titel.localeCompare(b.s.l.titel, 'de'));
+  const all = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || a.s.l.titel.localeCompare(b.s.l.titel, 'de'));
+  const list = all.filter(x => x.tot > 0), silent = all.filter(x => x.tot === 0);
   const sumAll = list.reduce((t, x) => t + x.tot, 0);
   const maxTot = Math.max(1, ...list.map(x => x.tot));
   $('period-h').textContent = String(c.year);
@@ -240,11 +241,14 @@ function renderPeriod(cols){
       </span>
       ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Von</th><th>Sicherheit</th>${snds.map(v => `<th>${esc(v.name)}</th>`).join('')}<th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
     </li>`;
-  }).join('') : `<li class="empty muted">Aus ${c.year} gibt es keine gezählten Lieder für diese Auswahl.</li>`;
+  }).join('') : `<li class="empty muted">${c.counted.length ? `In den gezählten Liedern aus ${c.year} kommen keine dieser Laute vor.` : `Aus ${c.year} gibt es keine gezählten Lieder für diese Auswahl.`}</li>`;
   const rest = c.songs.filter(s => !s.counted);
-  uc.hidden = !rest.length;
-  uc.innerHTML = rest.length ? '<b>Ohne Zählung:</b> ' + rest.map(s =>
-    `${esc(s.l.titel)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span>`).join(' · ') : '';
+  const lines = [];
+  if (silent.length) lines.push('<b>Ohne Laute:</b> ' + silent.map(x => esc(x.s.l.titel)).join(' · '));
+  if (rest.length) lines.push('<b>Ohne Zählung:</b> ' + rest.map(s =>
+    `${esc(s.l.titel)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span>`).join(' · '));
+  uc.hidden = !lines.length;
+  uc.innerHTML = lines.join('<br>');
 }
 function renderTable(cols){
   const snds = sounds();
