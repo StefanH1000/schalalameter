@@ -23,7 +23,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 1. `npm start` und http://localhost:8080/werkstatt.html öffnen (oder die Werkstatt auf der Live-Seite).
 2. Cowork-Datei laden, neue Laute prüfen, Zählungen ergänzen.
 3. „Vorschau“ prüfen, dann „Datei herunterladen“.
-4. Die Datei nach `daten/shalalameter-daten.json` kopieren, `npm test`, committen, pushen. GitHub Pages ist nach etwa einer Minute aktuell.
+4. Die Datei nach `daten/shalalameter-daten.json` kopieren, `npm test`, committen, pushen. Bei Änderungen an CSS oder JS vorher `npm run cachebust` (neue Versionsnummer gegen veraltete Browser-Caches). GitHub Pages ist nach etwa einer Minute aktuell.
 
 Der Entwurf der Werkstatt liegt nur im jeweiligen Browser. Veröffentlicht ist erst, was im Repository liegt.
 

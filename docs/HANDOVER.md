@@ -114,7 +114,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 
 **Familie eines Lauts ändern:** in der Datendatei beim Laut das Feld `familie` umsetzen. Familien und ihre Reihenfolge (= Farben) stehen in `familien`.
 
-**Code ändern:** `npm test`, lokal im Browser prüfen, pushen. Node 24 ist installiert, die GitHub-CLI `gh` ist als StefanH1000 angemeldet.
+**Code ändern:** `npm test`, lokal im Browser prüfen, `npm run cachebust`, pushen. Der letzte Schritt setzt eine neue Versionsnummer an CSS und JS (`?v=…`); ohne ihn arbeiten Browser bis zu 10 Minuten mit alten Dateien aus dem Cache weiter und die Seite kann „Die Daten konnten nicht geladen werden“ melden. Node 24 ist installiert, die GitHub-CLI `gh` ist als StefanH1000 angemeldet.
 
 ## Getroffene Entscheidungen
 

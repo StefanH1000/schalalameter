@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node tools/serve.js",
     "test": "node --test \"tests/*.test.js\"",
-    "beispieldaten": "node tools/beispieldaten.js"
+    "beispieldaten": "node tools/beispieldaten.js",
+    "cachebust": "node tools/cachebust.js"
   }
 }
