@@ -1,4 +1,4 @@
-// Shalalameter – Werkstatt: Daten laden, neue Laute freigeben, Zählungen erfassen, Datei exportieren.
+// Schalalameter Werkstatt: Daten laden, neue Laute freigeben, Zählungen erfassen, Datei exportieren.
 (() => {
 const {esc} = SM;
 const $ = id => document.getElementById(id);
@@ -96,9 +96,46 @@ function renderCountForm(){
   if (cur && data.lieder.some(l => l.id === cur)) sel.value = cur;
   const box = $('cf-nums'), prev = {};
   box.querySelectorAll('input').forEach(i => { prev[i.dataset.id] = i.value; });
-  box.innerHTML = SM.sounds(data).map(s => `<label><span class="l"><span class="sw" style="background:${color(s.slot)}"></span>${esc(s.name)}</span>
+  // Nach Familie gruppiert; die Werkstatt zeigt alten Namen und Anzeigenamen.
+  const snds = SM.sounds(data);
+  box.innerHTML = SM.families(data).map(f => {
+    const both = f.anzeigename && f.anzeigename !== f.name ? `${esc(f.name)} <span class="hint">(${esc(f.anzeigename)})</span>` : esc(f.name);
+    return `<div class="famhead"><span class="sw" style="background:${color(f.slot)}"></span>${both}</div>` +
+      snds.filter(s => s.familie === f.id).map(s => `<label><span class="l">${esc(s.name)}</span>
     <input type="number" min="0" step="1" id="cf-n-${esc(s.id)}" data-id="${esc(s.id)}" value="${esc(prev[s.id] ?? '0')}"></label>`).join('');
+  }).join('');
 }
+/* ---------- Albumphase eines Lieds: berechnet, überschreibbar ---------- */
+const REGEL = {
+  1: 'manuell festgelegt',
+  2: 'Übersetzung, folgt der Phase des Originals',
+  3: 'steht auf diesem Studioalbum',
+  4: 'kein Studioalbum, nächstes Album nach Datum',
+};
+function renderPhase(){
+  const sel = $('cf-phase'), info = $('cf-phase-info');
+  const lied = data.lieder.find(l => l.id === $('cf-lied').value);
+  const alb = SM.albums(data);
+  if (!lied || !alb.length) { sel.innerHTML = ''; sel.disabled = true; info.textContent = alb.length ? '' : 'Die Datendatei enthält keine Alben.'; return; }
+  sel.disabled = false;
+  const {phase, ...ohne} = lied;
+  const auto = SM.phaseInfo(data, ohne);
+  sel.innerHTML = `<option value="">automatisch: ${esc(auto ? auto.album.titel : 'keine')}</option>` +
+    alb.map(a => `<option value="${esc(a.id)}">${esc(a.titel)} (${esc(String(a.datum).slice(0, 4))})</option>`).join('');
+  sel.value = lied.phase && alb.some(a => a.id === lied.phase) ? lied.phase : '';
+  const now = SM.phaseInfo(data, lied);
+  info.textContent = now
+    ? `Regel ${now.regel}: ${REGEL[now.regel]}${now.regel === 4 ? ` (${now.abstand} Tage)` : ''}${now.unklar ? '. Gleichstand zweier Alben, bitte festlegen.' : ''}. Änderungen hier gelten sofort für den Entwurf.`
+    : 'Keine Phase ermittelbar, bitte festlegen.';
+}
+$('cf-lied').addEventListener('change', renderPhase);
+$('cf-phase').addEventListener('change', e => {
+  const lied = data.lieder.find(l => l.id === $('cf-lied').value); if (!lied) return;
+  if (e.target.value) lied.phase = e.target.value; else delete lied.phase;
+  saveDraft(); render();
+  $('cf-status').textContent = `Albumphase für „${lied.titel}“ ${e.target.value ? 'festgelegt' : 'wieder automatisch'}`;
+});
+
 $('cf-auto').addEventListener('click', () => {
   const counts = SM.countText($('cf-text').value, SM.sounds(data));
   for (const [id, n] of Object.entries(counts)) { const el = $('cf-n-' + id); if (el) el.value = n; }
@@ -127,16 +164,18 @@ function renderOpen(){
   const songs = SM.derive(data, {typeOn: new Set(SM.TYPES.map(t => t.id)), minSicher: 1, aufl: false});
   const open = songs.filter(s => !s.best).sort((a, b) => (a.year || 0) - (b.year || 0));
   $('open-count').textContent = `${open.length} von ${songs.length}`;
-  $('open-list').innerHTML = open.map(s => `<li><button type="button" class="linkbtn" data-lied="${esc(s.l.id)}">${esc(s.l.titel)}</button> <span class="muted">${s.year || '?'} · ${SM.TYPE_LABEL[s.typ]}</span></li>`).join('')
+  const albumKurz = id => (SM.albums(data).find(a => a.id === id) || {}).kurz || '';
+  $('open-list').innerHTML = open.map(s => `<li><button type="button" class="linkbtn" data-lied="${esc(s.l.id)}">${esc(s.l.titel)}</button> <span class="muted">${s.year || '?'} · ${SM.TYPE_LABEL[s.typ]}${s.phase ? ' · ' + esc(albumKurz(s.phase)) : ''}</span></li>`).join('')
     || '<li class="muted">Alle Lieder haben eine Zählung.</li>';
 }
 $('open-list').addEventListener('click', e => {
   const id = e.target.dataset.lied; if (!id) return;
   $('cf-lied').value = id;
+  renderPhase();
   $('erfassen').scrollIntoView({block: 'start'});
   $('cf-grund').focus({preventScroll: true});
 });
 
-function render(){ renderCands(); renderCountForm(); renderOpen(); }
+function render(){ renderCands(); renderCountForm(); renderPhase(); renderOpen(); }
 init().catch(() => { $('draft-status').textContent = 'Die veröffentlichten Daten konnten nicht geladen werden. Lade eine Datei.'; data = {laute: [], lieder: [], zaehlungen: [], kandidaten_verworfen: []}; render(); });
 })();

@@ -1,6 +1,8 @@
-# Fortuna Ehrenfeld Shalalameter
+# Fortuna Ehrenfeld Schalalameter
 
-Wie oft singen Fortuna Ehrenfeld „piu piu“, „shalala“ und Co.? Die Seite zeigt die Laute aller Lieder als gestapelte Kurven über die Jahre. Ein Klick auf ein Jahr listet dessen Lieder, sortiert nach Anzahl der Laute.
+*Sprache von vor und nach der Sprache.*
+
+Wie oft singen Fortuna Ehrenfeld „piu piu“, „schalala“ und Co.? Die Seite zeigt die Laute aller Lieder als gestapelte Kurven über die Jahre. Ein Klick auf ein Jahr listet dessen Lieder, sortiert nach Anzahl der Laute.
 
 Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zählungen, keine Liedtexte.
 
@@ -41,11 +43,41 @@ Der Entwurf der Werkstatt liegt nur im jeweiligen Browser. Veröffentlicht ist e
 }
 ```
 
-Laute gehören zu Familien (`familien: [{id, name}]`, je Laut `familie`). Die Kurven zeigen Familien, eine Farbe pro Familie in fester Reihenfolge (höchstens 8); die Übersicht „Alle Laute“ zeigt jeden Laut einzeln. Neu freigegebene Laute landen in „Weitere Laute“ und lassen sich in der Datei umhängen.
+Laute gehören zu Familien (je Laut `familie`). Eine Familie hat:
 
-Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Booklet vor Gehör vor Online-Text, dann Sicherheit, dann die neueste. Höchstens 8 Laute gleichzeitig, eine Farbe pro Laut in fester Reihenfolge.
+```json
+{"id": "shalala", "name": "Schalala", "anzeigename": "Schalalamente", "untertitel": "Schalala",
+ "steckbrief": "Die Silbe für alles, was zugleich egal und heilig ist."}
+```
 
-Zählregel: eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („shalala, shalala“ = 2).
+`id` ist die feste Kennung (bleibt, damit die Zuordnung der Laute nicht bricht), `name` der bisherige Name (zeigt die Werkstatt), `anzeigename`, `untertitel` und `steckbrief` zeigt die öffentliche Seite. Die Kurven zeigen Familien, eine Farbe pro Familie in fester Reihenfolge (höchstens 8); ein Klick auf eine Familie öffnet ihren Steckbrief und zeigt ihre Schalalas einzeln. Die Übersicht „Alle Schalalas“ zeigt jeden Laut einzeln. Neu freigegebene Laute landen in „Weitere Laute“ und lassen sich in der Datei umhängen.
+
+Die Familien: Spatzenlaser (Piu piu), Schalalamente (Schalala), Silbenhack (La la, Da da und Co), Rummse (Bumm und Kawumm), DNA Elemente eines erfüllten Lebens (Oh, Ah, Uh), Täterätätä im Pyjama (Dudeln und Tröten), Daseinslaute (Hey, Yeah, Olé).
+
+### Albumphasen
+
+Die x-Achse zeigt Albumphasen statt Jahren, in Erscheinungsreihenfolge und gleichmäßig verteilt. Die Phasen stehen in `alben`:
+
+```json
+{"id": "rueckkehr", "titel": "Die Rückkehr zur Normalität", "kurz": "Rückkehr", "datum": "2021-06-04", "reihenfolge": 4}
+```
+
+Die Achse zeigt statt Namen die Cover aus `assets/cover/<id>.jpg` (Cover Art Archive, 250 px); ein anderer Pfad lässt sich im Feld `cover` des Albums angeben. `titel` muss so geschrieben sein wie in `veroeffentlichung` („Titel (Album)“) und `auch_auf` („Titel (Datum)“). Keine eigenen Phasen bekommen das Übersetzungsalbum „Debout pour ma prière“ und die Livealben; „Live at the Hollywood Bowl“ gilt als Studioalbum.
+
+Die Phase eines Lieds wird berechnet, Regeln in dieser Reihenfolge:
+
+1. Überschreibung im Feld `phase` des Lieds gewinnt immer.
+2. Übersetzung (`typ: uebersetzung`): Phase des Originals über `original_id`.
+3. Lied steht auf einem Studioalbum (`veroeffentlichung` oder `auch_auf`): dieses Album, bei mehreren das zuerst erschienene.
+4. Sonst das Album mit dem geringsten Abstand in Tagen zur Erstveröffentlichung. Bei Gleichstand meldet die Werkstatt „bitte festlegen“.
+
+Gespeichert ist `phase` nur bei den festgelegten Überschreibungen: die Lieder der Regenradar-EP und „Trust Me, I'm an Alien!“ (Helm ab zum Gebet) sowie „Weltuntergang“ (Die Rückkehr zur Normalität). In der Werkstatt lässt sich die Phase pro Lied ansehen und überschreiben.
+
+Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Booklet vor Gehör vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
+
+Zählregel: Gezählt wird, was kein Wort mehr schafft. Eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („schalala, schalala“ = 2). Das Vorzählen erkennt beide Schreibweisen (Shalala, Schalala, Sha la la, Scha la la) als denselben Laut.
+
+Schreibweise: sichtbar immer „Schalala“. Interne Kennungen, Dateinamen, Repository und URL heißen weiter `shalala` bzw. `shalalameter`.
 
 ## Schriften
 

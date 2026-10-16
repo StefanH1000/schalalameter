@@ -9,7 +9,7 @@
     },
     {
       "id": "shalala",
-      "name": "Shalala",
+      "name": "Schalala",
       "status": "freigegeben",
       "familie": "shalala"
     },
@@ -575,7 +575,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "helm-ab"
     },
     {
       "id": "druckerkolonne",
@@ -585,7 +586,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "helm-ab"
     },
     {
       "id": "bella-ciao",
@@ -595,7 +597,8 @@
       "auch_auf": [],
       "typ": "cover",
       "original_id": null,
-      "notiz": "Italienisches Volkslied."
+      "notiz": "Italienisches Volkslied.",
+      "phase": "helm-ab"
     },
     {
       "id": "die-ewige-sabine",
@@ -605,7 +608,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "helm-ab"
     },
     {
       "id": "hossegor",
@@ -615,7 +619,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "helm-ab"
     },
     {
       "id": "hooray-hooray",
@@ -625,7 +630,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Titel erinnert an fremde Lieder, Urheberschaft nicht geprüft; als original geführt."
+      "notiz": "Titel erinnert an fremde Lieder, Urheberschaft nicht geprüft; als original geführt.",
+      "phase": "helm-ab"
     },
     {
       "id": "vereinsheim",
@@ -635,7 +641,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "helm-ab"
     },
     {
       "id": "heiliges-fernweh",
@@ -906,7 +913,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "phase": "rueckkehr"
     },
     {
       "id": "wissenschaft-ist-eine-meinung",
@@ -4542,7 +4550,7 @@
       "belege": {},
       "kandidaten": {},
       "sicherheit": "mittel",
-      "notiz": "Abweichung zu shazam.com (Apple): shalala 0 statt 5."
+      "notiz": "Abweichung zu shazam.com (Apple): Schalala 0 statt 5."
     },
     {
       "lied_id": "das-ist-punk-das-raffst-du-nie",
@@ -4571,7 +4579,7 @@
       },
       "kandidaten": {},
       "sicherheit": "mittel",
-      "notiz": "Eine Folge mit abweichender Schreibweise (Scha-la-lal-a). Abweichung zu sonichits.com (LyricFind): shalala 5 statt 0."
+      "notiz": "Eine Folge mit abweichender Schreibweise (Scha-la-lal-a). Abweichung zu sonichits.com (LyricFind): Schalala 5 statt 0."
     },
     {
       "lied_id": "das-ist-punk-das-raffst-du-nie",
@@ -5949,7 +5957,7 @@
       },
       "kandidaten": {},
       "sicherheit": "mittel",
-      "notiz": "Abweichung zu shazam.com (Apple): shalala 2 statt 3."
+      "notiz": "Abweichung zu shazam.com (Apple): Schalala 2 statt 3."
     },
     {
       "lied_id": "anleitung-zum-sha-la-la",
@@ -5976,7 +5984,7 @@
       },
       "kandidaten": {},
       "sicherheit": "mittel",
-      "notiz": "Abweichung zu sonichits.com (LyricFind): shalala 3 statt 2."
+      "notiz": "Abweichung zu sonichits.com (LyricFind): Schalala 3 statt 2."
     },
     {
       "lied_id": "anleitung-zum-sha-la-la",
@@ -10355,31 +10363,117 @@
   "familien": [
     {
       "id": "piu",
-      "name": "Piu piu"
+      "name": "Piu piu",
+      "anzeigename": "Spatzenlaser",
+      "untertitel": "Piu piu",
+      "steckbrief": "Ein Vogel, der schießt, oder eine Waffe, die zwitschert. Oft gehört, doch nie gesungen."
     },
     {
       "id": "shalala",
-      "name": "Shalala"
+      "name": "Schalala",
+      "anzeigename": "Schalalamente",
+      "untertitel": "Schalala",
+      "steckbrief": "Die Silbe für alles, was zugleich egal und heilig ist."
     },
     {
       "id": "silben",
-      "name": "La-la, Da-da & Co."
+      "name": "La-la, Da-da & Co.",
+      "anzeigename": "Silbenhack",
+      "untertitel": "La la, Da da und Co",
+      "steckbrief": "Wo der Text aufhört und alle trotzdem weitersingen."
     },
     {
       "id": "knall",
-      "name": "Bumm & Kawumm"
+      "name": "Bumm & Kawumm",
+      "anzeigename": "Rummse",
+      "untertitel": "Bumm und Kawumm",
+      "steckbrief": "Der große Knall in kleinen Verhältnissen."
     },
     {
       "id": "rufe",
-      "name": "Oh, Ah, Uh"
+      "name": "Oh, Ah, Uh",
+      "anzeigename": "DNA Elemente eines erfüllten Lebens",
+      "untertitel": "Oh, Ah, Uh",
+      "steckbrief": "Staunen, Seufzen, Sehnen. Vokale ohne Worte drumherum."
     },
     {
       "id": "instrumente",
-      "name": "Dudeln & Tröten"
+      "name": "Dudeln & Tröten",
+      "anzeigename": "Täterätätä im Pyjama",
+      "untertitel": "Dudeln und Tröten",
+      "steckbrief": "Blaskapelle, Kirmes und Fanfare aus einem einzigen Mund."
     },
     {
       "id": "jubel",
-      "name": "Hey, Yeah, Olé"
+      "name": "Hey, Yeah, Olé",
+      "anzeigename": "Daseinslaute",
+      "untertitel": "Hey, Yeah, Olé",
+      "steckbrief": "Stadiongebrüll, das eigentlich eine Liebeserklärung ist."
+    }
+  ],
+  "alben": [
+    {
+      "id": "coolness",
+      "titel": "Das Ende der Coolness Vol. 2",
+      "kurz": "Coolness",
+      "datum": "2016-02-26",
+      "reihenfolge": 1
+    },
+    {
+      "id": "hey-sexy",
+      "titel": "Hey Sexy",
+      "kurz": "Hey Sexy",
+      "datum": "2017-08-18",
+      "reihenfolge": 2
+    },
+    {
+      "id": "helm-ab",
+      "titel": "Helm ab zum Gebet",
+      "kurz": "Helm ab",
+      "datum": "2019-05-03",
+      "reihenfolge": 3
+    },
+    {
+      "id": "rueckkehr",
+      "titel": "Die Rückkehr zur Normalität",
+      "kurz": "Rückkehr",
+      "datum": "2021-06-04",
+      "reihenfolge": 4
+    },
+    {
+      "id": "solo-1",
+      "titel": "Solo I.",
+      "kurz": "Solo I.",
+      "datum": "2022-03-25",
+      "reihenfolge": 5
+    },
+    {
+      "id": "glitzerschwein",
+      "titel": "Glitzerschwein",
+      "kurz": "Glitzerschwein",
+      "datum": "2023-09-08",
+      "reihenfolge": 6
+    },
+    {
+      "id": "universum",
+      "titel": "Universum",
+      "kurz": "Universum",
+      "datum": "2024-10-11",
+      "reihenfolge": 7
+    },
+    {
+      "id": "himmelerdenblau",
+      "titel": "Himmelerdenblau",
+      "kurz": "Himmelerdenblau",
+      "datum": "2025-08-29",
+      "reihenfolge": 8
+    },
+    {
+      "id": "hollywood-bowl",
+      "titel": "Live at the Hollywood Bowl",
+      "kurz": "Hollywood Bowl",
+      "datum": "2026-03-06",
+      "reihenfolge": 9
     }
   ]
 }

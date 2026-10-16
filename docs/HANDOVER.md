@@ -1,10 +1,12 @@
-# Übergabe: Fortuna Ehrenfeld Shalalameter
+# Übergabe: Fortuna Ehrenfeld Schalalameter
 
 Stand: 16.10.2026
 
 ## Worum es geht
 
-Das Shalalameter zeigt, wie oft Fortuna Ehrenfeld lautmalerische Laute wie „Shalala“, „Da-da“ oder „Oh-oh-oh“ singen, und wie sich das über die Jahre verändert. Einstieg ist ein Diagramm mit gestapelten Kurven pro Jahr. Ein Klick auf ein Jahr listet dessen Lieder, sortiert nach Anzahl der Laute. Darunter steht eine Übersicht aller einzelnen Laute pro Jahr.
+Das Schalalameter zeigt, wie oft Fortuna Ehrenfeld lautmalerische Laute wie „Schalala“, „Da-da“ oder „Oh-oh-oh“ singen, und wie sich das über die Albumphasen verändert. Unterzeile: „Sprache von vor und nach der Sprache.“ Einstieg ist ein Diagramm mit gestapelten Kurven über neun Albumphasen. Ein Klick auf ein Album listet die Lieder dieser Phase, sortiert nach Anzahl der Schalalas. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief. Darunter stehen die Übersicht „Alle Schalalas“ und der Abschnitt „Über das Schalalameter“.
+
+**Schreibweise:** sichtbar immer „Schalala“, in der Bedienung heißen die Laute „Schalalas“. Interne Kennungen, Dateinamen, Repository und URL bleiben `shalala` / `shalalameter`. Die Texte der Seite (Unterzeile, Zählerklärung, Steckbriefe, „Über“, Schlusszeile) sind vom Projektverantwortlichen festgelegt und werden nicht umformuliert.
 
 Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffentlicht werden nur Zählungen, keine Liedtexte.
 
@@ -25,23 +27,26 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **29 Laute in 7 Familien**, alle freigegeben:
 
-| Familie | Laute | Summe (eigene Lieder) |
-|---|---|---|
-| Piu piu | Piu piu | 0 |
-| Shalala | Shalala | 51 |
-| La-la, Da-da & Co. | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
-| Bumm & Kawumm | Bumm, Kawumm, Boom laboom | 13 |
-| Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 47 |
-| Dudeln & Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel | 16 |
-| Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray | 14 |
+| Familie (Anzeigename) | Untertitel | Laute | Summe (eigene Lieder) |
+|---|---|---|---|
+| Spatzenlaser | Piu piu | Piu piu | 0 |
+| Schalalamente | Schalala | Schalala | 51 |
+| Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
+| Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 13 |
+| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 47 |
+| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel | 16 |
+| Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray | 14 |
 
-Auffällig: Shalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer, Hurensohn!“). 2019 ragt durch 48× „Da-da“ in „Sanktpankpaul“ heraus. **Piu piu kommt in keinem Online-Text vor.**
+Jede Familie hat in der Datendatei `id` (fest), `name` (bisheriger Name, für die Werkstatt), `anzeigename`, `untertitel` und `steckbrief`.
+
+Auffällig: Schalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer, Hurensohn!“). 2019 ragt durch 48× „Da-da“ in „Sanktpankpaul“ heraus. **Piu piu kommt in keinem Online-Text vor.**
 
 ## Regeln, die in den Zahlen stecken
 
-**Zählregel**
+**Zählregel** (auf der Seite: „Gezählt wird, was kein Wort mehr schafft.“)
 - Eine Lautfolge zählt einmal: „piu piu piu“ = 1.
-- Komma und Zeilenumbruch trennen Lautfolgen: „shalala, shalala“ = 2.
+- Komma und Zeilenumbruch trennen Lautfolgen: „schalala, schalala“ = 2.
+- Das Vorzählen erkennt Shalala, Schalala, Sha la la und Scha la la als denselben Laut.
 - Gezählt wird, was im Text steht. Wo ein Text nur „(2x)“ oder „Refrain“ enthält, kann eine aufgelöste Zahl in `anzahl_aufgeloest` stehen. Die Seite nutzt sie nur, wenn der Filter „Refrains ausgeschrieben“ aktiv ist.
 - Ein Laut im Liedtitel zählt nicht.
 
@@ -54,10 +59,31 @@ Auffällig: Shalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer,
 
 Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würden sie bei mehreren Quellen doppelt gezählt.
 
+**Albumphasen** (`phaseInfo` in `assets/core.js`)
+
+Die x-Achse zeigt neun Albumphasen in Erscheinungsreihenfolge, gleichmäßig verteilt (nicht nach Datum skaliert): Coolness (2016), Hey Sexy (2017), Helm ab (2019), Rückkehr (2021), Solo I. (2022), Glitzerschwein (2023), Universum (2024), Himmelerdenblau (2025), Hollywood Bowl (2026, gilt als Studioalbum). Keine eigenen Phasen: „Debout pour ma prière“ (Übersetzungsalbum), „Das letzte Kommando“, „Solo Live“, „Solo Live im St. Pauli Theater“ (Livealben). Die Alben stehen in der Datendatei unter `alben` (id, titel, kurz, datum, reihenfolge).
+
+Zuordnung eines Lieds, in dieser Reihenfolge:
+1. Überschreibung im Feld `phase` des Lieds gewinnt immer.
+2. Übersetzung: Phase des Originals über `original_id`.
+3. Lied steht auf einem Studioalbum (`veroeffentlichung` „Titel (Album)“ oder `auch_auf` „Titel (Datum)“): dieses Album, bei mehreren das zuerst erschienene. Beispiel: „Brüsseler Platz“ → Solo I.
+4. Sonst das Album mit dem geringsten Abstand in Tagen zur Erstveröffentlichung (18 Lieder, darunter „Arsch am Meer“, „Wilde Jahre“, Live-Erstveröffentlichungen). Gleichstände gibt es derzeit keine.
+
+Gespeicherte Überschreibungen: Helm ab zum Gebet für „Trust Me, I'm an Alien!“ und die Regenradar-EP (Drückerkolonne, Bella Ciao, Die ewige Sabine, Hossegor, Hooray Hooray, Vereinsheim; die EP erschien einen Tag vor dem Album); Die Rückkehr zur Normalität für „Weltuntergang“ (nach Regel 4 läge Helm ab knapp näher, 378 zu 385 Tage). Alle übrigen Phasen werden berechnet, nicht gespeichert.
+
+Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 21/18, Rückkehr 11/10, Solo I. 15/11, Glitzerschwein 15/4, Universum 30/26, Himmelerdenblau 16/0, Hollywood Bowl 12/12. In der Vorgabe standen Helm ab 21/17 und Rückkehr 11/11. Die Daten ergeben eindeutig 18 und 10: In Helm ab fehlt der Text nur bei „Hör endlich auf zu jammern“, „Faire Tapisserie“ und „Pluie, movement“; in Rückkehr hat „Weltuntergang“ keinen Text.
+
 **Darstellung**
 - Die Farbe folgt der Familie in fester Reihenfolge, nie dem Rang. Es gibt höchstens 8 Farben.
-- Zoom: Ein Klick auf eine Familie (Legende oder Übersicht „Alle Laute“) zeigt ihre einzelnen Laute als Kurven. Im Zoom bekommen die Laute die Farben in ihrer Reihenfolge in der Datendatei, Rangliste und Übersicht beschränken sich auf die Familie. Die Ansicht lässt sich verlinken: `#2021/rufe` (Jahr/Familien-id).
-- Jahre ohne Lieder erscheinen als Lücke (0). Unter jedem Jahr steht die Abdeckung („gezählt/alle“), damit niemand eine Lücke für „keine Laute“ hält.
+- Überall stehen die Laute einer Familie groß (Feld `untertitel`, z. B. „Oh, Ah, Uh“) und der Familienname klein darunter (`anzeigename`), auch im Steckbrief und an den Kurven.
+- Familien-Chips sind zweiteilig: Ein Klick auf den Chip blendet die Familie ein oder aus (mindestens eine bleibt sichtbar, „Alle zeigen“ setzt zurück). Die y-Achse passt sich den eingeblendeten Familien an.
+- Die Lupe (am Chip und in der Übersicht „Alle Schalalas“) öffnet unter dem Hauptdiagramm das Detail: Steckbrief, Summe im aktuellen Filter, die drei Lieder mit den meisten Treffern (je Lied die Schalalas dieser Familie mit Anzahl, z. B. „Ah-ah-oh-ah-ah 15 · Ah-ah 5“) und kleine Kurven je Laut, alle in der Familienfarbe und im selben Maßstab. Das Hauptdiagramm bleibt stehen. Bei offenem Detail zählt die Rangliste nur die Laute dieser Familie.
+- Lange Namen brechen um, sie werden nie gekürzt.
+- Verlinkbar: `#rueckkehr` (Phase), `#rueckkehr/rufe` (Detail offen), `#rueckkehr/-/piu,silben` (ohne Detail, zwei Familien ausgeblendet). Alte Links mit Jahreszahl (`#2021`) führen zum Album dieses Jahres.
+- Die Achse zeigt die Albumcover (`assets/cover/<id>.jpg`, oder Feld `cover` beim Album), das gewählte umrandet. Albumname, Jahr und Abdeckung („x von y Liedern gezählt“) stehen im Tooltip und in der Phasenansicht, nicht an der Achse. Fehlt ein Cover, erscheint bei großen Covern der Kurzname.
+- Cover: aus dem Cover Art Archive (MusicBrainz), 250 px, Rechte bei Band und Label; Verwendung vom Projektverantwortlichen freigegeben.
+- Die Liedliste einer Phase zeigt bei jedem Lied das Erscheinungsjahr. Die Übersicht „Alle Schalalas“ ist nach Phasen gegliedert.
+- Absolute Zahlen, keine Normierung pro Lied (außer im Umschalter „Ø je Lied“).
 
 ## Aufbau
 
@@ -66,15 +92,17 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | Datei | Zweck |
 |---|---|
 | `index.html`, `assets/app.js` | öffentliche Seite |
-| `werkstatt.html`, `assets/werkstatt.js` | Pflege: Daten laden, Kandidaten freigeben, Zählungen erfassen, Datei herunterladen |
-| `assets/core.js` | gemeinsame Logik (beste Zählung, Jahre, Familien, Vorzählen), auch in den Tests genutzt |
-| `assets/style.css`, `assets/fonts/` | Gestaltung; Schriften selbst gehostet (Shrikhand, Instrument Sans, JetBrains Mono, SIL OFL) |
+| `werkstatt.html`, `assets/werkstatt.js` | Pflege: Daten laden, Kandidaten freigeben, Zählungen erfassen, Albumphase pro Lied ansehen und überschreiben, Datei herunterladen |
+| `assets/core.js` | gemeinsame Logik (beste Zählung, Albumphasen, Familien, Vorzählen), auch in den Tests genutzt |
+| `assets/style.css`, `assets/fonts/` | Gestaltung; Schriften selbst gehostet (Shrikhand, Instrument Sans; JetBrains Mono nur für Code-Felder, SIL OFL) |
 | `daten/shalalameter-daten.json` | **die Daten**; alles, was die Seite zeigt |
-| `tests/core.test.js` | 17 Tests: Zählregel, beste Zählung, Kandidaten, Familien, Gültigkeit der Datendatei |
+| `tests/core.test.js` | 26 Tests: Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
+| `tools/alben-2026-10-16.js` | einmaliges Skript: Alben und Phasen-Überschreibungen angelegt (Dokumentation, nicht erneut ausführen) |
+| `tools/sprache-2026-10-16.js` | einmaliges Skript: Schreibweise „Schalala“, Anzeigenamen, Untertitel, Steckbriefe (Dokumentation, nicht erneut ausführen) |
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
 | `tools/beispieldaten.js` | erzeugt erfundene Beispieldaten (nur für Tests ohne echte Daten) |
-| `impressum.html`, `datenschutz.html` | Pflichtseiten, **noch mit Platzhaltern** |
+| `impressum.html`, `datenschutz.html` | Pflichtseiten, minimal ausgefüllt (Stefan Hoch) |
 
 ## So wird gearbeitet
 
@@ -99,8 +127,8 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 ## Offene Punkte
 
 **Vor einer breiteren Bekanntmachung**
-- [ ] **Impressum und Datenschutz ausfüllen** (Name, Anschrift, E-Mail). Die Seite ist bereits öffentlich.
-- [ ] Auf dem Handy prüfen. Getestet ist nur eine Breite ab 504 px, weil Edge im Headless-Modus nicht schmaler rendert.
+- [x] Impressum und Datenschutz ausgefüllt (Stefan Hoch, Anschrift, E-Mail; die Adresse ist im Quelltext gegen Adresssammler verschleiert und nicht klickbar).
+- [ ] Auf einem echten Handy ansehen. Geprüft ist eine 360 px breite Ansicht im Browser: kein waagrechtes Scrollen, auch nicht im Steckbrief mit dem langen Familiennamen.
 
 **Inhaltlich mit dem Fortuna-Team klären**
 - [ ] **Piu piu:** steht bei 0. Weglassen, als bewusste 0 behalten oder nach Gehör nachzählen?
@@ -109,7 +137,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 - [ ] Gelten „Kommst Du?“, „Wer kann sich schon entscheiden“ und „Endspiel“ (Gisbert zu Knyphausen) als Cover?
 - [ ] Gehört „Wissenschaft ist eine Meinung“ (Rainald Grebe feat. Fortuna Ehrenfeld) dazu?
 - [ ] Gibt es Veröffentlichungen vor 2016 („Das Ende der Coolness Vol. 1“)? Cowork hat keine gefunden.
-- [ ] Familieneinteilung absegnen.
+- [ ] Familieneinteilung absegnen (die Namen und Steckbriefe stehen fest, die Zuordnung der Laute stammt von Claude).
 
 Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` (liegt nicht im Repository).
 
@@ -130,8 +158,10 @@ Das Datenformat ist dafür vorbereitet: Jede Zählung ist ein eigener Eintrag mi
 ## Verlauf in Kürze
 
 1. Designprototyp mit erfundenen Daten (Claude-Artifact), dann gestapelte Kurven als Einstieg.
-2. Name „Fortuna Ehrenfeld Shalalameter“, Zustimmung des Fortuna-Teams.
+2. Name „Fortuna Ehrenfeld Shalalameter“ (seit Schritt 7 „Schalalameter“), Zustimmung des Fortuna-Teams.
 3. Diskografie aus MusicBrainz, Auszählung durch Claude Cowork.
 4. Projekt mit Tests, GitHub Pages online.
 5. Echte Daten eingespielt. Dabei behoben: Gleichstand zwischen Quellen, doppelt gezählte Kandidaten, Zählmuster über Zeilenumbrüche hinweg.
-6. Alle Kandidaten freigegeben, Lautfamilien und Übersicht „Alle Laute“ ergänzt.
+6. Alle Kandidaten freigegeben, Lautfamilien und Übersicht „Alle Laute“ ergänzt, Zoom in Familien (später ersetzt durch Ein/Aus und Lupe mit Detail).
+7. Endgültige Sprache: „Schalala“, Unterzeile, Familiennamen mit Steckbriefen, „Über das Schalalameter“, Schlusszeile „Laute gegen die Schwerkraft.“
+8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).

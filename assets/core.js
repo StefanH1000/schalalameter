@@ -1,4 +1,4 @@
-// Shalalameter – gemeinsame Datenlogik für Seite, Werkstatt und Tests.
+// Schalalameter: gemeinsame Datenlogik für Seite, Werkstatt und Tests.
 (function (root) {
   const TYPES = [
     {id: 'original', name: 'Eigene Lieder', on: true},
@@ -57,7 +57,8 @@
       if (!all.some(f => f.id === id)) all.push({id, name: id === 'weitere' ? 'Weitere Laute' : l.name});
     }
     const used = new Set(released.map(l => familyId(data, l)));
-    return all.map((f, i) => ({...f, slot: Math.min(i + 1, MAX_SOUNDS)})).filter(f => used.has(f.id));
+    return all.map((f, i) => ({...f, anzeigename: f.anzeigename || f.name, untertitel: f.untertitel || '', steckbrief: f.steckbrief || '', slot: Math.min(i + 1, MAX_SOUNDS)}))
+      .filter(f => used.has(f.id));
   }
   function sounds(data) {
     const slot = new Map(families(data).map(f => [f.id, f.slot]));
@@ -96,6 +97,46 @@
     return Number.isFinite(v) ? v : 0;
   }
 
+  /* ---------- Albumphasen ---------- */
+  function albums(data) {
+    return (Array.isArray(data.alben) ? data.alben : []).slice()
+      .sort((a, b) => (a.reihenfolge ?? 0) - (b.reihenfolge ?? 0) || String(a.datum).localeCompare(String(b.datum)));
+  }
+  function dayNum(d) {
+    const m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(d || '');
+    return m ? Date.UTC(+m[1], (+m[2] || 1) - 1, +m[3] || 1) / 864e5 : null;
+  }
+  // Zuordnung eines Lieds zu einer Albumphase, Regeln in dieser Reihenfolge:
+  // 1 Überschreibung im Feld `phase`, 2 Übersetzung folgt dem Original (`original_id`),
+  // 3 Lied steht auf einem Studioalbum (`veroeffentlichung` oder `auch_auf`), bei mehreren das zuerst erschienene,
+  // 4 sonst das Album mit dem geringsten Abstand in Tagen zur Erstveröffentlichung.
+  // Ergebnis: {album, regel, abstand?, unklar?}; unklar = Gleichstand bei Regel 4.
+  function phaseInfo(data, lied, seen) {
+    const alb = albums(data);
+    if (!alb.length || !lied) return null;
+    const byId = new Map(alb.map(a => [a.id, a]));
+    if (lied.phase && byId.has(lied.phase)) return {album: byId.get(lied.phase), regel: 1};
+    if (lied.typ === 'uebersetzung' && lied.original_id) {
+      const s = seen || new Set();
+      if (!s.has(lied.id)) {
+        s.add(lied.id);
+        const p = phaseInfo(data, data.lieder.find(l => l.id === lied.original_id), s);
+        if (p) return {album: p.album, regel: 2};
+      }
+    }
+    const auch = Array.isArray(lied.auch_auf) ? lied.auch_auf : [];
+    const on = alb.filter(a => lied.veroeffentlichung === `${a.titel} (Album)` || auch.includes(`${a.titel} (${a.datum})`));
+    if (on.length) return {album: on.sort((a, b) => String(a.datum).localeCompare(String(b.datum)))[0], regel: 3};
+    const d = dayNum(lied.erstveroeffentlichung);
+    if (d == null) return null;
+    let best = null, bd = Infinity, tie = false;
+    for (const a of alb) {
+      const dd = Math.abs(dayNum(a.datum) - d);
+      if (dd < bd) { bd = dd; best = a; tie = false; } else if (dd === bd) tie = true;
+    }
+    return {album: best, regel: 4, abstand: bd, unklar: tie};
+  }
+
   // opts: {typeOn:Set, minSicher:1..3, aufl:boolean}
   function derive(data, opts) {
     const byLied = new Map();
@@ -112,25 +153,31 @@
       const values = {};
       if (best) for (const s of snds) values[s.id] = value(best, s.id, opts.aufl);
       const trusted = !!best && (SICHER_RANK[best.sicherheit] || 1) >= opts.minSicher;
-      return {l, all, best, year, typ, values, counted: trusted, lowConf: !!best && !trusted, shown: opts.typeOn.has(typ) && year != null};
+      const pi = phaseInfo(data, l);
+      return {l, all, best, year, typ, values, phase: pi ? pi.album.id : null, phaseRegel: pi ? pi.regel : null,
+        counted: trusted, lowConf: !!best && !trusted, shown: opts.typeOn.has(typ) && year != null};
     });
   }
 
-  // Ein Eintrag pro Jahr zwischen erstem und letztem Jahr, auch für Jahre ohne Lieder.
-  function yearCols(songs, snds, mode) {
+  // Eine Spalte je Albumphase in Erscheinungsreihenfolge, gleichmäßig verteilt, auch ohne Lieder.
+  // Ohne `alben` in den Daten (ältere Dateien) wird jedes Jahr zu einer eigenen Phase.
+  function phaseCols(data, songs, snds, mode) {
     const shown = songs.filter(s => s.shown);
-    if (!shown.length) return [];
-    const years = shown.map(s => s.year);
-    const y0 = Math.min(...years), y1 = Math.max(...years), cols = [];
-    for (let y = y0; y <= y1; y++) {
-      const inY = shown.filter(s => s.year === y), counted = inY.filter(s => s.counted), counts = {};
+    let alb = albums(data);
+    const pseudo = !alb.length;
+    if (pseudo) {
+      const years = [...new Set(shown.map(s => s.year))].sort((a, b) => a - b);
+      alb = years.map(y => ({id: String(y), titel: String(y), kurz: String(y), datum: `${y}-01-01`}));
+    }
+    return alb.map(a => {
+      const inP = shown.filter(s => pseudo ? String(s.year) === a.id : s.phase === a.id);
+      const counted = inP.filter(s => s.counted), counts = {};
       for (const snd of snds) {
         const sum = counted.reduce((t, s) => t + (s.values[snd.id] || 0), 0);
         counts[snd.id] = mode === 'avg' ? (counted.length ? sum / counted.length : 0) : sum;
       }
-      cols.push({year: y, songs: inY, counted, counts});
-    }
-    return cols;
+      return {key: a.id, album: a, label: a.kurz || a.titel, year: yearOf({erstveroeffentlichung: a.datum}), songs: inP, counted, counts};
+    });
   }
 
   // Nur aus der besten Zählung je Lied, sonst zählt ein Laut bei mehreren Quellen mehrfach.
@@ -197,7 +244,8 @@
     const parts = String(s.name).toLowerCase().split(/[\s\-,]+/).filter(Boolean).map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     return String.raw`\b` + parts.join(SEP + '*') + String.raw`\b`;
   }
-  // Zählt Lautfolgen der Reihe nach; Treffer werden maskiert, damit z. B. Shalala nicht auch als Lalala zählt.
+  // Zählt Lautfolgen der Reihe nach; Treffer werden maskiert, damit z. B. Schalala nicht auch als Lalala zählt.
+  // Das Schalala-Muster erkennt beide Schreibweisen (mit und ohne c) und Silben mit Leerzeichen dazwischen.
   function countText(text, snds) {
     let work = String(text || '');
     const out = {};
@@ -237,7 +285,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, yearCols,
+    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };

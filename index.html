@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fortuna Ehrenfeld Shalalameter</title>
-<meta name="description" content="Wie oft singen Fortuna Ehrenfeld Piu piu, Shalala und Lalala? Die Laute aller Lieder auf einer Zeitleiste.">
-<meta property="og:title" content="Fortuna Ehrenfeld Shalalameter">
-<meta property="og:description" content="Piu piu, Shalala & Co.: die Laute aller Fortuna-Ehrenfeld-Lieder auf einer Zeitleiste.">
+<title>Fortuna Ehrenfeld Schalalameter</title>
+<meta name="description" content="Wie oft singen Fortuna Ehrenfeld Piu piu, Schalala und Lalala? Die Laute aller Lieder auf einer Zeitleiste.">
+<meta property="og:title" content="Fortuna Ehrenfeld Schalalameter">
+<meta property="og:description" content="Piu piu, Schalala &amp; Co.: die Laute aller Fortuna-Ehrenfeld-Lieder auf einer Zeitleiste.">
 <link rel="preload" href="assets/fonts/shrikhand-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -15,21 +15,24 @@
   <section class="hero" aria-labelledby="h1">
     <div class="hero-top">
       <div>
-        <div class="eyebrow">Piu piu, Shalala &amp; Co. · Lautmalerei über die Jahre</div>
-        <h1 id="h1">Fortuna Ehrenfeld <em>Shalalameter</em></h1>
-        <p class="lede">Wie oft kommen die Laute in den Liedern eines Jahres vor? Die Kurven zeigen die Laute nach Familien gruppiert. Klicke auf eine Familie, um ihre einzelnen Laute zu sehen, und auf ein Jahr für dessen Lieder.</p>
+        <div class="eyebrow">Piu piu, Schalala &amp; Co. · Lautmalerei über die Jahre</div>
+        <h1 id="h1">Fortuna Ehrenfeld <em>Schalalameter</em></h1>
+        <p class="subline">Sprache von vor und nach der Sprache.</p>
+        <p class="lede">Wie oft kommen die Laute in den Liedern einer Albumphase vor? Die Kurven zeigen die Laute nach Familien gruppiert. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief, ein Klick auf ein Album zeigt dessen Lieder.</p>
       </div>
       <div class="seg" role="group" aria-label="Wert">
         <button type="button" id="mode-sum" aria-pressed="true">Summe</button>
         <button type="button" id="mode-avg" aria-pressed="false">Ø je Lied</button>
       </div>
     </div>
-    <div class="zoombar" id="zoombar" hidden></div>
-    <div class="legend" id="legend" aria-label="Lautfamilien"></div>
+    <div class="legend" id="legend" aria-label="Familien der Schalalas"></div>
+    <p class="legend-note" id="legend-note" aria-live="polite" hidden></p>
     <div class="chart-scroll" id="chart-wrap">
-      <svg id="chart" role="group" aria-label="Gestapelte Kurven: Vorkommen der Laute pro Jahr"></svg>
+      <svg id="chart" role="group" aria-label="Gestapelte Kurven: Schalalas je Albumphase"></svg>
       <div class="tip" id="tip" hidden></div>
     </div>
+    <section class="steckbrief" id="detail" aria-live="polite" hidden></section>
+    <p class="countnote"><strong>Gezählt wird, was kein Wort mehr schafft.</strong><span>Eine Lautfolge zählt einmal. Komma und Zeilenumbruch trennen Lautfolgen.</span></p>
     <div class="notice" id="notice" hidden></div>
   </section>
 
@@ -51,8 +54,8 @@
   <section class="panel period" aria-live="polite" aria-labelledby="period-h">
     <div class="panel-head">
       <div>
-        <div class="eyebrow">Gewählter Zeitabschnitt</div>
-        <h2 id="period-h">–</h2>
+        <div class="eyebrow">Gewählte Albumphase</div>
+        <h2 id="period-h"></h2>
         <div class="scope" id="period-scope"></div>
       </div>
       <span class="sum" id="period-sum"></span>
@@ -60,7 +63,7 @@
     <ol class="rank" id="rank"></ol>
     <p class="uncounted" id="uncounted" hidden></p>
     <details class="table-view" style="margin-top:14px">
-      <summary>Alle Jahre als Tabelle</summary>
+      <summary>Alle Albumphasen als Tabelle</summary>
       <div class="tbl-scroll" id="table"></div>
     </details>
   </section>
@@ -68,21 +71,28 @@
   <section class="panel" aria-labelledby="grid-h">
     <div class="panel-head">
       <div>
-        <div class="eyebrow">Jeder Laut einzeln</div>
-        <h2 id="grid-h">Alle Laute</h2>
+        <div class="eyebrow">Jedes Schalala einzeln</div>
+        <h2 id="grid-h">Alle Schalalas</h2>
       </div>
-      <span class="sum" id="grid-hint"></span>
+      <span class="sum" id="grid-hint">Je kräftiger das Feld, desto häufiger das Schalala. Die Lupe öffnet den Steckbrief, ein Klick auf ein Album wählt es aus.</span>
     </div>
     <div class="tbl-scroll" id="grid"></div>
   </section>
 
-  <section class="panel" aria-labelledby="how-h">
-    <h2 id="how-h" style="font-size:18px; margin-bottom:8px">So wird gezählt</h2>
-    <p>Gezählt wird pro Lautfolge: „piu piu piu“ ist ein Vorkommen, „shalala, shalala“ sind zwei. Jedes Lied zählt einmal, im Jahr seiner ersten Veröffentlichung. Grundlage sind zunächst online verfügbare Liedtexte. Wo es eine Zählung nach Booklet oder nach Gehör gibt, hat sie Vorrang. Die Zahl unter jedem Jahr zeigt, wie viele Lieder dieses Jahres schon gezählt sind.</p>
-  </section>
+  <details class="about" id="about" open>
+    <summary><h2>Über das Schalalameter</h2></summary>
+    <div class="about-body">
+      <p>Das Schalalameter zählt die Laute in den Liedern von Fortuna Ehrenfeld: Schalala, Dadada, Oh oh oh, Bumm, Kawumm. Silben ohne Wortbedeutung, die trotzdem etwas sagen.</p>
+      <p>Den Namen hat die Band selbst vorgegeben. In ihren Tourtexten heißt das eigene Werk „das selbstersponnene Schalala“.</p>
+      <p>Gezählt wird nach den verfügbaren Liedtexten. Gezeigt werden nur Zahlen und die Laute selbst, keine Liedtexte. Die Einteilung in Familien ist eine Lesart dieses Projekts, keine Deutung der Band.</p>
+      <p class="about-last">Ein Fanprojekt aus Dadadadaismus.</p>
+    </div>
+  </details>
+
+  <p class="closing">Laute gegen die Schwerkraft.</p>
 
   <footer class="site-foot">
-    <span>Fanprojekt mit Einverständnis von Fortuna Ehrenfeld. Gespeichert werden nur Zählungen, keine Liedtexte.</span>
+    <span>Fanprojekt</span>
     <a href="impressum.html">Impressum</a>
     <a href="datenschutz.html">Datenschutz</a>
   </footer>
