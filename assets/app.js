@@ -1,10 +1,12 @@
-// Shalalameter – öffentliche Seite: Kurven nach Lautfamilien, Übersicht aller Laute, gewählter Zeitabschnitt.
+// Shalalameter – öffentliche Seite: Kurven nach Lautfamilien (mit Zoom in eine Familie),
+// Übersicht aller Laute, gewählter Zeitabschnitt.
 (() => {
 const {esc, fmt} = SM;
 const $ = id => document.getElementById(id);
 
 let data = null;
-let hidden = new Set();          // ausgeblendete Familien
+let zoom = null;                 // id der aufgeklappten Familie oder null
+let hidden = new Set();          // ausgeblendete Laute (nur im Zoom)
 let mode = 'sum';
 let typeOn = new Set(SM.TYPES.filter(t => t.on).map(t => t.id));
 let minSicher = 1;
@@ -14,13 +16,26 @@ let hoverIdx = null;
 let geo = null;
 
 const color = slot => `var(--c${slot})`;
-const fams = () => SM.families(data);
-const visFams = () => fams().filter(f => !hidden.has(f.id));
-const sounds = () => SM.sounds(data);
-const visible = () => sounds().filter(s => !hidden.has(s.familie));
-const total = s => visible().reduce((t, x) => t + (s.values[x.id] || 0), 0);
-const famValue = (counts, f) => sounds().filter(s => s.familie === f.id).reduce((t, s) => t + (counts[s.id] || 0), 0);
 const num = v => fmt(+v.toFixed(1));
+const fams = () => SM.families(data);
+const sounds = () => SM.sounds(data);
+const zoomFam = () => fams().find(f => f.id === zoom) || null;
+
+// Eine „Reihe“ ist im Überblick eine Familie, im Zoom ein einzelner Laut der Familie.
+// Im Zoom folgt die Farbe der festen Reihenfolge der Laute in der Datendatei.
+function series(){
+  if (zoom) return sounds().filter(s => s.familie === zoom).map((s, i) => ({id: s.id, name: s.name, slot: i + 1, members: [s]}));
+  return fams().map(f => ({id: f.id, name: f.name, slot: f.slot, members: sounds().filter(s => s.familie === f.id)}));
+}
+const visSeries = () => series().filter(x => !hidden.has(x.id));
+const visible = () => visSeries().flatMap(x => x.members);
+const seriesValue = (counts, x) => x.members.reduce((t, s) => t + (counts[s.id] || 0), 0);
+const total = s => visible().reduce((t, x) => t + (s.values[x.id] || 0), 0);
+function soundSlot(){
+  const m = new Map();
+  for (const x of series()) for (const s of x.members) m.set(s.id, x.slot);
+  return m;
+}
 
 /* ---------- Daten laden ---------- */
 async function loadData(){
@@ -39,6 +54,19 @@ async function loadData(){
   return d;
 }
 function showNotice(html){ $('notice').innerHTML = html; $('notice').hidden = false; }
+
+/* ---------- Adresse (#jahr oder #jahr/familie) ---------- */
+function writeHash(){ history.replaceState(null, '', '#' + (selYear || '') + (zoom ? '/' + zoom : '')); }
+function readHash(){
+  const [y, f] = location.hash.slice(1).split('/');
+  if (parseInt(y, 10)) selYear = parseInt(y, 10);
+  zoom = f && fams().some(x => x.id === f) ? f : null;
+}
+function setZoom(id){
+  zoom = id; hidden = new Set();
+  writeHash(); render();
+  $('zoombar').scrollIntoView({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
 
 /* ---------- Filter ---------- */
 function renderTypeFilter(){
@@ -69,22 +97,35 @@ function renderStats(songs){
     + (hiddenTyp ? `<span class="muted">${hiddenTyp} ausgeblendet (Typ)</span>` : '');
 }
 
-/* ---------- Legende (Familien) ---------- */
+/* ---------- Zoom-Leiste + Legende ---------- */
+function renderZoombar(){
+  const f = zoomFam(), bar = $('zoombar');
+  bar.hidden = !f;
+  if (!f) { bar.innerHTML = ''; return; }
+  const n = sounds().filter(s => s.familie === f.id).length;
+  bar.innerHTML = `<button type="button" class="btn small" id="zoom-out">← Alle Familien</button>
+    <span class="zoomtitle"><span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)}</span>
+    <span class="muted">${n} ${n === 1 ? 'Laut' : 'Laute'} · Klick auf einen Laut blendet ihn aus oder ein</span>`;
+  $('zoom-out').addEventListener('click', () => setZoom(null));
+}
 function renderLegend(songs){
   const counted = songs.filter(x => x.shown && x.counted);
-  $('legend').innerHTML = fams().map(f => {
-    const members = sounds().filter(s => s.familie === f.id);
-    const t = counted.reduce((a, x) => a + members.reduce((b, s) => b + (x.values[s.id] || 0), 0), 0);
-    return `<button type="button" data-id="${esc(f.id)}" aria-pressed="${!hidden.has(f.id)}" title="${esc(members.map(s => s.name).join(', '))}">
-      <span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)} <span class="n">${t}</span></button>`;
+  $('legend').innerHTML = series().map(x => {
+    const t = counted.reduce((a, s) => a + x.members.reduce((b, m) => b + (s.values[m.id] || 0), 0), 0);
+    if (zoom) return `<button type="button" data-id="${esc(x.id)}" aria-pressed="${!hidden.has(x.id)}" title="${esc(x.name)} ein- oder ausblenden">
+      <span class="sw" style="background:${color(x.slot)}"></span>${esc(x.name)} <span class="n">${t}</span></button>`;
+    return `<button type="button" class="zoomable" data-zoom="${esc(x.id)}" title="Einzelne Laute: ${esc(x.members.map(m => m.name).join(', '))}">
+      <span class="sw" style="background:${color(x.slot)}"></span>${esc(x.name)} <span class="n">${t}</span><span class="more" aria-hidden="true">›</span></button>`;
   }).join('');
 }
 $('legend').addEventListener('click', e => {
+  const z = e.target.closest('button[data-zoom]');
+  if (z) { setZoom(z.dataset.zoom); return; }
   const b = e.target.closest('button[data-id]'); if (!b) return;
   const id = b.dataset.id; hidden.has(id) ? hidden.delete(id) : hidden.add(id); render();
 });
 
-/* ---------- Gestapelte Kurven (Familien) ---------- */
+/* ---------- Gestapelte Kurven ---------- */
 function renderChart(cols){
   const svg = $('chart'), wrap = $('chart-wrap');
   wrap.querySelector('.empty-chart')?.remove();
@@ -93,7 +134,7 @@ function renderChart(cols){
     wrap.insertAdjacentHTML('beforeend', '<div class="empty-chart">Keine Lieder für diese Auswahl. Ändere die Filter.</div>');
     return;
   }
-  const vis = visFams();
+  const vis = visSeries();
   const cw = wrap.clientWidth - 8;
   const M = {t: 18, r: 28, b: 46, l: 40};
   const H = cw < 600 ? 310 : 430;
@@ -103,7 +144,7 @@ function renderChart(cols){
   const xs = t => n === 1 ? M.l + iw / 2 : M.l + (t / (n - 1)) * iw;
 
   // Jede Schicht wird einzeln geglättet und dann gestapelt, so kreuzen sich die Kurven nie.
-  const fns = vis.map(f => SM.monotone(cols.map(c => famValue(c.counts, f))));
+  const fns = vis.map(x => SM.monotone(cols.map(c => seriesValue(c.counts, x))));
   const SUB = 24, ts = [];
   if (n === 1) ts.push(-0.5, 0.5);
   else for (let k = 0; k <= (n - 1) * SUB; k++) ts.push(k / SUB);
@@ -124,23 +165,23 @@ function renderChart(cols){
     const x0 = Math.max(M.l, xs(si) - half), x1 = Math.min(W - M.r, xs(si) + half);
     out += `<rect class="selband" x="${x0}" y="${M.t}" width="${x1 - x0}" height="${ih}"/>`;
   }
-  vis.forEach((f, k) => {
+  vis.forEach((x, k) => {
     const upper = ts.map((t, j) => `${xt(t).toFixed(1)},${y(stacks[j][k]).toFixed(1)}`);
     const lower = ts.map((t, j) => `${xt(t).toFixed(1)},${y(k ? stacks[j][k - 1] : 0).toFixed(1)}`).reverse();
-    out += `<path class="layer" fill="${color(f.slot)}" d="M${upper.join('L')}L${lower.join('L')}Z"/>`;
+    out += `<path class="layer" fill="${color(x.slot)}" d="M${upper.join('L')}L${lower.join('L')}Z"/>`;
   });
   // Direkte Beschriftung an der dicksten Stelle jeder Schicht
-  vis.forEach((f, k) => {
+  vis.forEach((x, k) => {
     let best = -1, bj = 0;
     stacks.forEach((st, j) => { const th = st[k] - (k ? st[k - 1] : 0); if (th > best) { best = th; bj = j; } });
     if ((best / top) * ih < 20) return;
-    const x = Math.min(W - M.r - 60, Math.max(M.l + 60, xt(ts[bj])));
-    out += `<text class="lbl" x="${x}" y="${y(stacks[bj][k] - best / 2) + 4}" text-anchor="middle">${esc(f.name)}</text>`;
+    const xx = Math.min(W - M.r - 60, Math.max(M.l + 60, xt(ts[bj])));
+    out += `<text class="lbl" x="${xx}" y="${y(stacks[bj][k] - best / 2) + 4}" text-anchor="middle">${esc(x.name)}</text>`;
   });
   if (si >= 0) {
     out += `<line class="selline" x1="${xs(si)}" x2="${xs(si)}" y1="${M.t}" y2="${M.t + ih}"/>`;
     let acc = 0;
-    vis.forEach(f => { const v = famValue(cols[si].counts, f); acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(acc)}" r="4.5" fill="${color(f.slot)}"/>`; });
+    vis.forEach(x => { const v = seriesValue(cols[si].counts, x); acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(acc)}" r="4.5" fill="${color(x.slot)}"/>`; });
   }
   const every = Math.max(1, Math.ceil(40 / (n === 1 ? 999 : iw / (n - 1))));
   cols.forEach((c, i) => {
@@ -153,6 +194,7 @@ function renderChart(cols){
     out += `<rect class="hit" data-i="${i}" tabindex="0" role="button" aria-pressed="${i === si}" aria-label="${c.year}: ${c.counted.length} von ${c.songs.length} Liedern gezählt" x="${x0}" y="${M.t}" width="${x1 - x0}" height="${ih + M.b}"/>`;
   });
   svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('aria-label', `Gestapelte Kurven: ${zoom ? 'Laute der Familie ' + zoomFam().name : 'Lautfamilien'} pro Jahr`);
   svg.innerHTML = out;
   geo = {cols, xs, M, ih};
 }
@@ -161,8 +203,8 @@ function showTip(i){
   const tip = $('tip');
   if (i == null || !geo) { tip.hidden = true; return; }
   const c = geo.cols[i];
-  const rows = visFams().map(f =>
-    `<div class="row"><span class="sw" style="background:${color(f.slot)}"></span><span>${esc(f.name)}</span><span>${num(famValue(c.counts, f))}</span></div>`).join('');
+  const rows = visSeries().map(x =>
+    `<div class="row"><span class="sw" style="background:${color(x.slot)}"></span><span>${esc(x.name)}</span><span>${num(seriesValue(c.counts, x))}</span></div>`).join('');
   const meta = c.songs.length ? `${c.counted.length} von ${c.songs.length} Liedern gezählt${mode === 'avg' ? ' · Ø je Lied' : ''}` : 'keine Lieder';
   tip.innerHTML = `<b>${c.year}</b><div class="meta">${meta}</div>${rows}`;
   tip.hidden = false;
@@ -188,7 +230,7 @@ function setHover(i){
 }
 function selectYear(year, focus){
   selYear = year;
-  history.replaceState(null, '', '#' + year);
+  writeHash();
   render();
   if (focus && geo) $('chart').querySelector(`.hit[data-i="${geo.cols.findIndex(c => c.year === year)}"]`)?.focus({preventScroll: true});
 }
@@ -208,7 +250,8 @@ chart.addEventListener('keydown', e => {
 function renderGrid(cols){
   const box = $('grid');
   if (!cols.length) { box.innerHTML = ''; return; }
-  const snds = sounds();
+  const snds = sounds(), slots = soundSlot();
+  const groups = fams().filter(f => !zoom || f.id === zoom);
   const sumOf = s => cols.reduce((t, c) => t + (c.counts[s.id] || 0), 0);
   let max = 0;
   for (const c of cols) for (const s of snds) max = Math.max(max, c.counts[s.id] || 0);
@@ -220,19 +263,28 @@ function renderGrid(cols){
   };
   let html = `<table class="heat"><thead><tr><th scope="col">Laut</th>${cols.map(c =>
     `<th scope="col" class="${c.year === selYear ? 'sel' : ''}"><button type="button" data-year="${c.year}" aria-pressed="${c.year === selYear}">${String(c.year).slice(2)}<span class="sr">${c.year}</span></button></th>`).join('')}<th scope="col">Σ</th></tr></thead>`;
-  for (const f of fams()) {
+  for (const f of groups) {
     const members = snds.filter(s => s.familie === f.id).map(s => ({s, t: sumOf(s)})).sort((a, b) => b.t - a.t || a.s.name.localeCompare(b.s.name, 'de'));
     const ft = members.reduce((t, m) => t + m.t, 0);
-    const off = hidden.has(f.id) ? ' off' : '';
-    html += `<tbody class="fam${off}"><tr class="famrow"><th scope="rowgroup" colspan="${cols.length + 1}"><span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)}</th><td class="tot">${num(ft)}</td></tr>`;
+    const head = zoom
+      ? `<span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)}`
+      : `<button type="button" class="famzoom" data-zoom="${esc(f.id)}"><span class="sw" style="background:${color(f.slot)}"></span>${esc(f.name)}<span class="more" aria-hidden="true">›</span></button>`;
+    html += `<tbody class="fam"><tr class="famrow"><th scope="rowgroup" colspan="${cols.length + 1}">${head}</th><td class="tot">${num(ft)}</td></tr>`;
     for (const {s, t} of members) {
-      html += `<tr><th scope="row">${esc(s.name)}</th>${cols.map(c => cell(c.counts[s.id], f.slot, c.year === selYear)).join('')}<td class="tot">${t > 0 ? num(t) : '<span class="z">0</span>'}</td></tr>`;
+      const slot = zoom ? slots.get(s.id) : f.slot;
+      const off = hidden.has(s.id) ? ' class="off"' : '';
+      html += `<tr${off}><th scope="row">${zoom ? `<span class="sw" style="background:${color(slot)}"></span>` : ''}${esc(s.name)}</th>${cols.map(c => cell(c.counts[s.id], slot, c.year === selYear)).join('')}<td class="tot">${t > 0 ? num(t) : '<span class="z">0</span>'}</td></tr>`;
     }
     html += '</tbody>';
   }
   box.innerHTML = html + '</table>';
+  $('grid-hint').textContent = zoom
+    ? 'Je kräftiger das Feld, desto häufiger der Laut. Ein Klick auf ein Jahr wählt es oben aus.'
+    : 'Je kräftiger das Feld, desto häufiger der Laut. Ein Klick auf eine Familie zeigt ihre Laute als Kurven, ein Klick auf ein Jahr wählt es aus.';
 }
 $('grid').addEventListener('click', e => {
+  const z = e.target.closest('button[data-zoom]');
+  if (z) { setZoom(z.dataset.zoom); $('chart-wrap').scrollIntoView({block: 'nearest'}); return; }
   const b = e.target.closest('button[data-year]'); if (b) selectYear(+b.dataset.year, false);
 });
 
@@ -249,16 +301,17 @@ function renderPeriod(cols){
   const uc = $('uncounted');
   renderTable(cols);
   if (!c) { $('period-h').textContent = '–'; $('period-sum').textContent = ''; $('rank').innerHTML = ''; uc.hidden = true; return; }
-  const vf = visFams(), vis = visible();
+  const vs = visSeries(), vis = visible(), slots = soundSlot(), f = zoomFam();
   const all = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || a.s.l.titel.localeCompare(b.s.l.titel, 'de'));
   const list = all.filter(x => x.tot > 0), silent = all.filter(x => x.tot === 0);
   const sumAll = list.reduce((t, x) => t + x.tot, 0);
   const maxTot = Math.max(1, ...list.map(x => x.tot));
   $('period-h').textContent = String(c.year);
+  $('period-scope').textContent = f ? `nur ${f.name}` : '';
   $('period-sum').textContent = c.songs.length ? `${c.counted.length} von ${c.songs.length} Liedern gezählt · ${sumAll} Laute · sortiert nach Anzahl` : '';
   $('rank').innerHTML = list.length ? list.map((x, i) => {
     const s = x.s, b = s.best;
-    const segs = vf.map(f => ({f, v: famValue(s.values, f)})).filter(g => g.v > 0);
+    const segs = vs.map(r => ({r, v: seriesValue(s.values, r)})).filter(g => g.v > 0);
     const found = vis.filter(v => s.values[v.id] > 0);
     const link = SM.isHttp(b.quelle_url) ? `<a href="${esc(b.quelle_url)}" target="_blank" rel="noopener">Quelle</a>` : '';
     const gekuerzt = b.anzahl_aufgeloest && typeof b.anzahl_aufgeloest === 'object' && !aufl;
@@ -266,8 +319,8 @@ function renderPeriod(cols){
       <span class="pos">${i + 1}</span>
       <span><span class="t">${esc(s.l.titel)}</span><br><span class="m">${esc(s.l.erstveroeffentlichung)}${s.l.veroeffentlichung ? ' · ' + esc(s.l.veroeffentlichung) : ''}</span></span>
       <span class="viz">
-        <span class="bar" style="width:${(x.tot / maxTot) * 100}%">${segs.map(g => `<span style="flex:${g.v};background:${color(g.f.slot)}"></span>`).join('')}</span>
-        <span class="chips">${found.map(v => `<span class="chip"><i style="background:${color(v.slot)}"></i>${esc(v.name)} ${s.values[v.id]}</span>`).join('')}</span>
+        <span class="bar" style="width:${(x.tot / maxTot) * 100}%">${segs.map(g => `<span style="flex:${g.v};background:${color(g.r.slot)}"></span>`).join('')}</span>
+        <span class="chips">${found.map(v => `<span class="chip"><i style="background:${color(slots.get(v.id))}"></i>${esc(v.name)} ${s.values[v.id]}</span>`).join('')}</span>
       </span>
       <span class="tot">${x.tot}</span>
       <span class="src">
@@ -280,19 +333,19 @@ function renderPeriod(cols){
       </span>
       ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Sicherheit</th><th style="text-align:left">Laute</th><th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
     </li>`;
-  }).join('') : `<li class="empty muted">${c.counted.length ? `In den gezählten Liedern aus ${c.year} kommen keine dieser Laute vor.` : `Aus ${c.year} gibt es keine gezählten Lieder für diese Auswahl.`}</li>`;
+  }).join('') : `<li class="empty muted">${c.counted.length ? `In den gezählten Liedern aus ${c.year} kommen ${f ? 'keine Laute dieser Familie' : 'keine dieser Laute'} vor.` : `Aus ${c.year} gibt es keine gezählten Lieder für diese Auswahl.`}</li>`;
   const rest = c.songs.filter(s => !s.counted);
   const lines = [];
-  if (silent.length) lines.push('<b>Ohne Laute:</b> ' + silent.map(x => esc(x.s.l.titel)).join(' · '));
+  if (silent.length) lines.push(`<b>${f ? 'Ohne Laute dieser Familie' : 'Ohne Laute'}:</b> ` + silent.map(x => esc(x.s.l.titel)).join(' · '));
   if (rest.length) lines.push('<b>Ohne Zählung:</b> ' + rest.map(s =>
     `${esc(s.l.titel)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span>`).join(' · '));
   uc.hidden = !lines.length;
   uc.innerHTML = lines.join('<br>');
 }
 function renderTable(cols){
-  const fs = fams();
-  $('table').innerHTML = `<table><thead><tr><th>Jahr</th><th>Gezählt</th>${fs.map(f => `<th>${esc(f.name)}</th>`).join('')}</tr></thead><tbody>${
-    cols.map(c => `<tr><td>${c.year}</td><td>${c.counted.length}/${c.songs.length}</td>${fs.map(f => `<td>${num(famValue(c.counts, f))}</td>`).join('')}</tr>`).join('')
+  const ss = series();
+  $('table').innerHTML = `<table><thead><tr><th>Jahr</th><th>Gezählt</th>${ss.map(x => `<th>${esc(x.name)}</th>`).join('')}</tr></thead><tbody>${
+    cols.map(c => `<tr><td>${c.year}</td><td>${c.counted.length}/${c.songs.length}</td>${ss.map(x => `<td>${num(seriesValue(c.counts, x))}</td>`).join('')}</tr>`).join('')
   }</tbody></table>`;
 }
 
@@ -306,16 +359,16 @@ function render(){
     selYear = best;
   }
   hoverIdx = null; $('tip').hidden = true;
-  renderStats(songs); renderLegend(songs); renderChart(cols); renderGrid(cols); renderPeriod(cols);
+  renderStats(songs); renderZoombar(); renderLegend(songs); renderChart(cols); renderGrid(cols); renderPeriod(cols);
 }
 
 renderTypeFilter();
 loadData().then(d => {
   data = d;
-  const fromHash = parseInt(location.hash.slice(1), 10);
-  if (fromHash) selYear = fromHash;
+  readHash();
   render();
   let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(render, 120); });
+  window.addEventListener('hashchange', () => { readHash(); hidden = new Set(); render(); });
 }).catch(() => {
   $('chart-wrap').innerHTML = '<div class="empty-chart">Die Daten konnten nicht geladen werden. Bitte lade die Seite neu.</div>';
 });

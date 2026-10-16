@@ -56,6 +56,7 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 
 **Darstellung**
 - Die Farbe folgt der Familie in fester Reihenfolge, nie dem Rang. Es gibt höchstens 8 Farben.
+- Zoom: Ein Klick auf eine Familie (Legende oder Übersicht „Alle Laute“) zeigt ihre einzelnen Laute als Kurven. Im Zoom bekommen die Laute die Farben in ihrer Reihenfolge in der Datendatei, Rangliste und Übersicht beschränken sich auf die Familie. Die Ansicht lässt sich verlinken: `#2021/rufe` (Jahr/Familien-id).
 - Jahre ohne Lieder erscheinen als Lücke (0). Unter jedem Jahr steht die Abdeckung („gezählt/alle“), damit niemand eine Lücke für „keine Laute“ hält.
 
 ## Aufbau

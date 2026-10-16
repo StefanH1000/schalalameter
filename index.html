@@ -17,14 +17,15 @@
       <div>
         <div class="eyebrow">Piu piu, Shalala &amp; Co. · Lautmalerei über die Jahre</div>
         <h1 id="h1">Fortuna Ehrenfeld <em>Shalalameter</em></h1>
-        <p class="lede">Wie oft kommen die Laute in den Liedern eines Jahres vor? Die Kurven zeigen die Laute nach Familien gruppiert. Klicke auf ein Jahr, um die Lieder dieses Jahres zu sehen.</p>
+        <p class="lede">Wie oft kommen die Laute in den Liedern eines Jahres vor? Die Kurven zeigen die Laute nach Familien gruppiert. Klicke auf eine Familie, um ihre einzelnen Laute zu sehen, und auf ein Jahr für dessen Lieder.</p>
       </div>
       <div class="seg" role="group" aria-label="Wert">
         <button type="button" id="mode-sum" aria-pressed="true">Summe</button>
         <button type="button" id="mode-avg" aria-pressed="false">Ø je Lied</button>
       </div>
     </div>
-    <div class="legend" id="legend" aria-label="Laute ein- und ausblenden"></div>
+    <div class="zoombar" id="zoombar" hidden></div>
+    <div class="legend" id="legend" aria-label="Lautfamilien"></div>
     <div class="chart-scroll" id="chart-wrap">
       <svg id="chart" role="group" aria-label="Gestapelte Kurven: Vorkommen der Laute pro Jahr"></svg>
       <div class="tip" id="tip" hidden></div>
@@ -52,6 +53,7 @@
       <div>
         <div class="eyebrow">Gewählter Zeitabschnitt</div>
         <h2 id="period-h">–</h2>
+        <div class="scope" id="period-scope"></div>
       </div>
       <span class="sum" id="period-sum"></span>
     </div>
@@ -69,7 +71,7 @@
         <div class="eyebrow">Jeder Laut einzeln</div>
         <h2 id="grid-h">Alle Laute</h2>
       </div>
-      <span class="sum">Je kräftiger das Feld, desto häufiger der Laut. Ein Klick auf ein Jahr wählt es oben aus.</span>
+      <span class="sum" id="grid-hint"></span>
     </div>
     <div class="tbl-scroll" id="grid"></div>
   </section>
