@@ -20,9 +20,16 @@
     const timer = setTimeout(() => ctrl.abort(), timeoutMs || 3000);
     try {
       const rows = [], page = 1000;
+      // Ohne Spalte spitzname (tabelle.sql noch nicht neu ausgeführt) antwortet die Ansicht mit 400: dann ohne Namen laden.
+      let felder = 'lied_id,laut_id,anzahl,vorschlag,grundlage,spitzname';
       for (let from = 0; ; from += page) {
-        const res = await fetch(base() + 'fan_zaehlungen_oeffentlich?select=lied_id,laut_id,anzahl,vorschlag,grundlage',
+        let res = await fetch(base() + 'fan_zaehlungen_oeffentlich?select=' + felder,
           {headers: headers({Range: `${from}-${from + page - 1}`, 'Range-Unit': 'items'}), signal: ctrl.signal, cache: 'no-store'});
+        if (res.status === 400 && felder.endsWith(',spitzname')) {
+          felder = felder.replace(',spitzname', '');
+          from -= page;
+          continue;
+        }
         if (!res.ok && res.status !== 206) throw new Error('HTTP ' + res.status);
         const chunk = await res.json();
         rows.push(...chunk);

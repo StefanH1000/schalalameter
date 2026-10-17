@@ -327,6 +327,23 @@ test('Fankonsens: Vorschläge zählen erst nach der Freigabe, dann für den neue
   assert.strictEqual(SM.fanZaehlungen(d, rows)[0].fan[id], 3);
 });
 
+test('Fankonsens: Spitznamen je Lied, ausgeblendete (leere) Namen fehlen', () => {
+  const d = FANDATA();
+  const [z] = SM.fanZaehlungen(d, [
+    {lied_id: 'l1', laut_id: 'a', anzahl: 8, spitzname: 'Kalle'},
+    {lied_id: 'l1', laut_id: 'b', anzahl: 2, spitzname: 'Kalle'},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 7, spitzname: ''},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 6, spitzname: ' Taube '},
+    {lied_id: 'l1', laut_id: '', vorschlag: 'Zisch', anzahl: 1, spitzname: 'Nur-Vorschlag'},
+  ]);
+  assert.deepStrictEqual(z.namen, ['Kalle', 'Taube']);   // Vorschlag ohne Freigabe zählt nicht, also auch kein Name
+  assert.strictEqual(SM.namenListe(['A']), 'A');
+  assert.strictEqual(SM.namenListe(['A', 'B']), 'A und B');
+  assert.strictEqual(SM.namenListe(['A', 'B', 'C']), 'A, B und C');
+  assert.strictEqual(SM.namenListe(['A', 'B', 'C', 'D']), 'A, B, C und einer weiteren Person');
+  assert.strictEqual(SM.namenListe(['A', 'B', 'C', 'D', 'E']), 'A, B, C und 2 weiteren');
+});
+
 test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
   const d = FANDATA();
   const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);

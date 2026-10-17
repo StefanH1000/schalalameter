@@ -129,12 +129,14 @@
   function fanZaehlungen(data, rows) {
     const lieder = new Set(data.lieder.map(l => l.id));
     const snds = sounds(data), laute = new Set(snds.map(s => s.id)), ausVorschlag = vorschlagsLaut(snds);
-    const byLied = new Map();
+    const byLied = new Map(), namen = new Map();
     for (const r of Array.isArray(rows) ? rows : []) {
       const n = Number(r && r.anzahl);
       if (!r || !lieder.has(r.lied_id) || !Number.isInteger(n) || n < 0 || n > 200) continue;
       const laut = r.laut_id ? r.laut_id : String(r.vorschlag || '').trim() ? ausVorschlag(r.vorschlag) : null;
       if (!laute.has(laut)) continue;
+      const name = String(r.spitzname || '').trim();
+      if (name) (namen.get(r.lied_id) || namen.set(r.lied_id, new Set()).get(r.lied_id)).add(name);
       if (!byLied.has(r.lied_id)) byLied.set(r.lied_id, new Map());
       const m = byLied.get(r.lied_id);
       if (!m.has(laut)) m.set(laut, []);
@@ -163,9 +165,16 @@
         lied_id: liedId, grundlage: 'fankonsens', quelle_url: '', quelle_art: 'community', gezaehlt_von: 'Fans',
         status: 'gezaehlt', werte, anzahl_aufgeloest: null, belege: {}, kandidaten: {},
         sicherheit: minStimmen >= 3 ? 'hoch' : 'mittel', fan: stimmen, fan_anzahl: fan, notiz: '',
+        namen: [...(namen.get(liedId) || [])],
       });
     }
     return out;
+  }
+  // „Kalle, Taube und 2 weiteren“: höchstens drei Namen, der Rest als Zahl.
+  function namenListe(namen, max = 3) {
+    const n = namen.slice(0, max), rest = namen.length - n.length;
+    if (rest > 0) return `${n.join(', ')} und ${rest === 1 ? 'einer weiteren Person' : rest + ' weiteren'}`;
+    return n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n[n.length - 1]}` : (n[0] || '');
   }
   // Datendatei plus Fankonsens; die Datendatei selbst bleibt unverändert.
   function withFans(data, rows) {
@@ -376,7 +385,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, withFans, fanVorschlaege,
+    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };

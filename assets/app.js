@@ -456,7 +456,7 @@ function renderPeriod(cols){
         ${s.typ !== 'original' ? `<span class="badge typ">${SM.TYPE_LABEL[s.typ]}</span>` : ''}
         <span class="badge ${esc(b.sicherheit)}">${esc(b.sicherheit || '?')}</span>
         <span>${esc(SM.GRUND_LABEL[b.grundlage] || b.grundlage)}${b.quelle_art ? ' · ' + esc(b.quelle_art) : ''}</span>
-        ${fz ? `<span class="fanTot">aus ${fz.fan_anzahl} ${fz.fan_anzahl === 1 ? 'Fanzählung' : 'Fanzählungen'}</span>` : ''}
+        ${fz ? `<span class="fanTot">aus ${fz.fan_anzahl} ${fz.fan_anzahl === 1 ? 'Fanzählung' : 'Fanzählungen'}${fz.namen.length ? `, gezählt von ${esc(SM.namenListe(fz.namen))}` : ''}</span>` : ''}
         ${link}
         ${gekuerzt ? '<span class="muted">Refrain im Text gekürzt</span>' : ''}
         ${b.notiz ? `<span class="muted">${esc(b.notiz)}</span>` : ''}

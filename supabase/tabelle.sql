@@ -33,6 +33,9 @@ alter table public.fan_zaehlungen drop constraint if exists eine_zaehlung_je_ger
 create unique index if not exists fan_zaehlungen_eindeutig
   on public.fan_zaehlungen (geraet_id, lied_id, laut_id, lower(vorschlag));
 
+-- Spitzname ausblenden, die Zählung bleibt (für unpassende Namen). Bei Wiederholung nur ergänzt.
+alter table public.fan_zaehlungen add column if not exists name_ausgeblendet boolean not null default false;
+
 create index if not exists fan_zaehlungen_geraet_zeit on public.fan_zaehlungen (geraet_id, aktualisiert);
 
 -- RLS an und keine einzige Policy: Über die Data API kommt niemand direkt an die Zeilen,
@@ -126,11 +129,12 @@ grant execute on function public.zaehlung_einreichen(text, text, integer, text, 
 -- Lesen: nur über diese Ansicht
 -- ---------------------------------------------------------------------------
 -- Die Ansicht läuft mit den Rechten ihres Eigentümers (security_invoker = false) und liest deshalb
--- die Tabelle, obwohl anon dort nichts darf. Sie enthält weder geraet_id noch spitzname
--- und lässt gesperrte Einträge aus.
+-- die Tabelle, obwohl anon dort nichts darf. Sie enthält keine geraet_id, den Spitznamen nur, wenn er
+-- nicht ausgeblendet ist, und lässt gesperrte Einträge aus. Neue Spalten nur hinten anfügen.
 create or replace view public.fan_zaehlungen_oeffentlich
 with (security_invoker = false) as
-select lied_id, laut_id, anzahl, vorschlag, grundlage, aktualisiert
+select lied_id, laut_id, anzahl, vorschlag, grundlage, aktualisiert,
+       case when name_ausgeblendet then '' else spitzname end as spitzname
   from public.fan_zaehlungen
  where not gesperrt;
 
@@ -143,4 +147,6 @@ grant select on table public.fan_zaehlungen_oeffentlich to anon;
 --   update public.fan_zaehlungen set gesperrt = true where id = 123;
 -- Alle Einträge eines Spitznamens sperren:
 --   update public.fan_zaehlungen set gesperrt = true where spitzname = 'Beispiel';
+-- Nur den Spitznamen ausblenden, die Zählungen bleiben (Spalte name_ausgeblendet = true):
+--   update public.fan_zaehlungen set name_ausgeblendet = true where spitzname = 'Beispiel';
 -- ---------------------------------------------------------------------------

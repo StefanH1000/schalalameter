@@ -278,6 +278,21 @@ $('zf').addEventListener('submit', async e => {
   }
 });
 
+const ORDINAL = {2: 'zweite', 3: 'dritte', 4: 'vierte', 5: 'fünfte', 6: 'sechste', 7: 'siebte', 8: 'achte', 9: 'neunte', 10: 'zehnte'};
+// Spitznamen der anderen, die in diesem Lied dasselbe gezählt haben; der eigene Name zählt einmal nicht mit.
+function andereNamen(passt) {
+  const ich = $('name').value.trim();
+  let selbst = false;
+  const namen = [];
+  for (const r of rows) {
+    if (r.lied_id !== st.lied || !passt(r)) continue;
+    const n = String(r.spitzname || '').trim();
+    if (!n) continue;
+    if (n === ich && !selbst) { selbst = true; continue; }
+    if (!namen.includes(n)) namen.push(n);
+  }
+  return namen;
+}
 function naechstesOffenes() {
   const i = liste.findIndex(x => x.l.id === st.lied);
   return [...liste.slice(i + 1), ...liste.slice(0, Math.max(i, 0))].find(x => x.offen && x.l.id !== st.lied) || null;
@@ -288,11 +303,14 @@ function zeigeErgebnis(x, sound, neu, eigene) {
   if (sound) {
     const z = SM.fanZaehlungen(data, rows).find(r => r.lied_id === x.l.id);
     const v = z ? z.werte[sound.id] : eigene, k = z && z.fan[sound.id] ? z.fan[sound.id] : 1;
+    const andere = andereNamen(r => r.laut_id === sound.id);
+    const wer = k <= 1 ? 'Du bist die erste Fanstimme für dieses Schalala in diesem Lied.'
+      : andere.length ? `Du bist nach ${esc(SM.namenListe(andere))} die ${ORDINAL[k] || k + '.'} Stimme.` : `Aus ${k} Fanzählungen.`;
     mitte = `<div class="vergleich"><div><small>Deine Zählung</small><b>${eigene}</b></div><div class="stand"><small>Stand jetzt</small><b>${v}</b></div></div>
-      <p>${k <= 1 ? 'Du bist die erste Fanstimme für dieses Schalala in diesem Lied.' : `Aus ${k} Fanzählungen.`} Ab drei Stimmen zählt der häufigste Wert.</p>`;
+      <p>${wer} Ab drei Stimmen zählt der häufigste Wert.</p>`;
   } else {
     mitte = `<div class="vergleich"><div><small>Dein Vorschlag</small><span class="vorschlag-chip">${esc(neu)}</span></div><div><small>gezählt</small><b>${eigene}</b></div></div>
-      <p>Neue Laute werden erst geprüft. Sobald „${esc(neu)}“ freigegeben ist, erscheint er auf dem Schalalameter, mit deiner Zahl und allen anderen Zählungen dazu.</p>`;
+      <p>${(a => a.length ? `Auch ${esc(SM.namenListe(a))} ${a.length === 1 ? 'hat' : 'haben'} „${esc(neu)}“ in diesem Lied gehört. ` : '')(andereNamen(r => !r.laut_id && SM.slug(r.vorschlag || '') === SM.slug(neu)))}Neue Laute werden erst geprüft. Sobald „${esc(neu)}“ freigegeben ist, erscheint er auf dem Schalalameter, mit deiner Zahl und allen anderen Zählungen dazu.</p>`;
   }
   const next = naechstesOffenes();
   box.innerHTML = `
