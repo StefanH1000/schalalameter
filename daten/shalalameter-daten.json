@@ -1738,7 +1738,9 @@
       "titel": "Nudeln mit Tomatensosse",
       "erstveroeffentlichung": "2024-10-11",
       "veroeffentlichung": "Universum (Album)",
-      "auch_auf": [],
+      "auch_auf": [
+        "Revolution! (2026)"
+      ],
       "typ": "original",
       "original_id": null,
       "notiz": ""
@@ -2102,6 +2104,116 @@
       "typ": "original",
       "original_id": null,
       "notiz": ""
+    },
+    {
+      "id": "rabenflugel",
+      "titel": "Rabenflügel",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "me-fall-like-rain",
+      "titel": "Me Fall Like Rain",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "die-polyintensiven",
+      "titel": "Die Polyintensiven",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "goppingen",
+      "titel": "Göppingen",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "ich-bade-meine-angst",
+      "titel": "Ich Bade Meine Angst",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "kleiner-kapitan",
+      "titel": "Kleiner Kapitän",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "ausflug-in-den-club",
+      "titel": "Ausflug In Den Club",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "das-gerausch",
+      "titel": "Das Geräusch",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "ich-bin-frei",
+      "titel": "Ich Bin Frei",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "ich-mag-mich-fuhlen-wie-eine-taube",
+      "titel": "Ich Mag Mich Fühlen Wie Eine Taube",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
+    },
+    {
+      "id": "cognac-fur-die-huren",
+      "titel": "Cognac Für Die Huren",
+      "erstveroeffentlichung": "2026",
+      "veroeffentlichung": "Revolution! (Album)",
+      "auch_auf": [],
+      "typ": "original",
+      "original_id": null,
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt. Noch nicht gezählt."
     }
   ],
   "zaehlungen": [
@@ -10474,6 +10586,13 @@
       "kurz": "Hollywood Bowl",
       "datum": "2026-03-06",
       "reihenfolge": 9
+    },
+    {
+      "id": "revolution",
+      "titel": "Revolution!",
+      "kurz": "Revolution!",
+      "datum": "2026",
+      "reihenfolge": 10
     }
   ]
 }

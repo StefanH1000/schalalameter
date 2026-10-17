@@ -4,7 +4,7 @@ Stand: 17.10.2026
 
 ## Worum es geht
 
-Das Schalalameter zeigt, wie oft Fortuna Ehrenfeld lautmalerische Laute wie „Schalala“, „Da-da“ oder „Oh-oh-oh“ singen, und wie sich das über die Albumphasen verändert. Unterzeile: „Sprache von vor und nach der Sprache.“ Einstieg ist ein Diagramm mit gestapelten Kurven über neun Albumphasen. Ein Klick auf ein Album listet die Lieder dieser Phase, sortiert nach Anzahl der Schalalas. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief. Darunter stehen die Übersicht „Alle Schalalas“ und der Abschnitt „Über das Schalalameter“.
+Das Schalalameter zeigt, wie oft Fortuna Ehrenfeld lautmalerische Laute wie „Schalala“, „Da-da“ oder „Oh-oh-oh“ singen, und wie sich das über die Albumphasen verändert. Unterzeile: „Sprache von vor und nach der Sprache.“ Einstieg ist ein Diagramm mit gestapelten Kurven über zehn Albumphasen. Ein Klick auf ein Album listet die Lieder dieser Phase, sortiert nach Anzahl der Schalalas. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief. Darunter stehen die Übersicht „Alle Schalalas“ und der Abschnitt „Über das Schalalameter“.
 
 **Schreibweise:** sichtbar immer „Schalala“, in der Bedienung heißen die Laute „Schalalas“. Repository und URL heißen seit 17.10.2026 `schalalameter` (alte Adresse ohne Weiterleitung). Interne Kennungen, Dateinamen und der lokale Ordner bleiben `shalala` / `shalalameter`. Die Texte der Seite (Unterzeile, Zählerklärung, Steckbriefe, „Über“, Schlusszeile) sind vom Projektverantwortlichen festgelegt und werden nicht umformuliert.
 
@@ -24,6 +24,7 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
 - Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
+- Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026), noch ohne Zählung (Startseite jetzt 156 eigene Lieder).
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **29 Laute in 7 Familien**, alle freigegeben:
 
@@ -71,7 +72,7 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 
 **Albumphasen** (`phaseInfo` in `assets/core.js`)
 
-Die x-Achse zeigt neun Albumphasen in Erscheinungsreihenfolge, gleichmäßig verteilt (nicht nach Datum skaliert): Coolness (2016), Hey Sexy (2017), Helm ab (2019), Rückkehr (2021), Solo I. (2022), Glitzerschwein (2023), Universum (2024), Himmelerdenblau (2025), Hollywood Bowl (2026, gilt als Studioalbum). Keine eigenen Phasen: „Debout pour ma prière“ (Übersetzungsalbum), „Das letzte Kommando“, „Solo Live“, „Solo Live im St. Pauli Theater“ (Livealben). Die Alben stehen in der Datendatei unter `alben` (id, titel, kurz, datum, reihenfolge).
+Die x-Achse zeigt zehn Albumphasen in Erscheinungsreihenfolge, gleichmäßig verteilt (nicht nach Datum skaliert): Coolness (2016), Hey Sexy (2017), Helm ab (2019), Rückkehr (2021), Solo I. (2022), Glitzerschwein (2023), Universum (2024), Himmelerdenblau (2025), Hollywood Bowl (2026, gilt als Studioalbum), Revolution! (2026, neuestes Album; Vinyl-LP bei Tonproduktion Records, TPR069; genaues Datum unbekannt, deshalb `datum: "2026"`). Keine eigenen Phasen: „Debout pour ma prière“ (Übersetzungsalbum), „Das letzte Kommando“, „Solo Live“, „Solo Live im St. Pauli Theater“ (Livealben). Die Alben stehen in der Datendatei unter `alben` (id, titel, kurz, datum, reihenfolge).
 
 Zuordnung eines Lieds, in dieser Reihenfolge:
 1. Überschreibung im Feld `phase` des Lieds gewinnt immer.
@@ -81,7 +82,7 @@ Zuordnung eines Lieds, in dieser Reihenfolge:
 
 Gespeicherte Überschreibungen: Helm ab zum Gebet für „Trust Me, I'm an Alien!“ und die Regenradar-EP (Drückerkolonne, Bella Ciao, Die ewige Sabine, Hossegor, Hooray Hooray, Vereinsheim; die EP erschien einen Tag vor dem Album); Die Rückkehr zur Normalität für „Weltuntergang“ (nach Regel 4 läge Helm ab knapp näher, 378 zu 385 Tage). Alle übrigen Phasen werden berechnet, nicht gespeichert.
 
-Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 21/18, Rückkehr 11/10, Solo I. 15/11, Glitzerschwein 15/4, Universum 30/26, Himmelerdenblau 16/0, Hollywood Bowl 12/12. In der Vorgabe standen Helm ab 21/17 und Rückkehr 11/11. Die Daten ergeben eindeutig 18 und 10: In Helm ab fehlt der Text nur bei „Hör endlich auf zu jammern“, „Faire Tapisserie“ und „Pluie, movement“; in Rückkehr hat „Weltuntergang“ keinen Text.
+Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 21/18, Rückkehr 11/10, Solo I. 15/11, Glitzerschwein 15/4, Universum 30/26, Himmelerdenblau 16/0, Hollywood Bowl 12/12, Revolution! 11/0. In der Vorgabe standen Helm ab 21/17 und Rückkehr 11/11. Die Daten ergeben eindeutig 18 und 10: In Helm ab fehlt der Text nur bei „Hör endlich auf zu jammern“, „Faire Tapisserie“ und „Pluie, movement“; in Rückkehr hat „Weltuntergang“ keinen Text.
 
 **Darstellung**
 - Die Farbe folgt der Familie in fester Reihenfolge, nie dem Rang. Es gibt höchstens 8 Farben.
@@ -183,3 +184,4 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 7. Endgültige Sprache: „Schalala“, Unterzeile, Familiennamen mit Steckbriefen, „Über das Schalalameter“, Schlusszeile „Laute gegen die Schwerkraft.“
 8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).
 9. Fanzählungen: Formular „Zähl mit“, Konsens aus Fanstimmen, Supabase als Speicher.
+10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum.

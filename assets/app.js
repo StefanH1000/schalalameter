@@ -434,7 +434,7 @@ function renderPeriod(cols){
   const maxTot = Math.max(1, ...list.map(x => x.tot));
   $('period-h').innerHTML = `<img class="pcover" src="${esc(coverSrc(c.album))}" alt="" width="48" height="48"><span>${esc(c.album.titel)}</span>`;
   $('period-scope').textContent = f ? `nur ${short(f)}` : (hidden.size ? `ohne ${fams().filter(x => hidden.has(x.id)).map(short).join(', ')}` : '');
-  $('period-sum').textContent = `Album erschienen am ${datum(c.album.datum)}` + (c.songs.length ? ` · ${c.counted.length} von ${c.songs.length} Liedern gezählt · ${sumAll} Schalalas · sortiert nach Anzahl` : '');
+  $('period-sum').textContent = `Album erschienen ${/^\d{4}$/.test(c.album.datum) ? '' : 'am '}${datum(c.album.datum)}` + (c.songs.length ? ` · ${c.counted.length} von ${c.songs.length} Liedern gezählt · ${sumAll} Schalalas · sortiert nach Anzahl` : '');
   $('rank').innerHTML = list.length ? list.map((x, i) => {
     const s = x.s, b = s.best;
     const segs = parts.map(p => ({slot: p.slot, v: p.ids.reduce((t, id) => t + (s.values[id] || 0), 0)})).filter(g => g.v > 0);
@@ -470,7 +470,7 @@ function renderPeriod(cols){
   const titleYear = s => `${esc(s.l.titel)} <span class="muted">${s.year}</span>`;
   if (silent.length) lines.push(`<b>${f ? 'Ohne Schalalas dieser Familie' : 'Ohne Schalalas'}:</b> ` + silent.map(x => `${titleYear(x.s)} <a class="zaehlmit" href="${zaehlLink(x.s.l.id)}">Zähl mit</a>`).join(' · '));
   if (rest.length) lines.push('<b>Ohne Zählung:</b> ' + rest.map(s =>
-    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span> <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>`).join(' · '));
+    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : s.all.length ? 'kein Text gefunden' : 'noch nicht gezählt'})</span> <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>`).join(' · '));
   uc.hidden = !lines.length;
   uc.innerHTML = lines.join('<br>');
 }

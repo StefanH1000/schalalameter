@@ -165,10 +165,10 @@ test('Daten: festgelegte Überschreibungen und Beispiele der Zuordnung', () => {
     ['bella-ciao', 'die-ewige-sabine', 'druckerkolonne', 'hooray-hooray', 'hossegor', 'trust-me-i-m-an-alien', 'vereinsheim', 'weltuntergang']);
 });
 
-test('Daten: jedes Lied gehört genau einer der neun Albumphasen an', () => {
+test('Daten: jedes Lied gehört genau einer der zehn Albumphasen an', () => {
   const d = SM.normalize(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'daten', 'shalalameter-daten.json'), 'utf8')));
   const ids = SM.albums(d).map(a => a.id);
-  assert.strictEqual(ids.length, 9);
+  assert.strictEqual(ids.length, 10);
   const songs = SM.derive(d, {typeOn: new Set(SM.TYPES.map(t => t.id)), minSicher: 1, aufl: false});
   for (const s of songs) {
     const p = SM.phaseInfo(d, s.l);
