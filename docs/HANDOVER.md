@@ -25,6 +25,7 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
 - Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
 - Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Keiner der bisherigen Laute kommt darin vor, dafür fünf neue, freigegeben am 17.10.2026: Dub-di-dub-di-dubb (5× in „Ausflug in den Club“), Kuruu-kuruu und Ram-tam-tam (je 1× in „Rabenflügel“), Tatütata (1× in „Cognac für die Huren“, als Nomen, aber reine Lautmalerei), alle in Täterätätä im Pyjama; Fiki hey (1× in „Die Polyintensiven“) in Daseinslaute. Nicht gezählt: „ey“, „Hurra“, „Halleluja“ (stehen als Wörter).
+- Ebenfalls am 17.10.2026 nach Booklet gezählt: alle 12 Lieder von „Live at the Hollywood Bowl“ und 11 von „Das Ende der Coolness Vol. 2“ (Seite 4 der Textbeilage, das Titellied fehlt). Abweichungen zum Online-Text: „Alles explodiert“ bumm 9→3, kawumm 3→1, olé 3→1 (das Booklet druckt den Block nur einmal); „Life at the Hollywood Bowl“ hey hey hey 2→0; „Ciao Kakao“ whoopie whoopie 4→3; „Internet zerf*cken“ neu 3× Uh, uh, uh. Gezählt wird, was im Booklet steht, auch wenn gesungen öfter wiederholt wird.
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **34 Laute in 7 Familien**, alle freigegeben:
 
@@ -33,10 +34,10 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 | Spatzenlaser | Piu piu | Piu piu | 0 |
 | Schalalamente | Schalala | Schalala | 51 |
 | Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
-| Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 13 |
-| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 47 |
+| Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 5 |
+| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 50 |
 | Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata | 24 |
-| Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey | 15 |
+| Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey | 10 |
 
 Jede Familie hat in der Datendatei `id` (fest), `name` (bisheriger Name, für die Werkstatt), `anzeigename`, `untertitel` und `steckbrief`.
 
@@ -120,6 +121,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `supabase/tabelle.sql` | Tabelle, Funktion, Ansicht und Freigaben; einmal im SQL Editor ausführen |
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
+| `tools/booklet-hollywood-coolness-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für Hollywood Bowl und Coolness (Dokumentation, nicht erneut ausführen) |
 | `tools/freigabe-2026-10-17.js` | einmaliges Skript: die fünf neuen Laute aus „Revolution!“ freigegeben (Dokumentation, nicht erneut ausführen) |
 | `tools/beispieldaten.js` | erzeugt erfundene Beispieldaten (nur für Tests ohne echte Daten) |
 | `impressum.html`, `datenschutz.html` | Pflichtseiten, minimal ausgefüllt (Stefan Hoch) |
