@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Schalalameter Werkstatt</title>
-<link rel="stylesheet" href="assets/style.css?v=202610171139">
+<link rel="stylesheet" href="assets/style.css?v=202610171240">
 <style>
 .cands{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .cands li{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 12px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
@@ -71,7 +71,7 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
       <p>Weitere Laute, die beim Zählen aufgefallen sind. Als eigenen Laut freigeben, einem bestehenden zurechnen oder verwerfen. Bis dahin erscheinen sie nicht auf der Seite.</p>
       <ul class="cands" id="cands"></ul>
       <h3 style="font-size:15px; margin:18px 0 4px">Vorschläge von Fans</h3>
-      <p class="hint" style="margin:0 0 6px">Eingereicht über „Zähl mit“ als „anderer Laut“. „Als Laut anlegen“ nimmt ihn in den Entwurf auf (Familie „Weitere Laute“); nach dem Veröffentlichen können Fans ihn direkt zählen. Sperren geht in Supabase.</p>
+      <p class="hint" style="margin:0 0 6px">Eingereicht über „Zähl mit“ als „anderer Laut“. „Als Laut anlegen“ nimmt ihn in den Entwurf auf (Familie „Weitere Laute“); nach dem Veröffentlichen können Fans ihn direkt zählen. Sperren geht unten unter „Moderation“.</p>
       <ul class="cands" id="fan-cands"><li class="empty muted">Wird geladen …</li></ul>
     </div>
   </section>
@@ -108,15 +108,22 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
     </form>
   </section>
 
+  <section class="panel" id="moderation">
+    <div class="panel-head"><h2>Schalalalogie · Moderation</h2><span class="status" id="mod-status" aria-live="polite"></span></div>
+    <p>Gemeldete Beiträge prüfen; Beiträge, Themen, Abstimmungen und Fanzählungen sperren und freigeben; Abstimmungen schließen. Nur mit einem Konto, das in Supabase in der Tabelle <code>moderation</code> steht.</p>
+    <div id="mod"></div>
+  </section>
+
   <section class="panel">
     <div class="panel-head"><h2>Noch offen</h2><span class="status" id="open-count"></span></div>
     <p>Lieder ohne verwertbare Zählung. Ein Klick übernimmt das Lied ins Formular oben.</p>
     <ul class="open-list" id="open-list"></ul>
   </section>
 </div>
-<script src="assets/core.js?v=202610171139"></script>
-<script src="assets/supabase-config.js?v=202610171139"></script>
-<script src="assets/fans.js?v=202610171139"></script>
-<script src="assets/werkstatt.js?v=202610171139"></script>
+<script src="assets/core.js?v=202610171240"></script>
+<script src="assets/supabase-config.js?v=202610171240"></script>
+<script src="assets/fans.js?v=202610171240"></script>
+<script src="assets/werkstatt.js?v=202610171240"></script>
+<script src="assets/moderation.js?v=202610171240"></script>
 </body>
 </html>

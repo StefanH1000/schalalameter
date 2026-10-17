@@ -35,6 +35,26 @@
     return String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'laut';
   }
   function isHttp(u) { return /^https?:\/\//.test(u || ''); }
+  // Beitragstext der Schalalalogie als sicheres HTML: alles maskiert, nur http(s)-Adressen werden zu Links.
+  // Satzzeichen am Ende gehören nicht zur Adresse, eine schließende Klammer nur, wenn sie eine öffnende schließt.
+  // Zeilenumbrüche bleiben als \n stehen (Darstellung mit white-space: pre-wrap).
+  function textMitLinks(text) {
+    const s = String(text ?? ''), re = /https?:\/\/[^\s<>"'`]+/g;
+    let out = '', last = 0, m;
+    while ((m = re.exec(s))) {
+      let url = m[0];
+      for (;;) {
+        if (/[.,;:!?'"\]]$/.test(url)) url = url.slice(0, -1);
+        else if (url.endsWith(')') && url.split('(').length < url.split(')').length) url = url.slice(0, -1);
+        else break;
+      }
+      if (!/^https?:\/\/[^/?#\s]+/.test(url)) continue;
+      out += esc(s.slice(last, m.index)) + `<a href="${esc(url)}" rel="nofollow ugc noopener" target="_blank">${esc(url)}</a>`;
+      last = m.index + url.length;
+      re.lastIndex = last;
+    }
+    return out + esc(s.slice(last));
+  }
 
   function normalize(d) {
     if (!d || !Array.isArray(d.lieder) || !Array.isArray(d.zaehlungen)) return null;
@@ -389,7 +409,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
+    esc, fmt, slug, isHttp, textMitLinks, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };

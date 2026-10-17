@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schalalalogie · Schalalameter</title>
+<meta name="description" content="Schalalalogie: Fachschaftsforum zum Haarespalten und Jauchzen. Fans von Fortuna Ehrenfeld fachsimpeln über Schalalas, Zählungen und Lieder.">
+<link rel="stylesheet" href="assets/style.css?v=202610171139">
+<style>
+.sl-head{display:flex; flex-direction:column; gap:6px}
+.sl-head h1{font-family:var(--display); font-weight:400; font-size:clamp(38px, 8vw, 60px); line-height:1}
+.sl-head .subline{margin:0}
+.sl-nav{display:flex; flex-wrap:wrap; gap:8px}
+.sl-nav a{font-size:14px; font-weight:600; text-decoration:none; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+.sl-nav a[aria-current="page"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.leiste{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between}
+.filter{display:flex; flex-wrap:wrap; gap:8px}
+.pill{min-height:40px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--surface); font-size:14px; font-weight:600; cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.knopf{display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 18px; border-radius:12px; border:0; background:var(--accent); color:#fff; font-size:15px; font-weight:700; cursor:pointer; text-decoration:none}
+.knopf.hell{background:var(--surface); color:var(--ink); border:1px solid var(--line)}
+.knopf:disabled{opacity:.45; cursor:not-allowed}
+@media (prefers-color-scheme: dark){ .knopf:not(.hell){color:#22192b} }
+.themen{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px}
+.themen a{display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:4px 14px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:14px 16px; text-decoration:none; color:var(--ink)}
+.themen a:hover{border-color:var(--ink-2)}
+.themen b{font-size:16px; overflow-wrap:anywhere}
+.themen small{color:var(--ink-2); font-size:13px}
+.themen .zahl{font-size:13px; color:var(--ink-2); text-align:right; white-space:nowrap}
+.art{display:inline-block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; color:var(--accent); margin-right:6px}
+.leer{background:var(--surface); border:1px dashed var(--line); border-radius:var(--r); padding:18px; color:var(--ink-2)}
+.stoerung{background:var(--accent-soft); border-radius:var(--r); padding:14px 16px; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between}
+.zurueck{font-size:14px; font-weight:600; text-decoration:none}
+.thema-kopf{display:flex; flex-direction:column; gap:6px}
+.thema-kopf h2{font-family:var(--display); font-weight:400; font-size:clamp(28px, 5vw, 38px); line-height:1.1; overflow-wrap:anywhere}
+.thema-kopf .meta{font-size:13px; color:var(--ink-2); display:flex; flex-wrap:wrap; gap:4px 14px}
+.umfrage{display:flex; flex-direction:column; gap:8px}
+.umfrage button{position:relative; display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:12px; align-items:center; text-align:left; min-height:48px; padding:10px 14px; border-radius:12px; border:1px solid var(--line); background:var(--surface); cursor:pointer; overflow:hidden; font-size:15px}
+.umfrage button:disabled{cursor:default}
+.umfrage button .balken{position:absolute; inset:0 auto 0 0; background:var(--accent-soft); z-index:0}
+.umfrage button > span:not(.balken){position:relative; z-index:1; overflow-wrap:anywhere}
+.umfrage button.meine{border-color:var(--accent); border-width:2px}
+.umfrage .n{font-weight:700; white-space:nowrap}
+.beitraege{display:flex; flex-direction:column; gap:10px}
+.beitrag{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:12px 16px; display:flex; flex-direction:column; gap:6px}
+.beitrag header{display:flex; flex-wrap:wrap; gap:4px 12px; align-items:baseline; font-size:13px; color:var(--ink-2)}
+.beitrag header b{color:var(--ink); font-size:14px}
+.beitrag .btext{white-space:pre-wrap; overflow-wrap:anywhere; font-size:15px}
+.beitrag footer{display:flex; justify-content:flex-end}
+.melden{border:0; background:none; color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; padding:4px 0; min-height:32px}
+.melden.frage{color:var(--danger)}
+.beitrag.neu{border-color:var(--accent)}
+.formular{display:flex; flex-direction:column; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px}
+.formular h3{font-size:17px}
+.regeln{margin:0; background:var(--accent-soft); border-radius:10px; padding:10px 14px; font-size:14px; line-height:1.45}
+.feld{display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600}
+.feld input[type=text], .feld input[type=date], .feld textarea, .feld select{border:1px solid var(--line); background:var(--paper); border-radius:10px; min-height:46px; padding:8px 12px; font-size:16px; font-weight:400; width:100%}
+.feld textarea{min-height:130px}
+.feld small{font-weight:400; color:var(--ink-2); font-size:13px}
+.segment{display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); background:var(--line); border-radius:12px; padding:3px}
+.segment label{position:relative; display:flex; align-items:center; justify-content:center; text-align:center; min-height:44px; border-radius:9px; font-size:14px; font-weight:600; color:var(--ink-2); cursor:pointer; padding:0 6px}
+.segment input{position:absolute; opacity:0; pointer-events:none}
+.segment label:has(input:checked){background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(34,25,43,.15)}
+.segment label:has(input:focus-visible){outline:2px solid var(--accent); outline-offset:1px}
+.antwortfelder{display:flex; flex-direction:column; gap:8px}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.fehler{color:var(--danger); font-weight:600; font-size:14px; margin:0}
+.zeichen{font-weight:400; color:var(--muted); font-size:12px; text-align:right}
+.reihe{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+@media (max-width:560px){ .themen a{grid-template-columns:minmax(0, 1fr)} .themen .zahl{text-align:left} .knopf{width:100%} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="sl-head">
+    <div class="eyebrow">Fortuna Ehrenfeld Schalalameter</div>
+    <h1><a href="schalalalogie.html#" style="color:inherit; text-decoration:none">Schalalalogie</a></h1>
+    <p class="subline">Fachschaftsforum zum Haarespalten und Jauchzen</p>
+  </header>
+  <nav class="sl-nav" aria-label="Bereiche">
+    <a href="./">Schalalameter</a>
+    <a href="zaehlen.html">Zähl mit</a>
+    <a href="schalalalogie.html#" aria-current="page">Schalalalogie</a>
+  </nav>
+  <main id="ansicht" aria-live="polite"><p class="muted">Wird geladen …</p></main>
+  <footer class="site-foot"><a href="./">Schalalameter</a><a href="zaehlen.html">Zähl mit</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
+</div>
+<script src="assets/core.js?v=202610171139"></script>
+<script src="assets/supabase-config.js?v=202610171139"></script>
+<script src="assets/fans.js?v=202610171139"></script>
+<script src="assets/schalalalogie.js?v=202610171139"></script>
+</body>
+</html>

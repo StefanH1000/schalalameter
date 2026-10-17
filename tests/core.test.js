@@ -382,3 +382,26 @@ test('veröffentlichte Datendatei ist gültig', () => {
   for (const l of d.lieder) assert.ok(SM.yearOf(l), `Lied ${l.id} hat kein Jahr`);
   assert.ok(SM.sounds(d).length > 0, 'mindestens ein freigegebener Laut');
 });
+
+test('Beitragstext: HTML wird sichtbarer Text', () => {
+  const html = SM.textMitLinks('Hallo <script>alert("x")</script> & <img src=x onerror=alert(1)>');
+  assert.ok(!/<script|<img/i.test(html), 'kein HTML aus dem Beitrag');
+  assert.strictEqual(html, 'Hallo &lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; &lt;img src=x onerror=alert(1)&gt;');
+});
+
+test('Beitragstext: Adressen werden sichere Links', () => {
+  const html = SM.textMitLinks('Siehe https://example.org/a?b=1&c=2. Und (http://x.de/y) oder https://de.wikipedia.org/wiki/Bumm_(Laut)!');
+  assert.ok(html.includes('<a href="https://example.org/a?b=1&amp;c=2" rel="nofollow ugc noopener" target="_blank">https://example.org/a?b=1&amp;c=2</a>. Und'));
+  assert.ok(html.includes('(<a href="http://x.de/y" rel="nofollow ugc noopener" target="_blank">http://x.de/y</a>)'));
+  assert.ok(html.includes('href="https://de.wikipedia.org/wiki/Bumm_(Laut)"'), 'Klammer im Link bleibt');
+  assert.strictEqual((html.match(/<a /g) || []).length, 3);
+});
+
+test('Beitragstext: nur http und https, keine Tricks über Anführungszeichen', () => {
+  assert.ok(!SM.textMitLinks('javascript:alert(1) data:text/html,x ftp://x.de').includes('<a'));
+  const html = SM.textMitLinks('https://x.de/"onmouseover="alert(1)');
+  assert.ok(html.startsWith('<a href="https://x.de/" '), html);
+  assert.ok(!/<a[^>]*onmouseover/.test(html));
+  assert.strictEqual(SM.textMitLinks('https:// nichts'), 'https:// nichts');
+  assert.strictEqual(SM.textMitLinks('Zeile 1\nZeile 2'), 'Zeile 1\nZeile 2');
+});

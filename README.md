@@ -13,8 +13,13 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 | `index.html`, `assets/app.js` | öffentliche Seite |
 | `werkstatt.html`, `assets/werkstatt.js` | interne Pflege: Daten laden, neue Laute freigeben, Zählungen erfassen |
 | `assets/core.js` | gemeinsame Logik (beste Zählung, Jahre, Muster fürs Vorzählen) |
+| `zaehlen.html`, `assets/zaehlen.js` | „Zähl mit“: Fanzählungen einreichen |
+| `schalalalogie.html`, `assets/schalalalogie.js` | Schalalalogie: Forum mit Liedthemen, freien Themen und Abstimmungen |
+| `assets/moderation.js` | Werkstatt, Bereich Moderation (Anmeldung über Supabase Auth) |
+| `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
+| `supabase/tabelle.sql` | Tabellen, Funktionen, Ansichten, Rechte und Grenzwerte; im SQL Editor ausführen |
 | `daten/shalalameter-daten.json` | **die Daten**, Format siehe unten |
-| `impressum.html`, `datenschutz.html` | Pflichtseiten, Platzhalter `[…]` vor dem Start ausfüllen |
+| `impressum.html`, `datenschutz.html` | Pflichtseiten; im Impressum die Kontaktadresse für Meldungen rechtswidriger Inhalte eintragen |
 | `tests/` | `npm test` |
 | `tools/serve.js` | lokaler Server: `npm start` → http://localhost:8080 |
 
@@ -81,9 +86,26 @@ Gespeichert ist `phase` nur bei den festgelegten Überschreibungen: die Lieder d
 
 Konsens je Lied und Laut (`consensus` und `fanZaehlungen` in `assets/core.js`): Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt als erste Stimme. Unter 3 Stimmen gilt der Durchschnitt, aufgerundet; ab 3 der häufigste Wert, bei Gleichstand der Median aller Stimmen, aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei. Unbekannte Lied- oder Laut-IDs zählen nicht. Rangfolge in `bestOf`: „nach Gehör“ (Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
 
-Einrichtung: `supabase/tabelle.sql` einmal im SQL Editor ausführen, dann Projektadresse und öffentlichen Schlüssel (anon oder publishable, nie service_role) in `assets/supabase-config.js` eintragen. Die Rolle anon darf nur die Funktion `zaehlung_einreichen` ausführen und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne Gerät und Spitzname, ohne gesperrte Einträge). Höchstens 30 Einreichungen je Gerät und Stunde.
+Einrichtung: `supabase/tabelle.sql` im SQL Editor ausführen (wiederholbar, vorhandene Einträge bleiben), dann Projektadresse und öffentlichen Schlüssel (anon oder publishable, nie service_role) in `assets/supabase-config.js` eintragen. Die Rolle anon darf nur die Funktionen ausführen und die Ansichten lesen; die Zählansicht `fan_zaehlungen_oeffentlich` enthält keine Geräte-Kennung und lässt gesperrte Einträge aus.
 
-Sperren: in Supabase im Table Editor bei `fan_zaehlungen` die Spalte `gesperrt` auf `true` setzen, oder im SQL Editor `update public.fan_zaehlungen set gesperrt = true where id = 123;` (alle eines Spitznamens: `where spitzname = '…'`). Gesperrte Einträge verschwinden sofort aus der Ansicht und damit von der Seite.
+Sperren: in der Werkstatt unter „Schalalalogie · Moderation“ (nach Anmeldung), im Table Editor (Spalte `gesperrt`) oder im SQL Editor `update public.fan_zaehlungen set gesperrt = true where id = 123;`. Gesperrte Einträge verschwinden sofort aus der Ansicht und damit von der Seite.
+
+### Schalalalogie (Forum)
+
+`schalalalogie.html`, „Fachschaftsforum zum Haarespalten und Jauchzen“, ohne Anmeldung nutzbar. Drei Arten von Themen: Liedthemen (eins je Lied, entsteht beim ersten Beitrag, Adresse `schalalalogie.html#lied/<lied-id>`), freie Themen (Titel und erster Beitrag) und Abstimmungen (Frage, 2 bis 6 Antworten, optionales Enddatum; eine Stimme je Gerät, änderbar, solange offen). Beiträge bis 2.000 Zeichen; Ausgabe nur als Text über `SM.textMitLinks` (alles maskiert, http(s)-Adressen als Links mit `rel="nofollow ugc noopener"` und `target="_blank"`, keine Bilder). „Melden“ an jedem Beitrag; gemeldete Beiträge bleiben sichtbar und stehen in der Werkstatt in der Prüfliste.
+
+Datenbank: Tabellen `themen`, `beitraege`, `antworten`, `stimmen`, `meldungen`; Schreiben nur über die Funktionen `thema_anlegen`, `beitrag_schreiben`, `abstimmen`, `melden`; Lesen nur über `themen_oeffentlich`, `beitraege_oeffentlich`, `antworten_oeffentlich` (ohne Geräte-Kennung, ohne Gesperrtes).
+
+Grenzwerte stehen an einer Stelle, in der Tabelle `grenzwerte` (Standard: 30 Zählungen, 30 Beiträge, 10 neue Themen und 30 Meldungen je Gerät und Stunde). Ändern im Table Editor oder mit `update public.grenzwerte set wert = 50 where name = 'beitraege_je_stunde';`. Ein erneutes Ausführen von `tabelle.sql` überschreibt geänderte Werte nicht.
+
+### Moderation
+
+1. In Supabase unter Authentication → Sign In / Providers „Allow new users to sign up“ ausschalten (keine Selbstregistrierung).
+2. Authentication → Users → „Add user“: E-Mail, Passwort, „Auto Confirm User“.
+3. Im SQL Editor: `insert into public.moderation (user_id, name) values ('<User UID>', 'Name');`
+4. In der Werkstatt unter „Schalalalogie · Moderation“ anmelden. Dort: Prüfliste gemeldeter Beiträge, Beiträge, Themen und Fanzählungen sperren und freigeben, Spitznamen ausblenden, Abstimmungen schließen.
+
+Die Rechte setzt die Datenbank durch: Angemeldete dürfen nur lesen und die Spalten `gesperrt`, `geschlossen`, `name_ausgeblendet` und `erledigt` ändern, und nur, wenn ihre Nutzer-ID in `moderation` steht. Löschen geht über die Data API gar nicht. Im Browser liegt nur das Zugangstoken der angemeldeten Person (für den Tab), nie ein service_role-Schlüssel.
 
 Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Gehör vor Booklet vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
 

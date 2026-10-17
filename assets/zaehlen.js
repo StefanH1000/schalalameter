@@ -9,20 +9,7 @@ let data = null, rows = [], snds = [], fams = [];
 let liste = [];               // alle Lieder mit Album, Summe und Status, sortiert
 const st = {lied: null, laut: null, neu: false, filter: 'offen', suche: '', schritt: 1, album: null};
 
-function store(key, val) {
-  try { if (val === undefined) return localStorage.getItem(key); localStorage.setItem(key, val); } catch (e) { return null; }
-  return val;
-}
-// Zufällige Geräte-Kennung, nur in diesem Browser gespeichert; sie verknüpft spätere Korrekturen mit der eigenen Zählung.
-function geraetId() {
-  let id = store('schalala-geraet');
-  if (!id || !/^[0-9a-f-]{36}$/.test(id)) {
-    id = crypto.randomUUID ? crypto.randomUUID()
-      : '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-    store('schalala-geraet', id);
-  }
-  return id;
-}
+const {store, geraetId} = SchalalaFans;
 const coverUrl = a => a ? (a.cover || `assets/cover/${a.id}.jpg`) : '';
 const coverImg = a => a ? `<img src="${esc(coverUrl(a))}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'ohne'}))">` : '<span class="ohne"></span>';
 const jahr = l => String(l.erstveroeffentlichung || '').slice(0, 4);
@@ -369,6 +356,7 @@ function zeigeErgebnis(x, sound, neu, eigene, ohne) {
     <div class="knoepfe">
       ${ohne ? '' : '<button type="button" class="gross" id="noch-einer">Noch ein Schalala in diesem Lied</button>'}
       ${next ? `<button type="button" class="gross${ohne ? '' : ' hell'}" id="naechstes" data-lied="${esc(next.l.id)}">Nächstes Lied ohne Zählung</button>` : ''}
+      <a class="gross hell" href="schalalalogie.html#lied/${encodeURIComponent(x.l.id)}">Über dieses Lied fachsimpeln</a>
       <a class="backlink" href="./" style="justify-content:center">Zum Schalalameter</a>
     </div>`;
   box.hidden = false;

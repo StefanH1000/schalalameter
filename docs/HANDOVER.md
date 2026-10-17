@@ -73,6 +73,15 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 - Neue Laute: Fans schlagen sie mit Anzahl vor. Sie werden gespeichert, erscheinen aber auf der Seite erst nach der Freigabe. Die Werkstatt zeigt offene Vorschläge als Kandidaten, „Als Laut anlegen“ übernimmt sie in den Entwurf; nach dem Einspielen der Datendatei zählen alle Vorschläge mit gleichem Text (Name, ID oder Feld `aliase` des Lauts, verglichen ohne Groß-/Kleinschreibung und Satzzeichen) als Stimmen für diesen Laut. Eine Onlinezählung, die den Laut nicht kennt, ist dabei keine Stimme. Bekannte Lücke: Wer erst vorschlägt und nach der Freigabe denselben Laut im selben Lied noch einmal zählt, hat zwei Stimmen.
 - Datenschutz: Abschnitt zu Supabase. Der Vertrag zur Auftragsverarbeitung (DPA) ist Teil der Nutzungsbedingungen von Supabase und gilt ohne eigene Unterschrift (Organization settings → Legal Documents → View DPA); die Seite verweist auf Art. 28 DSGVO.
 
+**Schalalalogie** (seit 17.10.2026, Seite `schalalalogie.html`, „Fachschaftsforum zum Haarespalten und Jauchzen“)
+- Ohne Anmeldung: Liedthemen (eins je Lied, entsteht beim ersten Beitrag, `#lied/<lied-id>`), freie Themen, Abstimmungen (2 bis 6 Antworten, optionales Enddatum, eine Stimme je Gerät, änderbar solange offen). Spitzname und Geräte-Kennung wie bei „Zähl mit“ (gemeinsam in `fans.js`).
+- Beiträge bis 2.000 Zeichen, nie als HTML ausgegeben: `SM.textMitLinks` maskiert alles und macht nur http(s)-Adressen zu Links (`rel="nofollow ugc noopener"`, `target="_blank"`). Regeln über jedem Formular (freundlich bleiben, keine kompletten Liedtexte, Fortuna-Team und Fans respektieren).
+- „Melden“ in zwei Schritten; der Beitrag bleibt sichtbar und steht in der Werkstatt in der Prüfliste.
+- Verlinkt: Startseite (Knopf neben „Zähl mit“, Fußzeile), an jedem Lied „Diskussion (N)“, nach dem Absenden in „Zähl mit“ „Über dieses Lied fachsimpeln“.
+- Datenbank in `supabase/tabelle.sql`: Tabellen `themen`, `beitraege`, `antworten`, `stimmen`, `meldungen`, Funktionen `thema_anlegen`, `beitrag_schreiben`, `abstimmen`, `melden`, Ansichten `*_oeffentlich` ohne geraet_id und ohne Gesperrtes. Grenzwerte in der Tabelle `grenzwerte` (30 Zählungen, 30 Beiträge, 10 Themen, 30 Meldungen je Gerät und Stunde).
+- Moderation: Werkstatt, Bereich „Schalalalogie · Moderation“, Anmeldung mit E-Mail und Passwort (Supabase Auth, Token nur im Tab). Darf, wer in `public.moderation` steht: Prüfliste, sperren/freigeben (Beiträge, Themen, Zählungen), Spitznamen ausblenden, Abstimmungen schließen. Durchgesetzt über RLS-Policies und Spaltenrechte; Löschen gibt es über die Data API nicht. Einrichtung in der README unter „Moderation“.
+- Ist Supabase nicht erreichbar: Startseite zeigt nach höchstens 3 Sekunden die Datendatei, Schalalalogie und „Zähl mit“ melden, dass die Verbindung gerade nicht klappt.
+
 **Albumphasen** (`phaseInfo` in `assets/core.js`)
 
 Die x-Achse zeigt zehn Albumphasen in Erscheinungsreihenfolge, gleichmäßig verteilt (nicht nach Datum skaliert): Coolness (2016), Hey Sexy (2017), Helm ab (2019), Rückkehr (2021), Solo I. (2022), Glitzerschwein (2023), Universum (2024), Himmelerdenblau (2025), Hollywood Bowl (2026, gilt als Studioalbum), Revolution! (2026, neuestes Album; Vinyl-LP bei Tonproduktion Records, TPR069; genaues Datum unbekannt, deshalb `datum: "2026"`). Keine eigenen Phasen: „Debout pour ma prière“ (Übersetzungsalbum), „Das letzte Kommando“, „Solo Live“, „Solo Live im St. Pauli Theater“ (Livealben). Die Alben stehen in der Datendatei unter `alben` (id, titel, kurz, datum, reihenfolge).
@@ -112,13 +121,15 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `assets/core.js` | gemeinsame Logik (beste Zählung, Albumphasen, Familien, Vorzählen), auch in den Tests genutzt |
 | `assets/style.css`, `assets/fonts/` | Gestaltung; Schriften selbst gehostet (Shrikhand, Instrument Sans; JetBrains Mono nur für Code-Felder, SIL OFL) |
 | `daten/shalalameter-daten.json` | **die Daten**; alles, was die Seite zeigt |
-| `tests/core.test.js` | 32 Tests: Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
+| `tests/core.test.js` | 38 Tests: sichere Ausgabe von Beitragstexten mit Links, Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
 | `tools/alben-2026-10-16.js` | einmaliges Skript: Alben und Phasen-Überschreibungen angelegt (Dokumentation, nicht erneut ausführen) |
 | `tools/booklet-revolution-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für „Revolution!“ (Dokumentation, nicht erneut ausführen) |
 | `tools/sprache-2026-10-16.js` | einmaliges Skript: Schreibweise „Schalala“, Anzeigenamen, Untertitel, Steckbriefe (Dokumentation, nicht erneut ausführen) |
 | `zaehlen.html`, `assets/zaehlen.js` | Formular „Zähl mit“ für Fanzählungen |
-| `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
-| `supabase/tabelle.sql` | Tabelle, Funktion, Ansicht und Freigaben; einmal im SQL Editor ausführen |
+| `schalalalogie.html`, `assets/schalalalogie.js` | Schalalalogie (Forum) |
+| `assets/moderation.js` | Werkstatt, Bereich Moderation |
+| `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek), Anmeldung der Moderation, Geräte-Kennung und Spitzname; Adresse und öffentlicher Schlüssel |
+| `supabase/tabelle.sql` | Tabellen, Funktionen, Ansichten, Policies und Grenzwerte für Zählungen, Schalalalogie und Moderation; im SQL Editor ausführen (wiederholbar) |
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
 | `tools/booklet-hollywood-coolness-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für Hollywood Bowl und Coolness (Dokumentation, nicht erneut ausführen) |
@@ -169,6 +180,12 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - [x] Vertrag zur Auftragsverarbeitung (DPA): bei Supabase Teil der Nutzungsbedingungen, keine eigene Unterschrift nötig.
 - [ ] Formular auf dem Handy durchprobieren.
 
+**Schalalalogie**
+- [ ] `supabase/tabelle.sql` neu im SQL Editor ausführen.
+- [ ] Authentication: „Allow new users to sign up“ aus; Moderationskonto anlegen und in `public.moderation` eintragen.
+- [ ] Im Impressum die Kontaktadresse für Meldungen rechtswidriger Inhalte eintragen (Platzhalter „[Kontaktadresse folgt]“).
+- [ ] Nachweise gegen das echte Projekt mit curl (lokal mit PGlite und einem nachgebauten PostgREST geprüft, siehe Verlauf).
+
 **Optional**
 - Eigene Domain statt `stefanh1000.github.io` (z. B. schalalameter.de).
 - Vorschaubild für Social Media.
@@ -192,3 +209,4 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).
 9. Fanzählungen: Formular „Zähl mit“, Konsens aus Fanstimmen, Supabase als Speicher.
 10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum. Danach nach dem Booklet gezählt, Cover durch ein eigenes Foto ersetzt, fünf neue Laute freigegeben.
+11. Schalalalogie (Forum) und Moderation in der Werkstatt; Grenzwerte in einer Tabelle. SQL lokal in PGlite geprüft (leeres Projekt, Wiederholung, 66 Rechteprüfungen), Seiten mit einem nachgebauten PostgREST im Browser (26 Prüfungen, auch 360 px und ohne Supabase).

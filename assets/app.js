@@ -56,8 +56,10 @@ async function loadData(){
       if (d) { showNotice('<span><strong>Vorschau.</strong> Diese Ansicht zeigt den Entwurf aus der Werkstatt in diesem Browser, nicht die veröffentlichten Daten.</span><a class="btn" href="./">Veröffentlichte Daten zeigen</a>'); return d; }
     } catch (e) {}
   }
-  // Datendatei und Fanzählungen parallel; ohne Antwort von Supabase nach 3 Sekunden nur die Datendatei.
+  // Datendatei, Fanzählungen und Liedthemen der Schalalalogie parallel; ohne Antwort von Supabase nach 3 Sekunden nur die Datendatei.
   const fans = window.SchalalaFans ? window.SchalalaFans.load(3000) : Promise.resolve(null);
+  const themen = window.SchalalaFans && SchalalaFans.ready() ? SchalalaFans.forum.liedthemen(3000) : Promise.resolve(null);
+  themen.then(rows => { diskussion = rows ? new Map(rows.map(x => [x.lied_id, +x.beitraege])) : null; if (data) render(); });
   const res = await fetch('daten/shalalameter-daten.json', {cache: 'no-cache'});
   if (!res.ok) throw new Error('HTTP ' + res.status);
   const d = SM.normalize(await res.json());
@@ -67,6 +69,12 @@ async function loadData(){
   return rows && rows.length ? SM.withFans(d, rows) : d;
 }
 const zaehlLink = id => `zaehlen.html?lied=${encodeURIComponent(id)}`;
+// Beiträge je Liedthema (Lied-ID → Anzahl); null, solange nicht geladen oder Supabase nicht erreichbar.
+let diskussion = null;
+const diskLink = id => {
+  const n = diskussion ? diskussion.get(id) || 0 : null;
+  return `<a class="zaehlmit" href="schalalalogie.html#lied/${encodeURIComponent(id)}">Diskussion${n ? ` (${n})` : ''}</a>`;
+};
 function showNotice(html){ $('notice').innerHTML = html; $('notice').hidden = false; }
 
 /* ---------- Adresse: #phase, #phase/familie, #phase/familie/aus1,aus2 (familie „-“ = kein Detail) ---------- */
@@ -461,6 +469,7 @@ function renderPeriod(cols){
         ${gekuerzt ? '<span class="muted">Refrain im Text gekürzt</span>' : ''}
         ${b.notiz ? `<span class="muted">${esc(b.notiz)}</span>` : ''}
         <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>
+        ${diskLink(s.l.id)}
       </span>
       ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Sicherheit</th><th style="text-align:left">Schalalas</th><th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
     </li>`;
@@ -468,9 +477,9 @@ function renderPeriod(cols){
   const rest = c.songs.filter(s => !s.counted);
   const lines = [];
   const titleYear = s => `${esc(s.l.titel)} <span class="muted">${s.year}</span>`;
-  if (silent.length) lines.push(`<b>${f ? 'Ohne Schalalas dieser Familie' : 'Ohne Schalalas'}:</b> ` + silent.map(x => `${titleYear(x.s)} <a class="zaehlmit" href="${zaehlLink(x.s.l.id)}">Zähl mit</a>`).join(' · '));
+  if (silent.length) lines.push(`<b>${f ? 'Ohne Schalalas dieser Familie' : 'Ohne Schalalas'}:</b> ` + silent.map(x => `${titleYear(x.s)} <a class="zaehlmit" href="${zaehlLink(x.s.l.id)}">Zähl mit</a> ${diskLink(x.s.l.id)}`).join(' · '));
   if (rest.length) lines.push('<b>Ohne Zählung:</b> ' + rest.map(s =>
-    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : s.all.length ? 'kein Text gefunden' : 'noch nicht gezählt'})</span> <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>`).join(' · '));
+    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : s.all.length ? 'kein Text gefunden' : 'noch nicht gezählt'})</span> <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a> ${diskLink(s.l.id)}`).join(' · '));
   uc.hidden = !lines.length;
   uc.innerHTML = lines.join('<br>');
 }
