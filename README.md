@@ -19,7 +19,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 | `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
 | `supabase/tabelle.sql` | Tabellen, Funktionen, Ansichten, Rechte und Grenzwerte; im SQL Editor ausführen |
 | `daten/shalalameter-daten.json` | **die Daten**, Format siehe unten |
-| `impressum.html`, `datenschutz.html` | Pflichtseiten; im Impressum die Kontaktadresse für Meldungen rechtswidriger Inhalte eintragen |
+| `impressum.html`, `datenschutz.html` | Pflichtseiten; mit Kontaktadresse für Meldungen rechtswidriger Inhalte |
 | `tests/` | `npm test` |
 | `tools/serve.js` | lokaler Server: `npm start` → http://localhost:8080 |
 

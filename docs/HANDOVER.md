@@ -181,9 +181,9 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - [ ] Formular auf dem Handy durchprobieren.
 
 **Schalalalogie**
-- [ ] `supabase/tabelle.sql` neu im SQL Editor ausführen.
+- [x] `supabase/tabelle.sql` neu im SQL Editor ausgeführt (17.10.2026).
 - [ ] Authentication: „Allow new users to sign up“ aus; Moderationskonto anlegen und in `public.moderation` eintragen.
-- [ ] Im Impressum die Kontaktadresse für Meldungen rechtswidriger Inhalte eintragen (Platzhalter „[Kontaktadresse folgt]“).
+- [x] Meldeadresse im Impressum eingetragen (dieselbe E-Mail wie unter Kontakt, gegen Adresssammler verschleiert).
 - [ ] Nachweise gegen das echte Projekt mit curl (lokal mit PGlite und einem nachgebauten PostgREST geprüft, siehe Verlauf).
 
 **Optional**
