@@ -277,6 +277,41 @@
         "ray-of-fukin-sunshine"
       ],
       "familie": "jubel"
+    },
+    {
+      "id": "dub-di-dub-di-dubb",
+      "name": "Dub-di-dub-di-dubb",
+      "status": "freigegeben",
+      "familie": "instrumente",
+      "schreibweise_in_daten": "dub-di-dub-di-dubb"
+    },
+    {
+      "id": "kuruu-kuruu",
+      "name": "Kuruu-kuruu",
+      "status": "freigegeben",
+      "familie": "instrumente",
+      "schreibweise_in_daten": "kuruu-kuruu"
+    },
+    {
+      "id": "ram-tam-tam",
+      "name": "Ram-tam-tam",
+      "status": "freigegeben",
+      "familie": "instrumente",
+      "schreibweise_in_daten": "ram-tam-tam"
+    },
+    {
+      "id": "tatutata",
+      "name": "Tatütata",
+      "status": "freigegeben",
+      "familie": "instrumente",
+      "schreibweise_in_daten": "tatütata"
+    },
+    {
+      "id": "fiki-hey",
+      "name": "Fiki hey",
+      "status": "freigegeben",
+      "familie": "jubel",
+      "schreibweise_in_daten": "fiki hey"
     }
   ],
   "lieder": [
@@ -10507,21 +10542,13 @@
         "ta-ta-ra-ta-ta": 0,
         "uh-uh-uh": 0,
         "whoopie-whoopie": 0,
-        "yeah-yeah-yeah": 0
-      },
-      "anzahl_aufgeloest": null,
-      "belege": {
-        "kuruu-kuruu": [
-          "kuruu-kuruu"
-        ],
-        "ram-tam-tam": [
-          "ram-tam-tam"
-        ]
-      },
-      "kandidaten": {
+        "yeah-yeah-yeah": 0,
         "kuruu-kuruu": 1,
         "ram-tam-tam": 1
       },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "Raben und Perkussion in einer Zeile: „Kuruu-kuruu und Ram-tam-tam“, zwei Laute."
     },
@@ -10607,13 +10634,18 @@
         "ta-ta-ra-ta-ta": 0,
         "uh-uh-uh": 0,
         "whoopie-whoopie": 0,
-        "yeah-yeah-yeah": 0
+        "yeah-yeah-yeah": 0,
+        "fiki-hey": 1
       },
       "anzahl_aufgeloest": null,
-      "belege": {},
+      "belege": {
+        "fiki-hey": [
+          "fiki hey"
+        ]
+      },
       "kandidaten": {},
       "sicherheit": "hoch",
-      "notiz": "„Fiki hey!“ nicht gezählt: unklar, ob Name oder Ruf."
+      "notiz": ""
     },
     {
       "lied_id": "ich-bade-meine-angst",
@@ -10787,21 +10819,12 @@
         "ta-ta-ra-ta-ta": 0,
         "uh-uh-uh": 0,
         "whoopie-whoopie": 0,
-        "yeah-yeah-yeah": 0
-      },
-      "anzahl_aufgeloest": null,
-      "belege": {
-        "dub-di-dub-di-dubb": [
-          "dub-di-dub-di-dubb",
-          "dub-di-dub-di-dubb",
-          "dub-di-dub-di-dubb",
-          "dub-di-dub-di-dubb",
-          "dub-di-dub-di-dubb"
-        ]
-      },
-      "kandidaten": {
+        "yeah-yeah-yeah": 0,
         "dub-di-dub-di-dubb": 5
       },
+      "anzahl_aufgeloest": null,
+      "belege": {},
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "Refrain einmal abgedruckt."
     },
@@ -10977,17 +11000,16 @@
         "ta-ta-ra-ta-ta": 0,
         "uh-uh-uh": 0,
         "whoopie-whoopie": 0,
-        "yeah-yeah-yeah": 0
+        "yeah-yeah-yeah": 0,
+        "tatutata": 1
       },
       "anzahl_aufgeloest": null,
       "belege": {
-        "tatütata": [
+        "tatutata": [
           "tatütata"
         ]
       },
-      "kandidaten": {
-        "tatütata": 1
-      },
+      "kandidaten": {},
       "sicherheit": "hoch",
       "notiz": "„ein Tatütata“ als Nomen, aber reine Lautmalerei. „Hurra“ und „Halleluja“ sind hier Wörter und zählen nicht."
     },

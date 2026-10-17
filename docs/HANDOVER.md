@@ -24,9 +24,9 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
 - Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
-- Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Bisher keine bekannten Laute darin, aber vier neue Kandidaten, noch nicht freigegeben: „dub-di-dub-di-dubb“ (5× in „Ausflug in den Club“), „kuruu-kuruu“ und „ram-tam-tam“ (je 1× in „Rabenflügel“), „tatütata“ (1× in „Cognac für die Huren“).
+- Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Keiner der bisherigen Laute kommt darin vor, dafür fünf neue, freigegeben am 17.10.2026: Dub-di-dub-di-dubb (5× in „Ausflug in den Club“), Kuruu-kuruu und Ram-tam-tam (je 1× in „Rabenflügel“), Tatütata (1× in „Cognac für die Huren“, als Nomen, aber reine Lautmalerei), alle in Täterätätä im Pyjama; Fiki hey (1× in „Die Polyintensiven“) in Daseinslaute. Nicht gezählt: „ey“, „Hurra“, „Halleluja“ (stehen als Wörter).
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
-- **29 Laute in 7 Familien**, alle freigegeben:
+- **34 Laute in 7 Familien**, alle freigegeben:
 
 | Familie (Anzeigename) | Untertitel | Laute | Summe (eigene Lieder) |
 |---|---|---|---|
@@ -35,8 +35,8 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 | Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
 | Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 13 |
 | DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 47 |
-| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel | 16 |
-| Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray | 14 |
+| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata | 24 |
+| Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey | 15 |
 
 Jede Familie hat in der Datendatei `id` (fest), `name` (bisheriger Name, für die Werkstatt), `anzeigename`, `untertitel` und `steckbrief`.
 
@@ -120,6 +120,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `supabase/tabelle.sql` | Tabelle, Funktion, Ansicht und Freigaben; einmal im SQL Editor ausführen |
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
+| `tools/freigabe-2026-10-17.js` | einmaliges Skript: die fünf neuen Laute aus „Revolution!“ freigegeben (Dokumentation, nicht erneut ausführen) |
 | `tools/beispieldaten.js` | erzeugt erfundene Beispieldaten (nur für Tests ohne echte Daten) |
 | `impressum.html`, `datenschutz.html` | Pflichtseiten, minimal ausgefüllt (Stefan Hoch) |
 
@@ -187,4 +188,4 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 7. Endgültige Sprache: „Schalala“, Unterzeile, Familiennamen mit Steckbriefen, „Über das Schalalameter“, Schlusszeile „Laute gegen die Schwerkraft.“
 8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).
 9. Fanzählungen: Formular „Zähl mit“, Konsens aus Fanstimmen, Supabase als Speicher.
-10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum. Danach nach dem Booklet gezählt, Cover durch ein eigenes Foto ersetzt.
+10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum. Danach nach dem Booklet gezählt, Cover durch ein eigenes Foto ersetzt, fünf neue Laute freigegeben.
