@@ -217,6 +217,12 @@
       "familie": "silben"
     },
     {
+      "id": "pa-pa-pa",
+      "name": "Pa-pa-pa",
+      "status": "freigegeben",
+      "familie": "silben"
+    },
+    {
       "id": "mh-mh-mh-hm",
       "name": "Mh-mh-mh-hm",
       "status": "freigegeben",
@@ -305,6 +311,12 @@
       "status": "freigegeben",
       "familie": "instrumente",
       "schreibweise_in_daten": "tatütata"
+    },
+    {
+      "id": "duh-dudu",
+      "name": "Duh-dudu",
+      "status": "freigegeben",
+      "familie": "instrumente"
     },
     {
       "id": "fiki-hey",
