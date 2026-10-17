@@ -126,18 +126,21 @@
     for (const s of snds) for (const n of [s.id, s.name, ...(Array.isArray(s.aliase) ? s.aliase : [])]) if (n) m.set(slug(n), s.id);
     return ph => m.get(slug(ph)) || null;
   }
+  // Laut-ID KEINE: „Keine Schalalas in diesem Lied“, eine Einreichung, die für jeden Laut des Lieds als Stimme 0 zählt.
+  const KEINE = 'keine';
   function fanZaehlungen(data, rows) {
     const lieder = new Set(data.lieder.map(l => l.id));
-    const snds = sounds(data), laute = new Set(snds.map(s => s.id)), ausVorschlag = vorschlagsLaut(snds);
-    const byLied = new Map(), namen = new Map();
+    const snds = sounds(data).filter(s => s.id !== KEINE), laute = new Set(snds.map(s => s.id)), ausVorschlag = vorschlagsLaut(snds);
+    const byLied = new Map(), namen = new Map(), keine = new Map();
     for (const r of Array.isArray(rows) ? rows : []) {
       const n = Number(r && r.anzahl);
       if (!r || !lieder.has(r.lied_id) || !Number.isInteger(n) || n < 0 || n > 200) continue;
       const laut = r.laut_id ? r.laut_id : String(r.vorschlag || '').trim() ? ausVorschlag(r.vorschlag) : null;
-      if (!laute.has(laut)) continue;
+      if (laut !== KEINE && !laute.has(laut)) continue;
       const name = String(r.spitzname || '').trim();
       if (name) (namen.get(r.lied_id) || namen.set(r.lied_id, new Set()).get(r.lied_id)).add(name);
       if (!byLied.has(r.lied_id)) byLied.set(r.lied_id, new Map());
+      if (laut === KEINE) { keine.set(r.lied_id, (keine.get(r.lied_id) || 0) + 1); continue; }
       const m = byLied.get(r.lied_id);
       if (!m.has(laut)) m.set(laut, []);
       m.get(laut).push(n);
@@ -145,17 +148,18 @@
     const out = [];
     for (const [liedId, perLaut] of byLied) {
       const base = bestOf(data.zaehlungen.filter(z => z.lied_id === liedId && z.grundlage !== 'booklet' && z.grundlage !== 'fankonsens'));
-      const werte = {}, stimmen = {};
-      let minStimmen = Infinity, fan = 0;
+      const werte = {}, stimmen = {}, nKeine = keine.get(liedId) || 0;
+      let minStimmen = Infinity, fan = nKeine;
       for (const s of snds) {
-        const fv = perLaut.get(s.id);
+        const eigen = perLaut.get(s.id) || [];
+        const fv = eigen.length || nKeine ? [...eigen, ...Array(nKeine).fill(0)] : null;
+        fan += eigen.length;
         // Kennt die Zählung den Laut gar nicht (z. B. ein später freigegebener Fanvorschlag), ist sie keine Stimme.
         const online = base && base.werte && s.id in base.werte ? value(base, s.id, false) : null;
         if (fv) {
           const all = online == null ? fv : [online, ...fv];
           werte[s.id] = consensus(all);
           stimmen[s.id] = fv.length;
-          fan += fv.length;
           minStimmen = Math.min(minStimmen, all.length);
         } else {
           werte[s.id] = online == null ? 0 : online;
@@ -165,7 +169,7 @@
         lied_id: liedId, grundlage: 'fankonsens', quelle_url: '', quelle_art: 'community', gezaehlt_von: 'Fans',
         status: 'gezaehlt', werte, anzahl_aufgeloest: null, belege: {}, kandidaten: {},
         sicherheit: minStimmen >= 3 ? 'hoch' : 'mittel', fan: stimmen, fan_anzahl: fan, notiz: '',
-        namen: [...(namen.get(liedId) || [])],
+        namen: [...(namen.get(liedId) || [])], keine: nKeine,
       });
     }
     return out;
@@ -385,7 +389,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, withFans, fanVorschlaege,
+    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };

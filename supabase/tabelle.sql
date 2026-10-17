@@ -11,7 +11,7 @@
 create table if not exists public.fan_zaehlungen (
   id           bigint generated always as identity primary key,
   lied_id      text        not null check (lied_id ~ '^[a-z0-9-]{1,120}$'),
-  -- Laut aus der Datendatei; leer, wenn ein neuer Laut vorgeschlagen wird.
+  -- Laut aus der Datendatei; leer, wenn ein neuer Laut vorgeschlagen wird; 'keine' = keine Schalalas im Lied.
   laut_id      text        not null default '' check (laut_id = '' or laut_id ~ '^[a-z0-9-]{1,120}$'),
   anzahl       smallint    not null check (anzahl between 0 and 200),
   -- Freitext für einen neuen Laut, sonst leer.

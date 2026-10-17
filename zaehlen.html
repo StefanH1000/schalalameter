@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Zähl mit · Schalalameter</title>
 <meta name="description" content="Zähl die Schalalas in einem Lied von Fortuna Ehrenfeld und schick deine Zahl ans Schalalameter.">
-<link rel="stylesheet" href="assets/style.css?v=202610170531">
+<link rel="stylesheet" href="assets/style.css?v=202610170811">
 <style>
 /* Zähl mit: auf schmalen Bildschirmen vier Schritte nacheinander, ab 900 px alles in drei Spalten */
 .zm{display:flex; flex-direction:column; gap:16px}
@@ -206,6 +206,12 @@
             </label>
           </div>
         </div>
+        <div class="familie">
+          <div class="familie-kopf"><b>Gar kein Schalala?</b></div>
+          <div class="lautchips">
+            <button type="button" class="chip neu" id="keine-chip" aria-pressed="false">Keine Schalalas in diesem Lied</button>
+          </div>
+        </div>
         <div class="fussleiste nur-schmal">
           <p class="fehler" id="fehler-laut" role="alert" hidden></p>
           <button type="button" class="gross" id="zu-zaehlen">Bitte ein Schalala wählen</button>
@@ -243,13 +249,13 @@
         <section id="s-senden" aria-label="Prüfen und abschicken">
           <form id="zf" class="formular" autocomplete="off" novalidate>
             <div class="schrittzeile nur-schmal">
-              <button type="button" class="backlink" data-zu="3">← Weiterzählen</button><span class="schritt-nr">Schritt 4 von 4</span>
+              <button type="button" class="backlink" data-zu="3" id="zurueck-von-4">← Weiterzählen</button><span class="schritt-nr">Schritt 4 von 4</span>
             </div>
             <div class="fortschritt nur-schmal" aria-hidden="true"><span class="an"></span><span class="an"></span><span class="an"></span><span class="an"></span></div>
             <p class="frage nur-schmal">Passt das so?</p>
             <div class="karte">
               <div class="liedkarte nur-schmal" id="sendekarte" style="border:0; padding:0"></div>
-              <div class="anzahl-zeile">
+              <div class="anzahl-zeile" id="anzahl-zeile">
                 <span id="anz-lab" style="font-size:15px; font-weight:600">Wie oft?</span>
                 <div class="stepper" role="group" aria-labelledby="anz-lab">
                   <button type="button" id="minus" aria-label="Eins weniger">−</button>
@@ -284,9 +290,9 @@
   </main>
   <footer class="site-foot"><a href="./">Schalalameter</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
 </div>
-<script src="assets/core.js?v=202610170531"></script>
-<script src="assets/supabase-config.js?v=202610170531"></script>
-<script src="assets/fans.js?v=202610170531"></script>
-<script src="assets/zaehlen.js?v=202610170531"></script>
+<script src="assets/core.js?v=202610170811"></script>
+<script src="assets/supabase-config.js?v=202610170811"></script>
+<script src="assets/fans.js?v=202610170811"></script>
+<script src="assets/zaehlen.js?v=202610170811"></script>
 </body>
 </html>

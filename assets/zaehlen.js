@@ -140,6 +140,12 @@ $('familien').addEventListener('click', e => {
   st.laut = b.dataset.laut; st.neu = false;
   renderAuswahl();
 });
+// „Keine Schalalas in diesem Lied“: eine Einreichung mit Laut-ID SM.KEINE und Anzahl 0, ohne Mitzählen.
+$('keine-chip').addEventListener('click', () => {
+  st.laut = SM.KEINE; st.neu = false;
+  setAnzahl(0);
+  renderAuswahl();
+});
 $('neu-chip').addEventListener('click', () => {
   if (!st.neu) setAnzahl(0);
   st.neu = true; st.laut = null;
@@ -148,7 +154,8 @@ $('neu-chip').addEventListener('click', () => {
 });
 $('neu').addEventListener('input', renderAuswahl);
 
-const lautName = () => st.neu ? $('neu').value.trim() : (snds.find(s => s.id === st.laut) || {}).name || '';
+const keine = () => !st.neu && st.laut === SM.KEINE;
+const lautName = () => st.neu ? $('neu').value.trim() : keine() ? 'Keine Schalalas' : (snds.find(s => s.id === st.laut) || {}).name || '';
 const lautFarbe = () => { const s = !st.neu && snds.find(x => x.id === st.laut); return s ? `var(--c${s.slot})` : 'var(--muted)'; };
 
 function liedKarte(x) {
@@ -160,19 +167,23 @@ function renderAuswahl() {
   const x = eintrag(st.lied);
   for (const b of $('familien').querySelectorAll('[data-laut]')) b.setAttribute('aria-pressed', !st.neu && b.dataset.laut === st.laut);
   $('neu-chip').setAttribute('aria-pressed', st.neu);
+  $('keine-chip').setAttribute('aria-pressed', keine());
+  $('anzahl-zeile').hidden = keine();
+  $('zurueck-von-4').dataset.zu = keine() ? 2 : 3;
+  $('zurueck-von-4').textContent = keine() ? '← Anderes Schalala' : '← Weiterzählen';
   $('neu-feld').hidden = !st.neu;
   $('liedkarte').innerHTML = liedKarte(x);
   $('sendekarte').innerHTML = x ? liedKarte(x).replace(/<small>.*<\/small>/, `<small><span class="sw" style="background:${lautFarbe()}; display:inline-block; vertical-align:-1px"></span> ${esc(lautName() || '–')}</small>`) : '';
   $('laut-in').textContent = x ? `in „${x.l.titel}“` : '';
   const name = lautName();
-  $('zu-zaehlen').textContent = st.neu ? 'Weiter zum Zählen' : name ? `„${name}“ zählen` : 'Bitte ein Schalala wählen';
+  $('zu-zaehlen').textContent = st.neu ? 'Weiter zum Zählen' : keine() ? 'Weiter zum Abschicken' : name ? `„${name}“ zählen` : 'Bitte ein Schalala wählen';
   $('zu-zaehlen').disabled = !st.neu && !name;
   $('z-lied').textContent = x ? x.l.titel : '';
   const lautHtml = name ? `<span class="sw" style="background:${lautFarbe()}"></span>${esc(name)}` : '<span class="muted">Erst Lied und Schalala wählen</span>';
   $('z-laut-schmal').innerHTML = lautHtml;
   $('z-laut-breit').innerHTML = name ? lautHtml : '';
   renderTipp(name);
-  $('tipp').disabled = !x || !name;
+  $('tipp').disabled = !x || !name || keine();
   renderAnzahl();
 }
 
@@ -211,7 +222,7 @@ function renderAnzahl() {
   const n = anzahl(), name = lautName() || 'Schalala';
   $('z-n').textContent = n;
   $('z-einheit').textContent = `${n === 1 ? 'Schalala' : 'Schalalas'} bisher`;
-  $('senden').textContent = `${n} × ${name} abschicken`;
+  $('senden').textContent = keine() ? 'Keine Schalalas melden' : `${n} × ${name} abschicken`;
 }
 function tipp() {
   if ($('tipp').disabled) return;
@@ -263,7 +274,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[data-zu]');
   if (b) geheZu(+b.dataset.zu);
 });
-$('zu-zaehlen').addEventListener('click', () => geheZu(3));
+$('zu-zaehlen').addEventListener('click', () => geheZu(keine() ? 4 : 3));
 // Zurück-Taste des Handys geht einen Schritt zurück.
 addEventListener('popstate', e => {
   if (!$('ergebnis').hidden) zeigeFormular();
@@ -285,19 +296,20 @@ $('zf').addEventListener('submit', async e => {
   if (!name) { $('name').focus(); return fehler('fehler', 'Bitte gib einen Spitznamen an.'); }
   store('schalala-spitzname', name);
   const sound = st.neu ? null : snds.find(s => s.id === st.laut);
+  const ohne = keine();
   // Bot-Falle: Ist das unsichtbare Feld gefüllt, tun wir so, als sei alles angekommen.
-  if ($('website').value) return zeigeErgebnis(lied, sound, neu, n);
+  if ($('website').value) return zeigeErgebnis(lied, sound, neu, n, ohne);
 
   const btn = $('senden');
   btn.disabled = true; btn.textContent = 'Wird gesendet …';
   try {
     await SchalalaFans.submit({
-      lied_id: lied.l.id, laut_id: sound ? sound.id : '', vorschlag: neu, anzahl: n, spitzname: name,
+      lied_id: lied.l.id, laut_id: ohne ? SM.KEINE : sound ? sound.id : '', vorschlag: neu, anzahl: ohne ? 0 : n, spitzname: name,
       grundlage: document.querySelector('input[name="grundlage"]:checked').value, geraet_id: geraetId(),
     });
     rows = (await SchalalaFans.load(3000)) || rows;
     baueListe();
-    zeigeErgebnis(eintrag(lied.l.id), sound, neu, n);
+    zeigeErgebnis(eintrag(lied.l.id), sound, neu, n, ohne);
   } catch (err) {
     fehler('fehler', err.message);
   } finally {
@@ -325,10 +337,16 @@ function naechstesOffenes() {
   const i = liste.findIndex(x => x.l.id === st.lied);
   return [...liste.slice(i + 1), ...liste.slice(0, Math.max(i, 0))].find(x => x.offen && x.l.id !== st.lied) || null;
 }
-function zeigeErgebnis(x, sound, neu, eigene) {
+function zeigeErgebnis(x, sound, neu, eigene, ohne) {
   const box = $('ergebnis');
   let mitte;
-  if (sound) {
+  if (ohne) {
+    const z = SM.fanZaehlungen(data, rows).find(r => r.lied_id === x.l.id);
+    const summe = z ? Object.values(z.werte).reduce((t, v) => t + v, 0) : 0;
+    const andere = andereNamen(r => r.laut_id === SM.KEINE);
+    mitte = `<div class="vergleich"><div><small>Deine Meldung</small><b>0</b></div><div class="stand"><small>Stand jetzt</small><b>${summe}</b></div></div>
+      <p>${andere.length ? `Auch ${esc(SM.namenListe(andere))} ${andere.length === 1 ? 'hat' : 'haben'} hier keine Schalalas gehört. ` : ''}Deine Meldung zählt als 0 für jedes Schalala in diesem Lied. Hat jemand anders doch eins gehört, fließen beide Zählungen in den Wert ein.</p>`;
+  } else if (sound) {
     const z = SM.fanZaehlungen(data, rows).find(r => r.lied_id === x.l.id);
     const v = z ? z.werte[sound.id] : eigene, k = z && z.fan[sound.id] ? z.fan[sound.id] : 1;
     const andere = andereNamen(r => r.laut_id === sound.id);
@@ -343,21 +361,21 @@ function zeigeErgebnis(x, sound, neu, eigene) {
   const next = naechstesOffenes();
   box.innerHTML = `
     <h2>Danke!</h2>
-    <p>${sound ? 'Deine Zählung ist angekommen.' : 'Dein neues Schalala ist gespeichert.'}</p>
+    <p>${ohne ? 'Deine Meldung ist angekommen: keine Schalalas.' : sound ? 'Deine Zählung ist angekommen.' : 'Dein neues Schalala ist gespeichert.'}</p>
     <div class="karte">
-      <div class="liedkarte" style="border:0; padding:0">${coverImg(x.album)}<div><b>${esc(x.l.titel)}</b><small>${sound ? `<span class="sw" style="background:var(--c${sound.slot}); display:inline-block; vertical-align:-1px"></span> ${esc(sound.name)}` : esc([x.album && x.album.titel, jahr(x.l)].filter(Boolean).join(' · '))}</small></div></div>
+      <div class="liedkarte" style="border:0; padding:0">${coverImg(x.album)}<div><b>${esc(x.l.titel)}</b><small>${!ohne && sound ? `<span class="sw" style="background:var(--c${sound.slot}); display:inline-block; vertical-align:-1px"></span> ${esc(sound.name)}` : esc([x.album && x.album.titel, jahr(x.l)].filter(Boolean).join(' · '))}</small></div></div>
       ${mitte}
     </div>
     <div class="knoepfe">
-      <button type="button" class="gross" id="noch-einer">Noch ein Schalala in diesem Lied</button>
-      ${next ? `<button type="button" class="gross hell" id="naechstes" data-lied="${esc(next.l.id)}">Nächstes Lied ohne Zählung</button>` : ''}
+      ${ohne ? '' : '<button type="button" class="gross" id="noch-einer">Noch ein Schalala in diesem Lied</button>'}
+      ${next ? `<button type="button" class="gross${ohne ? '' : ' hell'}" id="naechstes" data-lied="${esc(next.l.id)}">Nächstes Lied ohne Zählung</button>` : ''}
       <a class="backlink" href="./" style="justify-content:center">Zum Schalalameter</a>
     </div>`;
   box.hidden = false;
   $('zm-grid').hidden = true;
   document.querySelector('.zm-head').style.display = 'flex';
   window.scrollTo(0, 0);
-  $('noch-einer').addEventListener('click', () => { zeigeFormular(); geheZu(2); });
+  if (!ohne) $('noch-einer').addEventListener('click', () => { zeigeFormular(); geheZu(2); });
   if (next) $('naechstes').addEventListener('click', () => { zeigeFormular(); waehleLied(next.l.id); renderLieder(); geheZu(2); });
 }
 function zeigeFormular() {

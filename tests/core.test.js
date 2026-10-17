@@ -344,6 +344,22 @@ test('Fankonsens: Spitznamen je Lied, ausgeblendete (leere) Namen fehlen', () =>
   assert.strictEqual(SM.namenListe(['A', 'B', 'C', 'D', 'E']), 'A, B, C und 2 weiteren');
 });
 
+test('Fankonsens: „Keine Schalalas“ ist eine Stimme 0 für jeden Laut des Lieds', () => {
+  const d = FANDATA();
+  const [ohne] = SM.fanZaehlungen(d, [{lied_id: 'l2', laut_id: 'keine', anzahl: 0, spitzname: 'Kalle'}]);
+  assert.deepStrictEqual(ohne.werte, {a: 0, b: 0});
+  assert.deepStrictEqual(ohne.fan, {a: 1, b: 1});
+  assert.strictEqual(ohne.fan_anzahl, 1);                // eine Einreichung, nicht eine je Laut
+  assert.deepStrictEqual(ohne.namen, ['Kalle']);
+  const [mit] = SM.fanZaehlungen(d, [
+    {lied_id: 'l1', laut_id: 'keine', anzahl: 0},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 6},
+  ]);
+  assert.strictEqual(mit.werte.a, 4);                     // Stimmen 4 (online), 6, 0: kein häufigster Wert, Median 4
+  assert.strictEqual(mit.werte.b, 1);                     // Stimmen 1 (online), 0: Durchschnitt aufgerundet
+  assert.strictEqual(mit.fan_anzahl, 2);
+});
+
 test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
   const d = FANDATA();
   const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);
