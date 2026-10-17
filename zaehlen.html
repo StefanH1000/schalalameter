@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Zähl mit · Schalalameter</title>
 <meta name="description" content="Zähl die Schalalas in einem Lied von Fortuna Ehrenfeld und schick deine Zahl ans Schalalameter.">
-<link rel="stylesheet" href="assets/style.css?v=202610170527">
+<link rel="stylesheet" href="assets/style.css?v=202610170531">
 <style>
 /* Zähl mit: auf schmalen Bildschirmen vier Schritte nacheinander, ab 900 px alles in drei Spalten */
 .zm{display:flex; flex-direction:column; gap:16px}
@@ -78,10 +78,12 @@
 .zahl{display:flex; flex-direction:column; align-items:center}
 .zahl b{font-size:88px; line-height:1; font-weight:700}
 .zahl span{font-size:15px; color:var(--ink-2)}
-.tipp{width:min(236px, 62vw); aspect-ratio:1; border-radius:50%; border:0; cursor:pointer; background:var(--accent); color:#fff; font-family:var(--display); font-size:34px; line-height:1; box-shadow:0 0 0 10px var(--accent-soft), 0 0 0 12px var(--fc, var(--accent)); touch-action:manipulation; -webkit-user-select:none; user-select:none; transition:transform .06s}
+/* Zählknopf in der Farbe der Familie des gewählten Lauts, mit dem Laut als Aufschrift; --ts verkleinert lange Laute */
+.tipp{width:min(236px, 62vw); aspect-ratio:1; border-radius:50%; border:0; cursor:pointer; background:var(--fc, var(--accent)); color:#fff; font-family:var(--display); font-size:calc(34px * var(--ts, 1)); line-height:1.05; padding:0 22px; text-wrap:balance; box-shadow:0 0 0 10px color-mix(in oklab, var(--fc, var(--accent)) 20%, var(--surface)), 0 0 0 12px var(--fc, var(--accent)); touch-action:manipulation; -webkit-user-select:none; user-select:none; transition:transform .06s}
+.tipp[data-ton="dunkel"]{color:#22192b}
 .tipp:active, .tipp.gedrueckt{transform:scale(.96)}
 .tipp:disabled{opacity:.4; cursor:not-allowed}
-@media (prefers-color-scheme: dark){ .tipp{color:#22192b} }
+@media (prefers-color-scheme: dark){ .tipp:not([data-ton]){color:#22192b} }
 .reihe{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
 .taste{font:inherit; font-weight:700; border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; padding:1px 8px; background:var(--paper)}
 .tastenhinweis{font-size:13px; color:var(--ink-2)}
@@ -147,7 +149,7 @@
   .zm-col3 .karte{border:0; padding:0}
   .chip{min-height:40px; font-size:14px}
   .zahl b{font-size:64px}
-  .tipp{width:160px; font-size:28px; box-shadow:0 0 0 8px var(--accent-soft), 0 0 0 10px var(--fc, var(--accent))}
+  .tipp{width:160px; font-size:calc(28px * var(--ts, 1)); padding:0 16px; box-shadow:0 0 0 8px color-mix(in oklab, var(--fc, var(--accent)) 20%, var(--surface)), 0 0 0 10px var(--fc, var(--accent))}
   .zaehler{padding:0}
 }
 </style>
@@ -282,9 +284,9 @@
   </main>
   <footer class="site-foot"><a href="./">Schalalameter</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
 </div>
-<script src="assets/core.js?v=202610170527"></script>
-<script src="assets/supabase-config.js?v=202610170527"></script>
-<script src="assets/fans.js?v=202610170527"></script>
-<script src="assets/zaehlen.js?v=202610170527"></script>
+<script src="assets/core.js?v=202610170531"></script>
+<script src="assets/supabase-config.js?v=202610170531"></script>
+<script src="assets/fans.js?v=202610170531"></script>
+<script src="assets/zaehlen.js?v=202610170531"></script>
 </body>
 </html>

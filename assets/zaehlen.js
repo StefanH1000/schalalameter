@@ -171,9 +171,37 @@ function renderAuswahl() {
   const lautHtml = name ? `<span class="sw" style="background:${lautFarbe()}"></span>${esc(name)}` : '<span class="muted">Erst Lied und Schalala wählen</span>';
   $('z-laut-schmal').innerHTML = lautHtml;
   $('z-laut-breit').innerHTML = name ? lautHtml : '';
-  $('tipp').style.setProperty('--fc', lautFarbe());
+  renderTipp(name);
   $('tipp').disabled = !x || !name;
   renderAnzahl();
+}
+
+// Zählknopf: Farbe der Familie, Aufschrift der Laut. Auf Grün, Gelb und Pink (Plätze 3 bis 5) ist weiße Schrift
+// zu schwach, dort steht sie dunkel. Ohne Wahl oder bei einem Vorschlag bleibt die Akzentfarbe.
+const DUNKLE_SCHRIFT = new Set([3, 4, 5]);
+// Verkleinert die Schrift so, dass der breiteste Wortteil (getrennt an Leerzeichen und nach Bindestrichen) in den
+// Kreis passt und nie mitten im Wort umbricht. Breite und Grundgröße wie im CSS: schmal min(236px, 62vw) und 34px, breit 160px und 28px.
+const messen = document.createElement('canvas').getContext('2d');
+function schriftFaktor(text) {
+  const basis = breit.matches ? 28 : 34;
+  const kreis = breit.matches ? 160 : Math.min(236, innerWidth * .62);
+  const platz = kreis - (breit.matches ? 32 : 44) - 16;
+  messen.font = `400 ${basis}px ${getComputedStyle(document.documentElement).getPropertyValue('--display') || 'serif'}`;
+  const breitester = Math.max(...text.split(/\s+|(?<=-)/).filter(Boolean).map(t => messen.measureText(t).width));
+  const zeilen = Math.ceil(messen.measureText(text).width / platz);
+  return Math.max(.4, Math.min(1, platz / breitester, zeilen > 3 ? 3 / zeilen : 1)).toFixed(2);
+}
+// Nach dem Laden der Schrift und bei Größenänderung neu messen.
+document.fonts && document.fonts.ready.then(() => renderTipp(lautName()));
+breit.addEventListener('change', () => renderTipp(lautName()));
+function renderTipp(name) {
+  const b = $('tipp'), s = !st.neu && snds.find(x => x.id === st.laut);
+  if (s) b.style.setProperty('--fc', `var(--c${s.slot})`); else b.style.removeProperty('--fc');
+  if (s) b.dataset.ton = DUNKLE_SCHRIFT.has(s.slot) ? 'dunkel' : 'hell'; else delete b.dataset.ton;
+  const text = name || 'Scha-lala!';
+  b.textContent = text;
+  b.style.setProperty('--ts', schriftFaktor(text));
+  b.setAttribute('aria-label', name ? `${name} gehört, eins mehr` : 'Erst Lied und Schalala wählen');
 }
 
 /* ---------- Schritt 3 und 4: Zählen, Abschicken ---------- */
