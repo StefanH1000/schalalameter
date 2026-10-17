@@ -14,6 +14,10 @@ const minSicher = 1;
 const aufl = false;
 let sel = null;                  // gewählte Albumphase (id)
 let hoverIdx = null;
+// Darstellung des Hauptdiagramms: absolut oder relativ (je Album ergeben die eingeblendeten Familien 100 %).
+// Nur eine Ansichtsvorliebe, deshalb im Browser gemerkt und nicht in der Adresse.
+let relativ = false;
+try { relativ = localStorage.getItem('schalala-skala') === 'relativ'; } catch (e) {}
 let geo = null;
 
 const color = slot => `var(--c${slot})`;
@@ -26,6 +30,9 @@ const long = f => f.anzeigename;
 const visFams = () => fams().filter(f => !hidden.has(f.id));
 const membersOf = f => sounds().filter(s => s.familie === f.id);
 const famValue = (counts, f) => membersOf(f).reduce((t, s) => t + (counts[s.id] || 0), 0);
+// Wert einer Familie in einer Albumphase, wie das Hauptdiagramm ihn zeigt: absolut oder als Anteil in Prozent.
+const colTotal = c => visFams().reduce((t, f) => t + famValue(c.counts, f), 0);
+const chartValue = (c, f) => { if (!relativ) return famValue(c.counts, f); const s = colTotal(c); return s ? famValue(c.counts, f) / s * 100 : 0; };
 const detailFam = () => fams().find(f => f.id === detail) || null;
 // Die Rangliste zählt bei offenem Detail nur dessen Laute, sonst alle eingeblendeten Familien.
 const rankSounds = () => { const d = detailFam(); return d ? membersOf(d) : visFams().flatMap(membersOf); };
@@ -209,20 +216,21 @@ function renderChart(cols){
 
   // Jede Schicht wird einzeln geglättet und dann gestapelt, so kreuzen sich die Kurven nie.
   // Die Achse passt sich den eingeblendeten Familien an.
-  const fns = vis.map(f => SM.monotone(cols.map(c => famValue(c.counts, f))));
+  const fns = vis.map(f => SM.monotone(cols.map(c => chartValue(c, f))));
   const SUB = 24, ts = [];
   if (n === 1) ts.push(-0.5, 0.5);
   else for (let k = 0; k <= (n - 1) * SUB; k++) ts.push(k / SUB);
-  const stacks = ts.map(t => { let acc = 0; return fns.map(fn => (acc += fn(n === 1 ? 0 : t))); });
+  // Relativ: Zwischen den Alben kann die Summe der geglätteten Schichten knapp über 100 % liegen, deshalb gekappt.
+  const stacks = ts.map(t => { let acc = 0; return fns.map(fn => (acc += fn(n === 1 ? 0 : t), relativ ? Math.min(acc, 100) : acc)); });
   const maxT = Math.max(1e-9, ...stacks.map(st => st.length ? st[st.length - 1] : 0));
-  const step = SM.niceStep(Math.max(maxT, 4)), top = Math.ceil(maxT / step) * step || step;
+  const step = relativ ? 25 : SM.niceStep(Math.max(maxT, 4)), top = relativ ? 100 : Math.ceil(maxT / step) * step || step;
   const y = v => M.t + ih - (v / top) * ih;
   const xt = t => n === 1 ? M.l + iw / 2 + t * iw : xs(t);
 
   let out = '';
   for (let v = 0; v <= top + 1e-9; v += step) {
     out += `<line class="${v === 0 ? 'base' : 'grid'}" x1="${M.l}" x2="${W - M.r}" y1="${y(v)}" y2="${y(v)}"/>`;
-    out += `<text x="${M.l - 10}" y="${y(v) + 4}" text-anchor="end">${fmt(+v.toFixed(2))}</text>`;
+    out += `<text x="${M.l - 10}" y="${y(v) + 4}" text-anchor="end">${fmt(+v.toFixed(2))}${relativ ? ' %' : ''}</text>`;
   }
   const si = cols.findIndex(c => c.key === sel);
   const half = n === 1 ? iw / 2 : iw / (n - 1) / 2;
@@ -248,12 +256,12 @@ function renderChart(cols){
   if (si >= 0) {
     out += `<line class="selline" x1="${xs(si)}" x2="${xs(si)}" y1="${M.t}" y2="${M.t + ih}"/>`;
     let acc = 0;
-    vis.forEach(f => { const v = famValue(cols[si].counts, f); acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(acc)}" r="4.5" fill="${color(f.slot)}"/>`; });
+    vis.forEach(f => { const v = chartValue(cols[si], f); acc += v; if (v > 0) out += `<circle class="dot" cx="${xs(si)}" cy="${y(Math.min(acc, top))}" r="4.5" fill="${color(f.slot)}"/>`; });
   }
   out += phaseAxis(cols, xs, H - M.b, si, size);
   out += hitRects(cols, xs, half, W, M.t, ih + M.b);
   svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.setAttribute('aria-label', `Gestapelte Kurven: Schalalas je Albumphase nach Familien${hidden.size ? ', ' + hidden.size + ' ausgeblendet' : ''}`);
+  svg.setAttribute('aria-label', `Gestapelte Kurven: ${relativ ? 'Anteile der Familien je Albumphase, jedes Album 100 %' : 'Schalalas je Albumphase nach Familien'}${hidden.size ? ', ' + hidden.size + ' ausgeblendet' : ''}`);
   svg.innerHTML = out;
   geo = {cols, xs, M, ih, W, half, iw};
 }
@@ -263,7 +271,7 @@ function showTip(i){
   if (i == null || !geo) { tip.hidden = true; return; }
   const c = geo.cols[i];
   const rows = visFams().map(f =>
-    `<div class="row"><span class="sw" style="background:${color(f.slot)}"></span><span>${esc(short(f))}</span><span>${num(famValue(c.counts, f))}</span></div>`).join('');
+    `<div class="row"><span class="sw" style="background:${color(f.slot)}"></span><span>${esc(short(f))}</span><span>${relativ ? `${Math.round(chartValue(c, f))} % <span class="muted">(${num(famValue(c.counts, f))})</span>` : num(famValue(c.counts, f))}</span></div>`).join('');
   const meta = `${c.year || ''}${c.songs.length ? ` · ${c.counted.length} von ${c.songs.length} Liedern gezählt` : ' · keine Lieder'}`;
   tip.innerHTML = `<b>${esc(c.album.titel)}</b><div class="meta">${meta}</div>${rows}`;
   tip.hidden = false;
@@ -303,6 +311,13 @@ function bindPhaseKeys(svg){
     else if (e.key === 'ArrowLeft') { e.preventDefault(); selectPhase(geo.cols[Math.max(0, i - 1)].key, svg); }
   });
 }
+document.querySelector('.skala').addEventListener('click', e => {
+  const b = e.target.closest('[data-skala]'); if (!b) return;
+  relativ = b.dataset.skala === 'relativ';
+  try { localStorage.setItem('schalala-skala', relativ ? 'relativ' : 'absolut'); } catch (err) {}
+  render();
+});
+function renderSkala(){ document.querySelectorAll('[data-skala]').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.skala === 'relativ') === relativ))); }
 const chart = $('chart');
 chart.addEventListener('pointermove', e => { const h = e.target.closest('.hit'); setHover(h ? +h.dataset.i : null); });
 chart.addEventListener('pointerleave', () => setHover(null));
@@ -500,7 +515,7 @@ function render(){
     sel = best;
   }
   hoverIdx = null; $('tip').hidden = true;
-  renderStats(songs); renderZaehlMit(songs, cols); renderLegend(songs); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
+  renderStats(songs); renderZaehlMit(songs, cols); renderLegend(songs); renderSkala(); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
 }
 
 loadData().then(d => {

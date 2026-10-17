@@ -8,7 +8,7 @@
 <meta property="og:title" content="Fortuna Ehrenfeld Schalalameter">
 <meta property="og:description" content="Piu piu, Schalala &amp; Co.: die Laute aller Fortuna-Ehrenfeld-Lieder auf einer Zeitleiste.">
 <link rel="preload" href="assets/fonts/shrikhand-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=202610171240">
+<link rel="stylesheet" href="assets/style.css?v=202610171313">
 </head>
 <body>
 <div class="wrap">
@@ -29,6 +29,10 @@
     </div>
     <div class="legend" id="legend" aria-label="Familien der Schalalas"></div>
     <p class="legend-note" id="legend-note" aria-live="polite" hidden></p>
+    <div class="skala" role="group" aria-label="Darstellung des Diagramms">
+      <button type="button" data-skala="absolut" aria-pressed="true">Absolut</button>
+      <button type="button" data-skala="relativ" aria-pressed="false">Relativ <span>je Album 100 %</span></button>
+    </div>
     <div class="chart-scroll" id="chart-wrap">
       <svg id="chart" role="group" aria-label="Gestapelte Kurven: Schalalas je Albumphase"></svg>
       <div class="tip" id="tip" hidden></div>
@@ -91,9 +95,9 @@
     <a href="datenschutz.html">Datenschutz</a>
   </footer>
 </div>
-<script src="assets/core.js?v=202610171240"></script>
-<script src="assets/supabase-config.js?v=202610171240"></script>
-<script src="assets/fans.js?v=202610171240"></script>
-<script src="assets/app.js?v=202610171240"></script>
+<script src="assets/core.js?v=202610171313"></script>
+<script src="assets/supabase-config.js?v=202610171313"></script>
+<script src="assets/fans.js?v=202610171313"></script>
+<script src="assets/app.js?v=202610171313"></script>
 </body>
 </html>

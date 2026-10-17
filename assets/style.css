@@ -96,6 +96,11 @@ body{font-variant-numeric:tabular-nums}
 .legend .lchip.off .sw{background:transparent!important; box-shadow:inset 0 0 0 2px var(--muted)}
 .legend .lchip.empty .n{color:var(--muted)}
 .legend-note{margin:-4px 0 0; font-size:13px; color:var(--ink-2)}
+/* Umschalter absolut / relativ (jedes Album 100 %) */
+.skala{display:inline-flex; align-self:flex-start; background:var(--line); border-radius:999px; padding:3px; gap:2px}
+.skala button{border:0; background:none; border-radius:999px; padding:6px 14px; min-height:36px; font-size:13px; font-weight:600; color:var(--ink-2); cursor:pointer}
+.skala button span{font-weight:400; color:var(--muted)}
+.skala button[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(34,25,43,.15)}
 .lupe.small{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; margin-left:6px; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--ink-2); cursor:pointer; vertical-align:middle}
 .lupe.small:hover, .lupe.small[aria-expanded="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
 .heat tbody.off{opacity:.45}
