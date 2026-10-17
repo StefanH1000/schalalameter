@@ -117,20 +117,28 @@
   }
 
   // Baut aus den Fan-Einreichungen je Lied eine Zählung mit Grundlage „fankonsens“.
-  // Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt je Laut als erste Stimme mit.
+  // Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt je Laut, den sie enthält, als erste Stimme mit.
   // Laute ohne Fanstimme übernehmen den Wert dieser Zählung, ohne sie 0.
-  // Einreichungen mit unbekannter Lied- oder Laut-ID und Vorschläge (ohne Laut-ID) zählen nicht.
+  // Einreichungen mit unbekannter Lied- oder Laut-ID zählen nicht. Ein Vorschlag (ohne Laut-ID) zählt erst,
+  // wenn ein freigegebener Laut so heißt (Name, ID oder Feld `aliase`), also nach der Freigabe in der Werkstatt.
+  function vorschlagsLaut(snds) {
+    const m = new Map();
+    for (const s of snds) for (const n of [s.id, s.name, ...(Array.isArray(s.aliase) ? s.aliase : [])]) if (n) m.set(slug(n), s.id);
+    return ph => m.get(slug(ph)) || null;
+  }
   function fanZaehlungen(data, rows) {
     const lieder = new Set(data.lieder.map(l => l.id));
-    const snds = sounds(data), laute = new Set(snds.map(s => s.id));
+    const snds = sounds(data), laute = new Set(snds.map(s => s.id)), ausVorschlag = vorschlagsLaut(snds);
     const byLied = new Map();
     for (const r of Array.isArray(rows) ? rows : []) {
       const n = Number(r && r.anzahl);
-      if (!r || !lieder.has(r.lied_id) || !laute.has(r.laut_id) || !Number.isInteger(n) || n < 0 || n > 200) continue;
+      if (!r || !lieder.has(r.lied_id) || !Number.isInteger(n) || n < 0 || n > 200) continue;
+      const laut = r.laut_id ? r.laut_id : String(r.vorschlag || '').trim() ? ausVorschlag(r.vorschlag) : null;
+      if (!laute.has(laut)) continue;
       if (!byLied.has(r.lied_id)) byLied.set(r.lied_id, new Map());
       const m = byLied.get(r.lied_id);
-      if (!m.has(r.laut_id)) m.set(r.laut_id, []);
-      m.get(r.laut_id).push(n);
+      if (!m.has(laut)) m.set(laut, []);
+      m.get(laut).push(n);
     }
     const out = [];
     for (const [liedId, perLaut] of byLied) {
@@ -139,7 +147,8 @@
       let minStimmen = Infinity, fan = 0;
       for (const s of snds) {
         const fv = perLaut.get(s.id);
-        const online = base ? value(base, s.id, false) : null;
+        // Kennt die Zählung den Laut gar nicht (z. B. ein später freigegebener Fanvorschlag), ist sie keine Stimme.
+        const online = base && base.werte && s.id in base.werte ? value(base, s.id, false) : null;
         if (fv) {
           const all = online == null ? fv : [online, ...fv];
           werte[s.id] = consensus(all);
@@ -163,14 +172,15 @@
     const extra = fanZaehlungen(data, rows);
     return extra.length ? {...data, zaehlungen: [...data.zaehlungen, ...extra]} : data;
   }
-  // Vorschläge für neue Laute aus den Einreichungen, nach Häufigkeit.
+  // Offene Vorschläge für neue Laute aus den Einreichungen, nach Häufigkeit. Schon freigegebene fallen weg.
   function fanVorschlaege(data, rows) {
     const lieder = new Set(data.lieder.map(l => l.id));
+    const bekannt = vorschlagsLaut(sounds(data));
     const map = new Map();
     for (const r of Array.isArray(rows) ? rows : []) {
       const ph = String((r && r.vorschlag) || '').trim();
-      if (!ph || !lieder.has(r.lied_id)) continue;
-      const key = ph.toLowerCase();
+      if (!ph || !lieder.has(r.lied_id) || bekannt(ph)) continue;
+      const key = slug(ph);
       const e = map.get(key) || {ph, total: 0, songs: new Set(), n: 0};
       e.total += Number(r.anzahl) || 0; e.n++; e.songs.add(r.lied_id);
       map.set(key, e);

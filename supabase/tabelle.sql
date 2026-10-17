@@ -1,5 +1,5 @@
 -- Schalalameter: Fanzählungen
--- Einmal im Supabase SQL Editor ausführen (leeres Projekt, Schema public).
+-- Im Supabase SQL Editor ausführen (Schema public). Bei Änderungen einfach erneut ausführen, vorhandene Einträge bleiben.
 -- Grundhaltung: Die Rolle anon (öffentlicher Schlüssel der Website) darf genau zwei Dinge:
 --   1. die Funktion zaehlung_einreichen ausführen,
 --   2. die Ansicht fan_zaehlungen_oeffentlich lesen.
@@ -23,10 +23,15 @@ create table if not exists public.fan_zaehlungen (
   aktualisiert timestamptz not null default now(),
   gesperrt     boolean     not null default false,
   -- Genau eins von beiden: ein bekannter Laut oder ein Vorschlag.
-  constraint laut_oder_vorschlag check ((laut_id <> '') <> (vorschlag <> '')),
-  -- Eine neue Einreichung desselben Geräts für dasselbe Lied und denselben Laut ersetzt die alte.
-  constraint eine_zaehlung_je_geraet unique (geraet_id, lied_id, laut_id)
+  constraint laut_oder_vorschlag check ((laut_id <> '') <> (vorschlag <> ''))
 );
+
+-- Eine neue Einreichung desselben Geräts für dasselbe Lied und denselben Laut ersetzt die alte.
+-- Vorschläge unterscheiden sich am Text (ohne Groß-/Kleinschreibung), so kann ein Gerät mehrere neue Laute
+-- im selben Lied vorschlagen. Die frühere Einschränkung ohne Vorschlagstext wird bei Wiederholung ersetzt.
+alter table public.fan_zaehlungen drop constraint if exists eine_zaehlung_je_geraet;
+create unique index if not exists fan_zaehlungen_eindeutig
+  on public.fan_zaehlungen (geraet_id, lied_id, laut_id, lower(vorschlag));
 
 create index if not exists fan_zaehlungen_geraet_zeit on public.fan_zaehlungen (geraet_id, aktualisiert);
 
@@ -44,7 +49,7 @@ revoke all on sequence public.fan_zaehlungen_id_seq from anon, authenticated, pu
 -- ---------------------------------------------------------------------------
 -- security definer: läuft mit den Rechten des Eigentümers (postgres) und darf deshalb schreiben,
 -- obwohl anon selbst keine Tabellenrechte hat. Sie prüft alle Eingaben, ersetzt eine frühere
--- Einreichung desselben Geräts und lässt höchstens 30 Einreichungen je Gerät und Stunde zu.
+-- Einreichung desselben Geräts (gleiches Lied, gleicher Laut bzw. gleicher Vorschlag) und lässt höchstens 30 Einreichungen je Gerät und Stunde zu.
 -- Gesperrte Einträge bleiben gesperrt, auch wenn das Gerät erneut einreicht.
 create or replace function public.zaehlung_einreichen(
   p_lied_id   text,
@@ -101,7 +106,7 @@ begin
 
   insert into public.fan_zaehlungen (lied_id, laut_id, anzahl, vorschlag, spitzname, grundlage, geraet_id)
   values (p_lied_id, v_laut, p_anzahl, v_vorschlag, v_name, p_grundlage, p_geraet_id)
-  on conflict on constraint eine_zaehlung_je_geraet do update
+  on conflict (geraet_id, lied_id, laut_id, lower(vorschlag)) do update
     set anzahl       = excluded.anzahl,
         vorschlag    = excluded.vorschlag,
         spitzname    = excluded.spitzname,

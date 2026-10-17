@@ -5,96 +5,285 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Zähl mit · Schalalameter</title>
 <meta name="description" content="Zähl die Schalalas in einem Lied von Fortuna Ehrenfeld und schick deine Zahl ans Schalalameter.">
-<link rel="stylesheet" href="assets/style.css?v=202610170422">
+<link rel="stylesheet" href="assets/style.css?v=202610170448">
 <style>
-.zm{display:flex; flex-direction:column; gap:22px; max-width:640px}
-.zm h1{font-family:var(--display); font-weight:400; font-size:clamp(34px, 7vw, 54px); line-height:1}
-.zm .lede{margin:6px 0 0}
-.regel{background:var(--accent-soft); border-radius:var(--r); padding:14px 16px; font-size:17px; line-height:1.45; color:var(--ink); font-weight:600}
-form#zf{display:flex; flex-direction:column; gap:16px}
-.zf-row{display:flex; flex-direction:column; gap:6px}
-.zf-row > .lab{font-size:12px; font-weight:600; color:var(--ink-2); letter-spacing:.02em}
-.zf-row select, .zf-row input[type=text]{border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:10px 12px; font-size:16px; width:100%}
-.stepper{display:flex; align-items:stretch; gap:8px}
-.stepper button{width:56px; min-height:52px; border:1px solid var(--line); background:var(--surface); border-radius:10px; font-size:26px; line-height:1; cursor:pointer; color:var(--ink)}
-.stepper button:hover{border-color:var(--ink-2)}
-.stepper input{width:110px; text-align:center; font-size:26px; font-weight:600; border:1px solid var(--line); background:var(--paper); border-radius:10px; font-variant-numeric:tabular-nums}
-.choice{display:flex; flex-wrap:wrap; gap:8px}
-.choice label{flex-direction:row; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:8px 14px; font-size:15px; color:var(--ink); cursor:pointer}
-.choice input{accent-color:var(--accent); margin:0}
+/* Zähl mit: auf schmalen Bildschirmen vier Schritte nacheinander, ab 900 px alles in drei Spalten */
+.zm{display:flex; flex-direction:column; gap:16px}
+.zm-head{display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.zm-head h1{font-family:var(--display); font-weight:400; font-size:clamp(36px, 7vw, 52px); line-height:1}
+.zm-titel{display:flex; flex-direction:column; gap:6px}
+.regel{background:var(--accent-soft); border-radius:12px; padding:12px 16px; font-size:15px; line-height:1.4; color:var(--ink); font-weight:600; margin:0; max-width:520px}
+.gesperrt-hinweis{background:var(--accent-soft); border-radius:var(--r); padding:12px 16px; font-size:14px; margin:0}
+.backlink{font-size:14px; font-weight:600; text-decoration:none; min-height:44px; display:inline-flex; align-items:center; border:0; background:none; padding:0; color:var(--accent); cursor:pointer}
+.schrittzeile{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.schritt-nr{font-size:13px; color:var(--ink-2); font-weight:600}
+.fortschritt{display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:6px}
+.fortschritt span{height:4px; border-radius:2px; background:var(--line)}
+.fortschritt span.an{background:var(--accent)}
+.kopf{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); font-weight:700; margin:0}
+.frage{font-family:var(--display); font-weight:400; font-size:30px; line-height:1.05; margin:0}
+
+.zm-grid{display:flex; flex-direction:column; gap:20px}
+.zm-col{display:flex; flex-direction:column; gap:14px; min-width:0}
+.zm-col3{display:flex; flex-direction:column; gap:20px; min-width:0}
+
+/* Lied */
+.suche{display:flex; flex-direction:row; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:0 14px; min-height:48px}
+.suche input{border:0; background:transparent; font-size:16px; flex:1; outline:none; min-width:0}
+.suche:focus-within{outline:2px solid var(--accent); outline-offset:2px}
+.filter{display:flex; flex-wrap:wrap; gap:8px}
+.pill{min-height:40px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--surface); font-size:14px; font-weight:600; cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.liste{display:flex; flex-direction:column; gap:18px}
+.album-kopf{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+.album-kopf img, .album-kopf .ohne{width:36px; height:36px; border-radius:6px; object-fit:cover; flex:none; background:var(--line)}
+.album-kopf b{font-size:15px; display:block}
+.album-kopf small{font-size:13px; color:var(--ink-2)}
+.lieder{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column}
+.lieder button{display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:52px; padding:8px 14px; border:0; border-top:1px solid var(--line); background:transparent; text-align:left; cursor:pointer; font-size:16px; font-weight:600}
+.lieder button:first-child{border-top:0}
+.lieder button:hover{background:color-mix(in oklab, var(--accent-soft) 50%, transparent)}
+.lieder button[aria-pressed="true"]{background:var(--accent-soft)}
+.lieder .typ{font-weight:400; color:var(--ink-2); font-size:13px}
+.markierung{font-size:13px; color:var(--ink-2); white-space:nowrap; font-weight:400; text-transform:none; letter-spacing:0}
+.markierung.offen{font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:3px 9px}
+.leer{color:var(--ink-2); font-size:15px; margin:0}
+
+/* Gewähltes Lied */
+.liedkarte{display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+.liedkarte img, .liedkarte .ohne{width:44px; height:44px; border-radius:6px; object-fit:cover; flex:none; background:var(--line)}
+.liedkarte b{font-size:16px; display:block}
+.liedkarte small{font-size:13px; color:var(--ink-2)}
+
+/* Laute */
+.familien{display:flex; flex-direction:column; gap:16px}
+.familie{display:flex; flex-direction:column; gap:8px}
+.familie-kopf{display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 8px}
+.familie-kopf .sw{align-self:center}
+.familie-kopf b{font-size:15px}
+.familie-kopf small{font-size:13px; color:var(--ink-2)}
+.lautchips{display:flex; flex-direction:row; flex-wrap:wrap; gap:8px}
+.chip{min-height:44px; padding:0 14px; border-radius:999px; background:var(--surface); border:2px solid var(--fc, var(--line)); font-size:15px; font-weight:600; cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink); box-shadow:0 0 0 3px var(--fc, var(--accent))}
+.chip.neu{border-style:dashed; --fc:var(--muted); align-self:flex-start}
+.feld{display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600}
+.feld input[type=text]{border:1px solid var(--line); background:var(--surface); border-radius:12px; min-height:48px; padding:0 14px; font-size:16px; font-weight:400; width:100%}
+.feld small{font-weight:400; color:var(--ink-2); font-size:13px}
+
+/* Zählen */
+.zaehler{display:flex; flex-direction:column; align-items:center; gap:16px; padding:8px 0}
+.aktuell{display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%}
+.aktuell b{font-size:20px; display:flex; align-items:center; gap:8px}
+.aktuell small{font-size:13px; color:var(--ink-2); display:block}
+.zahl{display:flex; flex-direction:column; align-items:center}
+.zahl b{font-size:88px; line-height:1; font-weight:700}
+.zahl span{font-size:15px; color:var(--ink-2)}
+.tipp{width:min(236px, 62vw); aspect-ratio:1; border-radius:50%; border:0; cursor:pointer; background:var(--accent); color:#fff; font-family:var(--display); font-size:34px; line-height:1; box-shadow:0 0 0 10px var(--accent-soft), 0 0 0 12px var(--fc, var(--accent)); touch-action:manipulation; -webkit-user-select:none; user-select:none; transition:transform .06s}
+.tipp:active, .tipp.gedrueckt{transform:scale(.96)}
+.tipp:disabled{opacity:.4; cursor:not-allowed}
+@media (prefers-color-scheme: dark){ .tipp{color:#22192b} }
+.reihe{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
+.taste{font:inherit; font-weight:700; border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; padding:1px 8px; background:var(--paper)}
+.tastenhinweis{font-size:13px; color:var(--ink-2)}
+.nulllink{border:0; background:none; color:var(--accent); font-size:14px; font-weight:600; min-height:40px; cursor:pointer; text-decoration:underline; text-underline-offset:2px}
+
+/* Abschicken */
+.formular{display:flex; flex-direction:column; gap:18px}
+.anzahl-zeile{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.stepper{display:flex; align-items:center; gap:6px}
+.stepper button{width:48px; height:48px; border-radius:12px; border:1px solid var(--line); background:var(--paper); font-size:24px; cursor:pointer}
+.stepper input{width:72px; text-align:center; font-size:30px; font-weight:700; border:0; background:transparent; -moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button, .stepper input::-webkit-outer-spin-button{-webkit-appearance:none; margin:0}
+.segment{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); background:var(--line); border-radius:12px; padding:3px}
+.segment label{position:relative; display:flex; align-items:center; justify-content:center; min-height:44px; border-radius:9px; font-size:15px; font-weight:600; color:var(--ink-2); cursor:pointer}
+.segment input{position:absolute; opacity:0; pointer-events:none}
+.segment label:has(input:checked){background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(34,25,43,.15)}
+.segment label:has(input:focus-visible){outline:2px solid var(--accent); outline-offset:1px}
 .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
-.zf-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-.zf-actions .btn.primary{padding:12px 22px; font-size:16px}
 .fehler{color:var(--danger); font-weight:600; font-size:14px; margin:0}
-.ergebnis{display:flex; flex-direction:column; gap:12px}
-.ergebnis h2{font-family:var(--display); font-weight:400; font-size:28px; line-height:1.1}
-.ergebnis .wert{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
-.ergebnis .wert b{font-size:44px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
-.gesperrt-hinweis{background:var(--accent-soft); border-radius:var(--r); padding:12px 16px; font-size:14px}
+.gross{display:flex; align-items:center; justify-content:center; width:100%; min-height:54px; border-radius:14px; border:0; background:var(--ink); color:var(--paper); font-size:17px; font-weight:700; cursor:pointer; text-decoration:none; padding:0 16px; text-align:center}
+.gross.akzent{background:var(--accent); color:#fff}
+@media (prefers-color-scheme: dark){ .gross.akzent{color:#22192b} }
+.gross.hell{background:var(--surface); color:var(--ink); border:1px solid var(--line)}
+.gross:disabled{opacity:.45; cursor:not-allowed}
+.hinweis{text-align:center; font-size:13px; color:var(--ink-2); margin:0}
+.fussleiste{display:flex; flex-direction:column; gap:8px}
+
+/* Ergebnis */
+.ergebnis{display:flex; flex-direction:column; gap:20px; max-width:560px}
+.ergebnis h2{font-family:var(--display); font-weight:400; font-size:52px; line-height:1; color:var(--accent)}
+.ergebnis > p{font-size:17px; margin:0}
+.karte{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:14px}
+.vergleich{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; border-top:1px solid var(--line); padding-top:14px}
+.vergleich small{font-size:13px; color:var(--ink-2); font-weight:600; display:block}
+.vergleich b{font-size:40px; line-height:1.05}
+.vergleich .stand b{color:var(--accent)}
+.karte p{margin:0; font-size:14px; color:var(--ink-2); line-height:1.45}
+.vorschlag-chip{display:inline-flex; align-items:center; min-height:36px; padding:0 14px; border-radius:999px; border:2px dashed var(--muted); font-size:16px; font-weight:700}
+.knoepfe{display:flex; flex-direction:column; gap:10px}
+
+/* Schmal: ein Schritt zur Zeit, Weiter-Knöpfe unten angeheftet */
+@media (max-width: 899px){
+  .nur-breit{display:none!important}
+  .zm[data-schritt="1"] :is(#s-laut, #s-zaehlen, #s-senden),
+  .zm[data-schritt="2"] :is(#s-lied, #s-zaehlen, #s-senden),
+  .zm[data-schritt="3"] :is(#s-lied, #s-laut, #s-senden),
+  .zm[data-schritt="4"] :is(#s-lied, #s-laut, #s-zaehlen){display:none}
+  .zm:not([data-schritt="1"]) .zm-head{display:none}
+  .fussleiste{position:sticky; bottom:0; margin:0 -16px; padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background:var(--surface); border-top:1px solid var(--line); z-index:2}
+  .zm .regel{max-width:none}
+  .wrap{padding-bottom:0}
+}
+/* Breit: drei Spalten, Lied- und Lautliste scrollen für sich */
+@media (min-width: 900px){
+  .nur-schmal{display:none!important}
+  .zm-grid{display:grid; grid-template-columns:minmax(300px, 360px) minmax(0, 1fr) minmax(320px, 400px); align-items:start}
+  .zm-col, .zm-col3 > section{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px}
+  #s-lied, #s-laut{max-height:calc(100vh - 48px); overflow:auto; position:sticky; top:24px}
+  .suche{background:var(--paper)}
+  .lieder{border:0; border-radius:0; background:transparent}
+  .lieder button{border-top:0; border-radius:8px; min-height:40px; font-size:15px; font-weight:500}
+  .lieder button[aria-pressed="true"]{font-weight:700}
+  .zm-col3 .karte{border:0; padding:0}
+  .chip{min-height:40px; font-size:14px}
+  .zahl b{font-size:64px}
+  .tipp{width:160px; font-size:28px; box-shadow:0 0 0 8px var(--accent-soft), 0 0 0 10px var(--fc, var(--accent))}
+  .zaehler{padding:0}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <main class="zm">
-    <p><a href="./">← Zum Schalalameter</a></p>
-    <header>
-      <div class="eyebrow">Schalalameter</div>
-      <h1>Zähl mit</h1>
-      <p class="lede">Hör ein Lied, zähl ein Schalala und schick deine Zahl. Jede Zählung fließt in die Zahlen auf der Seite ein.</p>
-    </header>
+  <main class="zm" id="zm" data-schritt="1">
+    <div class="zm-head">
+      <div class="zm-titel">
+        <a href="./" class="backlink" style="min-height:0">← Schalalameter</a>
+        <h1>Zähl mit</h1>
+      </div>
+      <p class="regel nur-breit">Eine Lautfolge ohne Pause zählt einmal. Nach einer Pause beginnt eine neue.</p>
+    </div>
 
-    <p class="regel">Eine Lautfolge ohne Pause zählt einmal. Nach einer Pause beginnt eine neue.</p>
+    <p class="gesperrt-hinweis" id="aus" hidden>Das Einreichen ist noch nicht freigeschaltet. Du kannst alles ansehen, aber noch nichts abschicken.</p>
 
-    <p class="gesperrt-hinweis" id="aus" hidden>Das Einreichen ist noch nicht freigeschaltet. Du kannst das Formular ansehen, aber noch nichts abschicken.</p>
+    <div class="zm-grid" id="zm-grid">
+      <section class="zm-col" id="s-lied" aria-labelledby="lied-kopf">
+        <div class="schrittzeile nur-schmal">
+          <span></span><span class="schritt-nr">Schritt 1 von 4</span>
+        </div>
+        <div class="fortschritt nur-schmal" aria-hidden="true"><span class="an"></span><span></span><span></span><span></span></div>
+        <h2 class="kopf nur-breit" id="lied-kopf">1 · Lied</h2>
+        <p class="nur-schmal" style="margin:0; font-size:16px; color:var(--ink-2)">Welches Lied hörst du gerade?</p>
+        <label class="suche">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input type="search" id="suche" placeholder="Lied suchen" aria-label="Lied suchen" autocomplete="off">
+        </label>
+        <div class="filter" role="group" aria-label="Filter">
+          <button type="button" class="pill" id="f-offen" aria-pressed="true">Noch ohne Zählung</button>
+          <button type="button" class="pill" id="f-alle" aria-pressed="false">Alle</button>
+        </div>
+        <div class="liste" id="liste"></div>
+      </section>
 
-    <section class="panel" id="formular">
-      <form id="zf" autocomplete="off" novalidate>
-        <div class="zf-row">
-          <label class="lab" for="zf-lied">Lied</label>
-          <select id="zf-lied" required></select>
+      <section class="zm-col" id="s-laut" aria-labelledby="laut-kopf">
+        <div class="schrittzeile nur-schmal">
+          <button type="button" class="backlink" data-zu="1">← Anderes Lied</button><span class="schritt-nr">Schritt 2 von 4</span>
         </div>
-        <div class="zf-row">
-          <label class="lab" for="zf-laut">Schalala</label>
-          <select id="zf-laut" required></select>
-        </div>
-        <div class="zf-row" id="zf-neu-row" hidden>
-          <label class="lab" for="zf-neu">Wie klingt der neue Laut?</label>
-          <input type="text" id="zf-neu" maxlength="60" placeholder="z. B. Peng peng">
-        </div>
-        <div class="zf-row">
-          <span class="lab" id="zf-anzahl-lab">Wie oft?</span>
-          <div class="stepper" role="group" aria-labelledby="zf-anzahl-lab">
-            <button type="button" id="zf-minus" aria-label="Eins weniger">−</button>
-            <input type="number" id="zf-anzahl" min="0" max="200" step="1" value="0" inputmode="numeric" aria-labelledby="zf-anzahl-lab">
-            <button type="button" id="zf-plus" aria-label="Eins mehr">+</button>
+        <div class="fortschritt nur-schmal" aria-hidden="true"><span class="an"></span><span class="an"></span><span></span><span></span></div>
+        <h2 class="kopf nur-breit" id="laut-kopf">2 · Schalala <span id="laut-in" style="text-transform:none; letter-spacing:0; font-weight:400"></span></h2>
+        <div class="liedkarte nur-schmal" id="liedkarte"></div>
+        <p class="frage nur-schmal">Was zählst du?</p>
+        <div class="familien" id="familien"></div>
+        <div class="familie">
+          <div class="familie-kopf"><b>Etwas anderes gehört?</b></div>
+          <div class="lautchips" style="flex-direction:column; align-items:stretch">
+            <button type="button" class="chip neu" id="neu-chip" aria-pressed="false">+ Neuen Laut vorschlagen</button>
+            <label class="feld" id="neu-feld" hidden>Wie klingt er?
+              <input type="text" id="neu" maxlength="60" placeholder="z. B. Peng peng">
+              <small>Neue Laute werden gespeichert und erscheinen nach der Prüfung auf dem Schalalameter.</small>
+            </label>
           </div>
         </div>
-        <div class="zf-row">
-          <span class="lab" id="zf-grund-lab">Gezählt nach</span>
-          <div class="choice" role="radiogroup" aria-labelledby="zf-grund-lab">
-            <label><input type="radio" name="grundlage" id="zf-gehoert" value="gehoert" checked> gehört</label>
-            <label><input type="radio" name="grundlage" id="zf-booklet" value="booklet"> Booklet</label>
-          </div>
+        <div class="fussleiste nur-schmal">
+          <p class="fehler" id="fehler-laut" role="alert" hidden></p>
+          <button type="button" class="gross" id="zu-zaehlen">Bitte ein Schalala wählen</button>
         </div>
-        <div class="zf-row">
-          <label class="lab" for="zf-name">Spitzname</label>
-          <input type="text" id="zf-name" maxlength="40" required placeholder="wird nicht veröffentlicht">
-        </div>
-        <div class="hp" aria-hidden="true"><label>Website <input type="text" id="zf-website" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <p class="fehler" id="zf-fehler" role="alert" hidden></p>
-        <div class="zf-actions">
-          <button type="submit" class="btn primary" id="zf-senden">Zählung abschicken</button>
-        </div>
-      </form>
-    </section>
+      </section>
 
-    <section class="panel ergebnis" id="ergebnis" aria-live="polite" hidden></section>
+      <div class="zm-col3">
+        <section id="s-zaehlen" aria-labelledby="zaehlen-kopf">
+          <div class="schrittzeile nur-schmal">
+            <button type="button" class="backlink" data-zu="2">← Anderes Schalala</button><span class="schritt-nr">Schritt 3 von 4</span>
+          </div>
+          <div class="fortschritt nur-schmal" aria-hidden="true"><span class="an"></span><span class="an"></span><span class="an"></span><span></span></div>
+          <div class="zaehler">
+            <div class="aktuell">
+              <h2 class="kopf nur-breit" id="zaehlen-kopf">3 · Zählen</h2>
+              <div class="nur-schmal"><small id="z-lied"></small><b id="z-laut-schmal"></b></div>
+              <b class="nur-breit" id="z-laut-breit" style="font-size:15px"></b>
+              <small class="nur-schmal" style="text-align:right; max-width:150px">Spiel das Lied ab und tipp bei jedem Schalala.</small>
+            </div>
+            <div class="zahl" aria-live="polite"><b id="z-n">0</b><span id="z-einheit">Schalalas bisher</span></div>
+            <button type="button" class="tipp" id="tipp">Scha-<br>lala!</button>
+            <span class="tastenhinweis nur-breit">oder <kbd class="taste">Leertaste</kbd> drücken</span>
+            <div class="reihe">
+              <button type="button" class="pill" id="zurueck">Einen zurück</button>
+              <button type="button" class="pill" id="vonvorn">Von vorn</button>
+            </div>
+          </div>
+          <p class="regel nur-schmal" style="margin-top:12px">Eine Lautfolge ohne Pause zählt einmal. Nach einer Pause beginnt eine neue.</p>
+          <div class="fussleiste nur-schmal" style="margin-top:12px">
+            <button type="button" class="gross" data-zu="4">Fertig gezählt</button>
+            <button type="button" class="nulllink" id="null">Kommt in diesem Lied nicht vor (0)</button>
+          </div>
+        </section>
+
+        <section id="s-senden" aria-label="Prüfen und abschicken">
+          <form id="zf" class="formular" autocomplete="off" novalidate>
+            <div class="schrittzeile nur-schmal">
+              <button type="button" class="backlink" data-zu="3">← Weiterzählen</button><span class="schritt-nr">Schritt 4 von 4</span>
+            </div>
+            <div class="fortschritt nur-schmal" aria-hidden="true"><span class="an"></span><span class="an"></span><span class="an"></span><span class="an"></span></div>
+            <p class="frage nur-schmal">Passt das so?</p>
+            <div class="karte">
+              <div class="liedkarte nur-schmal" id="sendekarte" style="border:0; padding:0"></div>
+              <div class="anzahl-zeile">
+                <span id="anz-lab" style="font-size:15px; font-weight:600">Wie oft?</span>
+                <div class="stepper" role="group" aria-labelledby="anz-lab">
+                  <button type="button" id="minus" aria-label="Eins weniger">−</button>
+                  <input type="number" id="anzahl" min="0" max="200" step="1" value="0" inputmode="numeric" aria-labelledby="anz-lab">
+                  <button type="button" id="plus" aria-label="Eins mehr">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="feld">
+              <span id="grund-lab">Gezählt nach</span>
+              <div class="segment" role="radiogroup" aria-labelledby="grund-lab">
+                <label><input type="radio" name="grundlage" value="gehoert" checked> Gehör</label>
+                <label><input type="radio" name="grundlage" value="booklet"> Booklet</label>
+              </div>
+            </div>
+            <label class="feld">Dein Spitzname
+              <input type="text" id="name" maxlength="40" required>
+              <small>Wird nicht veröffentlicht. Dein Browser merkt ihn sich.</small>
+            </label>
+            <div class="hp" aria-hidden="true"><label>Website <input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <div class="fussleiste">
+              <p class="fehler" id="fehler" role="alert" hidden></p>
+              <button type="submit" class="gross akzent" id="senden">Abschicken</button>
+              <p class="hinweis">Den aktuellen Stand siehst du nach dem Abschicken.</p>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <section class="ergebnis" id="ergebnis" aria-live="polite" hidden></section>
   </main>
   <footer class="site-foot"><a href="./">Schalalameter</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
 </div>
-<script src="assets/core.js?v=202610170422"></script>
-<script src="assets/supabase-config.js?v=202610170422"></script>
-<script src="assets/fans.js?v=202610170422"></script>
-<script src="assets/zaehlen.js?v=202610170422"></script>
+<script src="assets/core.js?v=202610170448"></script>
+<script src="assets/supabase-config.js?v=202610170448"></script>
+<script src="assets/fans.js?v=202610170448"></script>
+<script src="assets/zaehlen.js?v=202610170448"></script>
 </body>
 </html>

@@ -309,6 +309,24 @@ test('Fankonsens: unbekannte IDs, Vorschläge und ungültige Anzahlen zählen ni
   assert.deepStrictEqual(SM.fanVorschlaege(d, rows).map(v => [v.ph, v.n]), [['peng', 1]]);
 });
 
+test('Fankonsens: Vorschläge zählen erst nach der Freigabe, dann für den neuen Laut', () => {
+  const d = FANDATA();
+  const rows = [
+    {lied_id: 'l1', laut_id: '', vorschlag: 'Peng peng', anzahl: 3},
+    {lied_id: 'l1', laut_id: '', vorschlag: 'peng-peng', anzahl: 5},
+    {lied_id: 'l1', laut_id: '', vorschlag: 'Zisch', anzahl: 2},
+  ];
+  assert.deepStrictEqual(SM.fanZaehlungen(d, rows), []);
+  assert.deepStrictEqual(SM.fanVorschlaege(d, rows).map(v => [v.ph, v.n, v.total]), [['Peng peng', 2, 8], ['Zisch', 1, 2]]);
+  const id = SM.approveCandidate(d, 'Peng peng', '__neu');
+  const [z] = SM.fanZaehlungen(d, rows);
+  assert.strictEqual(z.werte[id], 4);                    // Stimmen 3 und 5, ohne Onlinezählung
+  assert.strictEqual(z.fan[id], 2);
+  assert.deepStrictEqual(SM.fanVorschlaege(d, rows).map(v => v.ph), ['Zisch']);
+  d.laute.find(l => l.id === id).aliase = ['zisch'];      // Alias: Zisch zählt ebenfalls für diesen Laut
+  assert.strictEqual(SM.fanZaehlungen(d, rows)[0].fan[id], 3);
+});
+
 test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
   const d = FANDATA();
   const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);

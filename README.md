@@ -43,6 +43,8 @@ Der Entwurf der Werkstatt liegt nur im jeweiligen Browser. Veröffentlicht ist e
 }
 ```
 
+Ein Laut kann `aliase` haben (Liste von Schreibweisen): Fanvorschläge mit einem dieser Texte zählen für ihn.
+
 Laute gehören zu Familien (je Laut `familie`). Eine Familie hat:
 
 ```json
