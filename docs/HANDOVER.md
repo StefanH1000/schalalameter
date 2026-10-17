@@ -24,7 +24,7 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
 - Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
-- Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026), noch ohne Zählung (Startseite jetzt 156 eigene Lieder).
+- Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Bisher keine bekannten Laute darin, aber vier neue Kandidaten, noch nicht freigegeben: „dub-di-dub-di-dubb“ (5× in „Ausflug in den Club“), „kuruu-kuruu“ und „ram-tam-tam“ (je 1× in „Rabenflügel“), „tatütata“ (1× in „Cognac für die Huren“).
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **29 Laute in 7 Familien**, alle freigegeben:
 
@@ -84,7 +84,7 @@ Zuordnung eines Lieds, in dieser Reihenfolge:
 
 Gespeicherte Überschreibungen: Helm ab zum Gebet für „Trust Me, I'm an Alien!“ und die Regenradar-EP (Drückerkolonne, Bella Ciao, Die ewige Sabine, Hossegor, Hooray Hooray, Vereinsheim; die EP erschien einen Tag vor dem Album); Die Rückkehr zur Normalität für „Weltuntergang“ (nach Regel 4 läge Helm ab knapp näher, 378 zu 385 Tage). Alle übrigen Phasen werden berechnet, nicht gespeichert.
 
-Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 21/18, Rückkehr 11/10, Solo I. 15/11, Glitzerschwein 15/4, Universum 30/26, Himmelerdenblau 16/0, Hollywood Bowl 12/12, Revolution! 11/0. In der Vorgabe standen Helm ab 21/17 und Rückkehr 11/11. Die Daten ergeben eindeutig 18 und 10: In Helm ab fehlt der Text nur bei „Hör endlich auf zu jammern“, „Faire Tapisserie“ und „Pluie, movement“; in Rückkehr hat „Weltuntergang“ keinen Text.
+Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 21/18, Rückkehr 11/10, Solo I. 15/11, Glitzerschwein 15/4, Universum 30/26, Himmelerdenblau 16/0, Hollywood Bowl 12/12, Revolution! 11/10. In der Vorgabe standen Helm ab 21/17 und Rückkehr 11/11. Die Daten ergeben eindeutig 18 und 10: In Helm ab fehlt der Text nur bei „Hör endlich auf zu jammern“, „Faire Tapisserie“ und „Pluie, movement“; in Rückkehr hat „Weltuntergang“ keinen Text.
 
 **Darstellung**
 - Die Farbe folgt der Familie in fester Reihenfolge, nie dem Rang. Es gibt höchstens 8 Farben.
@@ -94,7 +94,7 @@ Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 
 - Lange Namen brechen um, sie werden nie gekürzt.
 - Verlinkbar: `#rueckkehr` (Phase), `#rueckkehr/rufe` (Detail offen), `#rueckkehr/-/piu,silben` (ohne Detail, zwei Familien ausgeblendet). Alte Links mit Jahreszahl (`#2021`) führen zum Album dieses Jahres.
 - Die Achse zeigt die Albumcover (`assets/cover/<id>.jpg`, oder Feld `cover` beim Album), das gewählte umrandet. Albumname, Jahr und Abdeckung („x von y Liedern gezählt“) stehen im Tooltip und in der Phasenansicht, nicht an der Achse. Fehlt ein Cover, erscheint bei großen Covern der Kurzname.
-- Cover: aus dem Cover Art Archive (MusicBrainz), 250 px, Rechte bei Band und Label; Verwendung vom Projektverantwortlichen freigegeben.
+- Cover: aus dem Cover Art Archive (MusicBrainz), 250 px, Rechte bei Band und Label; Verwendung vom Projektverantwortlichen freigegeben. Ausnahme: Das Cover von „Revolution!“ ist ein eigenes Foto des Projektverantwortlichen.
 - Die Liedliste einer Phase zeigt bei jedem Lied das Erscheinungsjahr. Die Übersicht „Alle Schalalas“ ist nach Phasen gegliedert.
 - Absolute Zahlen, keine Normierung pro Lied. Den Umschalter „Ø je Lied“ gibt es nicht mehr (17.10.2026): Bei lückenhaften Phasen war auch der Durchschnitt verzerrt, und er machte die Seite schwerer verständlich.
 - Zähl mit auf der Startseite: Knopf neben dem Introtext mit der Zahl offener eigener Lieder; unter dem Diagramm „Hier fehlen noch Zählungen“ für jede Albumphase, in der weniger als die Hälfte der gezeigten Lieder gezählt ist, mit Link `zaehlen.html?album=<id>`; auf dem Handy ein fester Knopf unten, sobald der obere aus dem Bild ist.
@@ -113,6 +113,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `daten/shalalameter-daten.json` | **die Daten**; alles, was die Seite zeigt |
 | `tests/core.test.js` | 32 Tests: Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
 | `tools/alben-2026-10-16.js` | einmaliges Skript: Alben und Phasen-Überschreibungen angelegt (Dokumentation, nicht erneut ausführen) |
+| `tools/booklet-revolution-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für „Revolution!“ (Dokumentation, nicht erneut ausführen) |
 | `tools/sprache-2026-10-16.js` | einmaliges Skript: Schreibweise „Schalala“, Anzeigenamen, Untertitel, Steckbriefe (Dokumentation, nicht erneut ausführen) |
 | `zaehlen.html`, `assets/zaehlen.js` | Formular „Zähl mit“ für Fanzählungen |
 | `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
@@ -186,4 +187,4 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 7. Endgültige Sprache: „Schalala“, Unterzeile, Familiennamen mit Steckbriefen, „Über das Schalalameter“, Schlusszeile „Laute gegen die Schwerkraft.“
 8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).
 9. Fanzählungen: Formular „Zähl mit“, Konsens aus Fanstimmen, Supabase als Speicher.
-10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum.
+10. Album „Revolution!“ (2026) ergänzt: 11 neue Lieder, noch ohne Zählung. Der zwölfte Titel, „Nudeln mit Tomatensoße“, stand schon auf Universum (2024); dort ist Revolution! unter `auch_auf` vermerkt, das Lied bleibt in der Phase Universum. Danach nach dem Booklet gezählt, Cover durch ein eigenes Foto ersetzt.
