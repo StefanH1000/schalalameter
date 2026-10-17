@@ -8,23 +8,19 @@
 <meta property="og:title" content="Fortuna Ehrenfeld Schalalameter">
 <meta property="og:description" content="Piu piu, Schalala &amp; Co.: die Laute aller Fortuna-Ehrenfeld-Lieder auf einer Zeitleiste.">
 <link rel="preload" href="assets/fonts/shrikhand-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=202610170448">
+<link rel="stylesheet" href="assets/style.css?v=202610170505">
 </head>
 <body>
 <div class="wrap">
   <section class="hero" aria-labelledby="h1">
     <div class="hero-top">
       <div>
-        <div class="eyebrow">Piu piu, Schalala &amp; Co. · Lautmalerei über die Jahre</div>
+        <div class="eyebrow">Piu piu, Schalala &amp; Co. · Lautmalerei in 10 Jahren Fortuna Ehrenfeld</div>
         <h1 id="h1">Fortuna Ehrenfeld <em>Schalalameter</em></h1>
         <p class="subline">Sprache von vor und nach der Sprache.</p>
-        <p class="lede">Wie oft kommen die Laute in den Liedern einer Albumphase vor? Die Kurven zeigen die Laute nach Familien gruppiert. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief, ein Klick auf ein Album zeigt dessen Lieder.</p>
-      </div>
-      <div class="hero-actions">
-        <a class="btn primary" href="zaehlen.html">Zähl mit</a>
-        <div class="seg" role="group" aria-label="Wert">
-          <button type="button" id="mode-sum" aria-pressed="true">Summe</button>
-          <button type="button" id="mode-avg" aria-pressed="false">Ø je Lied</button>
+        <div class="intro">
+          <p class="lede">Wie oft kommen die Laute in den Liedern einer Albumphase vor? Die Kurven zeigen die Laute nach Familien gruppiert. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief, ein Klick auf ein Album zeigt dessen Lieder.</p>
+          <a class="cta" id="cta" href="zaehlen.html">Zähl mit <span class="cta-n" id="cta-n" hidden></span></a>
         </div>
       </div>
     </div>
@@ -34,6 +30,7 @@
       <svg id="chart" role="group" aria-label="Gestapelte Kurven: Schalalas je Albumphase"></svg>
       <div class="tip" id="tip" hidden></div>
     </div>
+    <div class="luecken" id="luecken" hidden></div>
     <section class="steckbrief" id="detail" aria-live="polite" hidden></section>
     <p class="countnote"><strong>Gezählt wird, was kein Wort mehr schafft.</strong><span>Eine Lautfolge zählt einmal. Komma und Zeilenumbruch trennen Lautfolgen.</span></p>
     <div class="notice" id="notice" hidden></div>
@@ -41,17 +38,6 @@
 
   <div class="dataline">
     <div class="stats" id="stats" aria-live="polite"></div>
-    <div class="filters">
-      <fieldset id="typ-filter"><legend>Zeigen</legend></fieldset>
-      <label class="inline-label">Sicherheit
-        <select id="f-sicher">
-          <option value="1">alle</option>
-          <option value="2">ab mittel</option>
-          <option value="3">nur hoch</option>
-        </select>
-      </label>
-      <label class="pill" title="Wo ein Text nur „(2x)“ oder „Refrain“ enthält, die ausgeschriebene Zahl verwenden"><input type="checkbox" id="f-aufl"> Refrains ausgeschrieben</label>
-    </div>
   </div>
 
   <section class="panel period" aria-live="polite" aria-labelledby="period-h">
@@ -93,15 +79,16 @@
 
   <p class="closing">Laute gegen die Schwerkraft.</p>
 
+  <a class="cta cta-fest" id="cta-fest" href="zaehlen.html" hidden>Zähl mit <span class="cta-n" id="cta-fest-n" hidden></span></a>
   <footer class="site-foot">
     <span>Fanprojekt</span>
     <a href="impressum.html">Impressum</a>
     <a href="datenschutz.html">Datenschutz</a>
   </footer>
 </div>
-<script src="assets/core.js?v=202610170448"></script>
-<script src="assets/supabase-config.js?v=202610170448"></script>
-<script src="assets/fans.js?v=202610170448"></script>
-<script src="assets/app.js?v=202610170448"></script>
+<script src="assets/core.js?v=202610170505"></script>
+<script src="assets/supabase-config.js?v=202610170505"></script>
+<script src="assets/fans.js?v=202610170505"></script>
+<script src="assets/app.js?v=202610170505"></script>
 </body>
 </html>

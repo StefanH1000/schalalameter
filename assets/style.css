@@ -140,7 +140,24 @@ body{font-variant-numeric:tabular-nums}
 .steckbrief .hint{margin:0}
 
 /* Fanzählungen */
-.hero-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.intro{display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:6px}
+.intro .lede{margin:0; flex:1 1 420px}
+.cta{display:inline-flex; align-items:center; gap:10px; min-height:52px; padding:0 22px; border-radius:14px; background:var(--accent); color:#fff; font-size:18px; font-weight:700; text-decoration:none; white-space:nowrap}
+.cta:hover{filter:brightness(1.08)}
+.cta-n{font-size:14px; font-weight:600; background:rgba(255,255,255,.2); border-radius:999px; padding:3px 10px}
+@media (prefers-color-scheme: dark){ .cta{color:#22192b} .cta-n{background:rgba(0,0,0,.12)} }
+/* Handy: fester Knopf unten, sobald der obere aus dem Bild ist */
+.cta-fest{position:fixed; left:16px; right:16px; bottom:calc(14px + env(safe-area-inset-bottom, 0px)); justify-content:center; border-radius:999px; box-shadow:0 6px 18px rgba(163,36,106,.35); z-index:20}
+@media (min-width:701px){ .cta-fest{display:none!important} }
+@media (max-width:700px){ body:has(#cta-fest) .wrap{padding-bottom:96px} }
+.luecken{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+.luecken > span{font-size:14px; font-weight:700}
+.luecken a{display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:48px; padding:6px 14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; text-decoration:none; color:var(--ink)}
+.luecken a:hover{border-color:var(--ink-2)}
+.luecken b{display:block; font-size:14px}
+.luecken small{display:block; font-size:13px; color:var(--ink-2)}
+.luecken .go{font-size:14px; font-weight:700; color:var(--accent); white-space:nowrap}
+@media (max-width:700px){ .luecken{flex-direction:column; align-items:stretch} }
 .chip .fanN{margin-left:4px; font-size:11px; color:var(--muted)}
 .fanTot{color:var(--accent); font-weight:600}
 .zaehlmit{color:var(--accent); font-weight:600; font-size:12px; white-space:nowrap}
@@ -164,9 +181,6 @@ body{font-variant-numeric:tabular-nums}
 .famzoom:hover{color:var(--ink)}
 .famzoom .sw{margin-right:0!important}
 .heat tbody th .sw{margin-right:8px; vertical-align:-1px; width:10px; height:10px}
-.seg{display:inline-flex; border:1px solid var(--line); border-radius:999px; padding:2px; background:var(--surface)}
-.seg button{border:0; background:none; border-radius:999px; padding:5px 12px; font-size:13px; font-weight:600; cursor:pointer; color:var(--ink-2)}
-.seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
 
 .chart-scroll{overflow-x:auto; position:relative; margin:0 -4px; padding:0 4px; min-height:320px}
 #chart{display:block; touch-action:pan-x}
@@ -200,18 +214,13 @@ body{font-variant-numeric:tabular-nums}
   background:var(--accent-soft); border-radius:var(--r); padding:10px 16px; font-size:14px;
 }
 
-/* Datenlage + Filter */
+/* Datenlage */
 .dataline{display:flex; flex-wrap:wrap; gap:12px 28px; align-items:center; justify-content:space-between;
   border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding-block:12px}
 .stats{display:flex; flex-wrap:wrap; gap:6px 22px; font-size:14px; color:var(--ink-2)}
 .stats b{font-family:var(--mono); color:var(--ink); font-variant-numeric:tabular-nums; font-weight:600}
-.filters{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; font-size:13px}
-.filters fieldset{border:0; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px; align-items:center}
-.filters legend{float:left; margin-right:4px; color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.04em}
-.inline-label{display:inline-flex; flex-direction:row; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--ink-2)}
 .pill{display:inline-flex; flex-direction:row; align-items:center; gap:6px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:4px 10px; cursor:pointer; font-weight:600; font-size:13px; color:var(--ink)}
 .pill input{margin:0; accent-color:var(--accent)}
-.filters select{border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:4px 10px; font-weight:600}
 
 /* Zeitabschnitt */
 .panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px}

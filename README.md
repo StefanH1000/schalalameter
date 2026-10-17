@@ -89,7 +89,7 @@ Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: B
 
 Zählregel: Gezählt wird, was kein Wort mehr schafft. Eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („schalala, schalala“ = 2). Das Vorzählen erkennt beide Schreibweisen (Shalala, Schalala, Sha la la, Scha la la) als denselben Laut.
 
-Schreibweise: sichtbar immer „Schalala“. Interne Kennungen, Dateinamen, Repository und URL heißen weiter `shalala` bzw. `shalalameter`.
+Schreibweise: sichtbar immer „Schalala“. Repository und URL heißen `schalalameter` (https://stefanh1000.github.io/schalalameter/), interne Kennungen und Dateinamen weiter `shalala` bzw. `shalalameter`.
 
 ## Schriften
 

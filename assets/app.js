@@ -8,10 +8,10 @@ const $ = id => document.getElementById(id);
 let data = null;
 let detail = null;               // id der Familie, deren Detail offen ist
 let hidden = new Set();          // ausgeblendete Familien
-let mode = 'sum';
-let typeOn = new Set(SM.TYPES.filter(t => t.on).map(t => t.id));
-let minSicher = 1;
-let aufl = false;
+// Die Seite zeigt nur eigene Lieder, jede Sicherheitsstufe und zählt, was im Text steht.
+const typeOn = new Set(['original']);
+const minSicher = 1;
+const aufl = false;
 let sel = null;                  // gewählte Albumphase (id)
 let hoverIdx = null;
 let geo = null;
@@ -103,33 +103,27 @@ function openDetail(id){
   if (detail) $('detail').scrollIntoView({block: 'nearest', behavior: reduceMotion() ? 'auto' : 'smooth'});
 }
 
-/* ---------- Filter ---------- */
-function renderTypeFilter(){
-  const fs = $('typ-filter');
-  for (const t of SM.TYPES) fs.insertAdjacentHTML('beforeend', `<label class="pill"><input type="checkbox" id="typ-${t.id}" data-typ="${t.id}" ${typeOn.has(t.id) ? 'checked' : ''}> ${t.name}</label>`);
-}
-$('typ-filter').addEventListener('change', e => {
-  const t = e.target.dataset.typ; if (!t) return;
-  e.target.checked ? typeOn.add(t) : typeOn.delete(t); render();
-});
-$('f-sicher').addEventListener('change', e => { minSicher = +e.target.value; render(); });
-$('f-aufl').addEventListener('change', e => { aufl = e.target.checked; render(); });
-for (const [id, m] of [['mode-sum', 'sum'], ['mode-avg', 'avg']]) {
-  $(id).addEventListener('click', () => {
-    mode = m; ['mode-sum', 'mode-avg'].forEach(b => $(b).setAttribute('aria-pressed', b === id)); render();
-  });
-}
-
 function renderStats(songs){
   const shown = songs.filter(s => s.shown);
   const counted = shown.filter(s => s.counted).length;
   const noText = shown.filter(s => !s.best).length;
-  const low = shown.filter(s => s.lowConf).length;
-  const hiddenTyp = songs.filter(s => !typeOn.has(s.typ)).length;
   $('stats').innerHTML = `<span><b>${shown.length}</b> Lieder</span><span><b>${counted}</b> gezählt</span><span><b>${noText}</b> ohne Text</span>`
-    + `<span><b>${sounds().length}</b> Schalalas in ${fams().length} Familien</span>`
-    + (low ? `<span><b>${low}</b> unter Sicherheitsschwelle</span>` : '')
-    + (hiddenTyp ? `<span class="muted">${hiddenTyp} ausgeblendet (Typ)</span>` : '');
+    + `<span><b>${sounds().length}</b> Schalalas in ${fams().length} Familien</span>`;
+}
+
+/* ---------- Zähl mit: Knopf mit offenen Liedern, Albumphasen mit Lücken ---------- */
+// Offen = eigenes Lied ohne jede Zählung. Lücke = Albumphase, in der weniger als die Hälfte der gezeigten Lieder gezählt ist.
+function renderZaehlMit(songs, cols){
+  const offen = songs.filter(s => s.typ === 'original' && !s.best).length;
+  for (const id of ['cta-n', 'cta-fest-n']) { $(id).textContent = `${offen} ${offen === 1 ? 'Lied' : 'Lieder'} offen`; $(id).hidden = !offen; }
+  const gaps = cols.filter(c => c.songs.length && c.counted.length < c.songs.length / 2);
+  $('luecken').innerHTML = gaps.length ? '<span>Hier fehlen noch Zählungen:</span>' + gaps.map(c =>
+    `<a href="zaehlen.html?album=${encodeURIComponent(c.album.id)}"><span><b>${esc(c.album.titel)}</b><small>${c.counted.length ? `nur ${c.counted.length}` : 'noch keins'} von ${c.songs.length} Liedern gezählt</small></span><span class="go">Zähl mit →</span></a>`).join('') : '';
+  $('luecken').hidden = !gaps.length;
+}
+// Fester Knopf auf dem Handy, sobald der obere Knopf aus dem Bild gescrollt ist.
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(([e]) => { $('cta-fest').hidden = e.isIntersecting || e.boundingClientRect.top > 0; }).observe($('cta'));
 }
 
 /* ---------- Legende: Schalter + Lupe je Familie ---------- */
@@ -213,7 +207,7 @@ function renderChart(cols){
   else for (let k = 0; k <= (n - 1) * SUB; k++) ts.push(k / SUB);
   const stacks = ts.map(t => { let acc = 0; return fns.map(fn => (acc += fn(n === 1 ? 0 : t))); });
   const maxT = Math.max(1e-9, ...stacks.map(st => st.length ? st[st.length - 1] : 0));
-  const step = SM.niceStep(Math.max(maxT, mode === 'avg' ? 1 : 4)), top = Math.ceil(maxT / step) * step || step;
+  const step = SM.niceStep(Math.max(maxT, 4)), top = Math.ceil(maxT / step) * step || step;
   const y = v => M.t + ih - (v / top) * ih;
   const xt = t => n === 1 ? M.l + iw / 2 + t * iw : xs(t);
 
@@ -262,7 +256,7 @@ function showTip(i){
   const c = geo.cols[i];
   const rows = visFams().map(f =>
     `<div class="row"><span class="sw" style="background:${color(f.slot)}"></span><span>${esc(short(f))}</span><span>${num(famValue(c.counts, f))}</span></div>`).join('');
-  const meta = `${c.year || ''}${c.songs.length ? ` · ${c.counted.length} von ${c.songs.length} Liedern gezählt` : ' · keine Lieder'}${mode === 'avg' ? ' · Ø je Lied' : ''}`;
+  const meta = `${c.year || ''}${c.songs.length ? ` · ${c.counted.length} von ${c.songs.length} Liedern gezählt` : ' · keine Lieder'}`;
   tip.innerHTML = `<b>${esc(c.album.titel)}</b><div class="meta">${meta}</div>${rows}`;
   tip.hidden = false;
   const wrap = $('chart-wrap'), bx = geo.xs(i);
@@ -490,17 +484,16 @@ function renderTable(cols){
 /* ---------- Gesamtrender ---------- */
 function render(){
   const songs = SM.derive(data, {typeOn, minSicher, aufl});
-  const cols = SM.phaseCols(data, songs, sounds(), mode);
+  const cols = SM.phaseCols(data, songs, sounds(), 'sum');
   if (!cols.some(c => c.key === sel)) {
     let best = null, bv = -1;
     cols.forEach(c => { const v = rankSounds().reduce((t, s) => t + c.counts[s.id], 0); if (v > bv) { bv = v; best = c.key; } });
     sel = best;
   }
   hoverIdx = null; $('tip').hidden = true;
-  renderStats(songs); renderLegend(songs); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
+  renderStats(songs); renderZaehlMit(songs, cols); renderLegend(songs); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
 }
 
-renderTypeFilter();
 loadData().then(d => {
   data = d;
   readHash();

@@ -6,15 +6,15 @@ Stand: 17.10.2026
 
 Das Schalalameter zeigt, wie oft Fortuna Ehrenfeld lautmalerische Laute wie „Schalala“, „Da-da“ oder „Oh-oh-oh“ singen, und wie sich das über die Albumphasen verändert. Unterzeile: „Sprache von vor und nach der Sprache.“ Einstieg ist ein Diagramm mit gestapelten Kurven über neun Albumphasen. Ein Klick auf ein Album listet die Lieder dieser Phase, sortiert nach Anzahl der Schalalas. Ein Klick auf eine Familie blendet sie ein oder aus, die Lupe daneben öffnet ihren Steckbrief. Darunter stehen die Übersicht „Alle Schalalas“ und der Abschnitt „Über das Schalalameter“.
 
-**Schreibweise:** sichtbar immer „Schalala“, in der Bedienung heißen die Laute „Schalalas“. Interne Kennungen, Dateinamen, Repository und URL bleiben `shalala` / `shalalameter`. Die Texte der Seite (Unterzeile, Zählerklärung, Steckbriefe, „Über“, Schlusszeile) sind vom Projektverantwortlichen festgelegt und werden nicht umformuliert.
+**Schreibweise:** sichtbar immer „Schalala“, in der Bedienung heißen die Laute „Schalalas“. Repository und URL heißen seit 17.10.2026 `schalalameter` (alte Adresse ohne Weiterleitung). Interne Kennungen, Dateinamen und der lokale Ordner bleiben `shalala` / `shalalameter`. Die Texte der Seite (Unterzeile, Zählerklärung, Steckbriefe, „Über“, Schlusszeile) sind vom Projektverantwortlichen festgelegt und werden nicht umformuliert.
 
 Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffentlicht werden nur Zählungen, keine Liedtexte.
 
 | | |
 |---|---|
-| Live-Seite | https://stefanh1000.github.io/shalalameter/ |
-| Werkstatt (intern, nicht verlinkt) | https://stefanh1000.github.io/shalalameter/werkstatt.html |
-| Repository | https://github.com/StefanH1000/shalalameter (öffentlich, Branch `main`) |
+| Live-Seite | https://stefanh1000.github.io/schalalameter/ |
+| Werkstatt (intern, nicht verlinkt) | https://stefanh1000.github.io/schalalameter/werkstatt.html |
+| Repository | https://github.com/StefanH1000/schalalameter (öffentlich, Branch `main`) |
 | Hosting | GitHub Pages, baut automatisch bei jedem Push auf `main` |
 | Lokaler Ordner | `C:\Users\hoch\shalalameter` |
 
@@ -23,7 +23,7 @@ Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffe
 Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach online verfügbaren Liedtexten (Shazam/Apple, sonichits.com/LyricFind, songtexte.com, lyricstranslate.com).
 
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
-- Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Standardmäßig zeigt die Seite nur eigene Lieder.
+- Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **29 Laute in 7 Familien**, alle freigegeben:
 
@@ -47,7 +47,7 @@ Auffällig: Schalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer
 - Eine Lautfolge zählt einmal: „piu piu piu“ = 1.
 - Komma und Zeilenumbruch trennen Lautfolgen: „schalala, schalala“ = 2.
 - Das Vorzählen erkennt Shalala, Schalala, Sha la la und Scha la la als denselben Laut.
-- Gezählt wird, was im Text steht. Wo ein Text nur „(2x)“ oder „Refrain“ enthält, kann eine aufgelöste Zahl in `anzahl_aufgeloest` stehen. Die Seite nutzt sie nur, wenn der Filter „Refrains ausgeschrieben“ aktiv ist.
+- Gezählt wird, was im Text steht. Wo ein Text nur „(2x)“ oder „Refrain“ enthält, kann eine aufgelöste Zahl in `anzahl_aufgeloest` stehen. Die Startseite nutzt sie nicht mehr (der Filter „Refrains ausgeschrieben“ ist entfernt); die Daten bleiben für später erhalten.
 - Ein Laut im Liedtitel zählt nicht.
 
 **Welche Zählung gilt, wenn es mehrere gibt** (`bestOf` in `assets/core.js`), in dieser Reihenfolge:
@@ -61,7 +61,7 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 
 **Fanzählungen** (Supabase, Region Frankfurt)
 
-- Seite `zaehlen.html` („Zähl mit“): Unter 900 px Breite vier Schritte nacheinander (Lied, Schalala, Mitzählen, Prüfen und Abschicken; die Zurück-Taste des Handys geht einen Schritt zurück), ab 900 px drei Spalten nebeneinander. Lieder mit Suche und Filter „Noch ohne Zählung / Alle“, nach Album mit Cover; Laute als farbige Knöpfe je Familie, dazu „Neuen Laut vorschlagen“; Mitzählen per großem Knopf oder Leertaste, „Einen zurück“, „Von vorn“, „Kommt nicht vor (0)“; Grundlage Gehör oder Booklet, Spitzname (im Browser gemerkt), zufällige Geräte-Kennung, unsichtbares Feld gegen Bots. Vorauswahl per `zaehlen.html?lied=…`. Der aktuelle Stand erscheint erst nach dem Absenden, danach „Noch ein Schalala in diesem Lied“ oder „Nächstes Lied ohne Zählung“. Entwurf: Design-Canvas https://claude.ai/artifact/5865AiNyciG9iNHs33QLHA.
+- Seite `zaehlen.html` („Zähl mit“): Unter 900 px Breite vier Schritte nacheinander (Lied, Schalala, Mitzählen, Prüfen und Abschicken; die Zurück-Taste des Handys geht einen Schritt zurück), ab 900 px drei Spalten nebeneinander. Nur eigene Lieder, mit Suche und Filter „Noch ohne Zählung / Alle“ (dazu ein Album über `?album=<id>`), nach Album mit Cover; Laute als farbige Knöpfe je Familie, dazu „Neuen Laut vorschlagen“; Mitzählen per großem Knopf oder Leertaste, „Einen zurück“, „Von vorn“, „Kommt nicht vor (0)“; Grundlage Gehör oder Booklet, Spitzname (im Browser gemerkt), zufällige Geräte-Kennung, unsichtbares Feld gegen Bots. Vorauswahl per `zaehlen.html?lied=…`. Der aktuelle Stand erscheint erst nach dem Absenden, danach „Noch ein Schalala in diesem Lied“ oder „Nächstes Lied ohne Zählung“. Entwurf: Design-Canvas https://claude.ai/artifact/5865AiNyciG9iNHs33QLHA.
 - Konsens je Lied und Laut: Die bisherige beste Zählung aus der Datendatei (Onlinetext) ist die erste Stimme. Unter 3 Stimmen Durchschnitt aufgerundet, ab 3 der häufigste Wert, bei Gleichstand Median aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei, ohne Datendatei-Zählung 0. Rangfolge in `bestOf`: Booklet vor Fankonsens vor „nach Gehör“ (Werkstatt) vor Onlinetext.
 - Die Startseite zeigt „aus N Fanzählungen“ am Lied und „aus n“ am Laut, sobald der Fankonsens die angezeigte Zählung ist.
 - Datenbank (`supabase/tabelle.sql`): Tabelle `fan_zaehlungen` mit RLS und ohne Policies; anon darf nur `zaehlung_einreichen` ausführen (prüft, ersetzt je Gerät, Lied und Laut, höchstens 30 je Gerät und Stunde) und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne geraet_id und spitzname, ohne gesperrte). Ein Vorschlag hat eine leere laut_id und den Laut als Text in `vorschlag`; ein Gerät kann mehrere Vorschläge je Lied machen, derselbe Text (ohne Groß-/Kleinschreibung) ersetzt den früheren.
@@ -93,7 +93,9 @@ Eigene Lieder je Phase (alle/gezählt): Coolness 12/11, Hey Sexy 13/13, Helm ab 
 - Die Achse zeigt die Albumcover (`assets/cover/<id>.jpg`, oder Feld `cover` beim Album), das gewählte umrandet. Albumname, Jahr und Abdeckung („x von y Liedern gezählt“) stehen im Tooltip und in der Phasenansicht, nicht an der Achse. Fehlt ein Cover, erscheint bei großen Covern der Kurzname.
 - Cover: aus dem Cover Art Archive (MusicBrainz), 250 px, Rechte bei Band und Label; Verwendung vom Projektverantwortlichen freigegeben.
 - Die Liedliste einer Phase zeigt bei jedem Lied das Erscheinungsjahr. Die Übersicht „Alle Schalalas“ ist nach Phasen gegliedert.
-- Absolute Zahlen, keine Normierung pro Lied (außer im Umschalter „Ø je Lied“).
+- Absolute Zahlen, keine Normierung pro Lied. Den Umschalter „Ø je Lied“ gibt es nicht mehr (17.10.2026): Bei lückenhaften Phasen war auch der Durchschnitt verzerrt, und er machte die Seite schwerer verständlich.
+- Zähl mit auf der Startseite: Knopf neben dem Introtext mit der Zahl offener eigener Lieder; unter dem Diagramm „Hier fehlen noch Zählungen“ für jede Albumphase, in der weniger als die Hälfte der gezeigten Lieder gezählt ist, mit Link `zaehlen.html?album=<id>`; auf dem Handy ein fester Knopf unten, sobald der obere aus dem Bild ist.
+- Oberzeile: „Piu piu, Schalala & Co. · Lautmalerei in 10 Jahren Fortuna Ehrenfeld“.
 
 ## Aufbau
 
@@ -135,7 +137,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 - **Schriften selbst gehostet**, damit keine Verbindung zu Google Fonts entsteht (DSGVO). Die Seite setzt keine Cookies und nutzt kein Tracking.
 - **GitHub Pages mit öffentlichem Repository**, weil das kostenlos ist. Das Repository enthält nur Zahlen und Code.
 - **Lautfamilien statt 29 einzelner Kurven:** Mehr als 8 Farben sind nicht unterscheidbar. Die Einteilung stammt von Claude und ist eine inhaltliche Setzung, die das Team anpassen kann.
-- **Cover, Übersetzungen und unklare Fälle** bleiben in den Daten, werden aber standardmäßig ausgeblendet.
+- **Cover, Übersetzungen und unklare Fälle** bleiben in den Daten, werden auf der Seite aber nicht gezeigt.
 
 ## Offene Punkte
 
@@ -160,7 +162,7 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - [ ] Formular auf dem Handy durchprobieren.
 
 **Optional**
-- Eigene Domain statt `stefanh1000.github.io` (z. B. shalalameter.de).
+- Eigene Domain statt `stefanh1000.github.io` (z. B. schalalameter.de).
 - Vorschaubild für Social Media.
 
 ## Bekannte Einschränkungen

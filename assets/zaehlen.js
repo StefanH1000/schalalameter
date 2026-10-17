@@ -7,7 +7,7 @@ const $ = id => document.getElementById(id);
 const breit = matchMedia('(min-width: 900px)');
 let data = null, rows = [], snds = [], fams = [];
 let liste = [];               // alle Lieder mit Album, Summe und Status, sortiert
-const st = {lied: null, laut: null, neu: false, filter: 'offen', suche: '', schritt: 1};
+const st = {lied: null, laut: null, neu: false, filter: 'offen', suche: '', schritt: 1, album: null};
 
 function store(key, val) {
   try { if (val === undefined) return localStorage.getItem(key); localStorage.setItem(key, val); } catch (e) { return null; }
@@ -40,6 +40,12 @@ async function init() {
   baueListe();
   renderLaute();
   $('name').value = store('schalala-spitzname') || '';
+  // Vorauswahl eines Albums (Link aus den Lücken auf der Startseite): nur dessen Lieder zeigen.
+  const alb = new URLSearchParams(location.search).get('album');
+  if (alb && liste.some(x => x.album && x.album.id === alb)) {
+    st.album = alb;
+    if (!liste.some(x => x.offen && x.album && x.album.id === alb)) st.filter = 'alle';
+  }
   const want = new URLSearchParams(location.search).get('lied');
   const vor = want && liste.find(x => x.l.id === want);
   if (vor) {
@@ -58,7 +64,7 @@ function baueListe() {
   const mit = SM.withFans(data, rows);
   const byLied = new Map();
   for (const z of mit.zaehlungen) if (SM.countable(z)) (byLied.get(z.lied_id) || byLied.set(z.lied_id, []).get(z.lied_id)).push(z);
-  liste = data.lieder.map(l => {
+  liste = data.lieder.filter(l => l.typ === 'original').map(l => {
     const best = SM.bestOf(byLied.get(l.id) || []);
     const p = SM.phaseInfo(data, l);
     return {l, album: p ? p.album : null, offen: !best, summe: best ? snds.reduce((t, s) => t + SM.value(best, s.id, false), 0) : 0};
@@ -74,12 +80,16 @@ function renderFilter() {
   $('f-alle').textContent = `Alle · ${liste.length}`;
   $('f-offen').setAttribute('aria-pressed', st.filter === 'offen');
   $('f-alle').setAttribute('aria-pressed', st.filter === 'alle');
+  const a = st.album && (liste.find(x => x.album && x.album.id === st.album) || {}).album;
+  $('f-album').hidden = !a;
+  if (a) { $('f-album').textContent = `${a.titel} ×`; $('f-album').setAttribute('aria-label', `Nur ${a.titel}, Filter entfernen`); }
 }
 const norm = s => String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
 function renderLieder() {
   const q = norm(st.suche.trim());
   // Bei einer Suche werden alle Lieder durchsucht, unabhängig vom Filter.
-  const sicht = liste.filter(x => q ? norm(x.l.titel).includes(q) : st.filter === 'alle' || x.offen);
+  const sicht = liste.filter(x => q ? norm(x.l.titel).includes(q)
+    : (st.filter === 'alle' || x.offen) && (!st.album || (x.album && x.album.id === st.album)));
   const gruppen = new Map();
   for (const x of sicht) {
     const k = x.album ? x.album.id : '';
@@ -93,7 +103,7 @@ function renderLieder() {
       st.filter === 'offen' && !q ? `${offen} von ${alle.length} noch offen` : `${alle.length - offen} von ${alle.length} gezählt`].filter(Boolean).join(' · ');
     return `<div><div class="album-kopf">${coverImg(g.album)}<div><b>${esc(g.album ? g.album.titel : 'Ohne Album')}</b><small>${esc(info)}</small></div></div>
       <div class="lieder">${g.lieder.map(x => `<button type="button" data-lied="${esc(x.l.id)}" aria-pressed="${x.l.id === st.lied}">
-        <span>${esc(x.l.titel)}${x.l.typ && x.l.typ !== 'original' ? ` <span class="typ">· ${esc(SM.TYPE_LABEL[x.l.typ] || x.l.typ)}</span>` : ''}</span>
+        <span>${esc(x.l.titel)}</span>
         ${x.offen ? '<span class="markierung offen">noch offen</span>' : `<span class="markierung">${x.summe} ${plural(x.summe)}</span>`}</button>`).join('')}</div></div>`;
   }).join('');
   $('liste').innerHTML = html || `<p class="leer">${q ? 'Kein Lied gefunden.' : 'Alle Lieder sind schon gezählt. Unter „Alle“ kannst du nachzählen.'}</p>`;
@@ -108,6 +118,7 @@ $('liste').addEventListener('click', e => {
 $('suche').addEventListener('input', e => { st.suche = e.target.value; renderLieder(); });
 $('f-offen').addEventListener('click', () => { st.filter = 'offen'; renderFilter(); renderLieder(); });
 $('f-alle').addEventListener('click', () => { st.filter = 'alle'; renderFilter(); renderLieder(); });
+$('f-album').addEventListener('click', () => { st.album = null; renderFilter(); renderLieder(); });
 
 function waehleLied(id) {
   if (st.lied !== id) setAnzahl(0);
