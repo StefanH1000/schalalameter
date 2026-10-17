@@ -67,7 +67,7 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 - Datenbank (`supabase/tabelle.sql`): Tabelle `fan_zaehlungen` mit RLS und ohne Policies; anon darf nur `zaehlung_einreichen` ausführen (prüft, ersetzt je Gerät, Lied und Laut, höchstens 30 je Gerät und Stunde) und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne geraet_id und spitzname, ohne gesperrte). Ein Vorschlag hat eine leere laut_id; ein zweiter Vorschlag desselben Geräts zum selben Lied ersetzt deshalb den ersten.
 - Sperren: Table Editor, Spalte `gesperrt` auf true, oder `update public.fan_zaehlungen set gesperrt = true where id = …;`. Gesperrte Einträge bleiben auch bei erneuter Einreichung gesperrt.
 - Werkstatt: zeigt Vorschläge von Fans als Kandidaten, „Als Laut anlegen“ übernimmt sie in den Entwurf.
-- Datenschutz: Abschnitt zu Supabase. Mit Supabase sollte ein Vertrag zur Auftragsverarbeitung (DPA) abgeschlossen sein; die Seite verweist auf Art. 28 DSGVO.
+- Datenschutz: Abschnitt zu Supabase. Der Vertrag zur Auftragsverarbeitung (DPA) ist Teil der Nutzungsbedingungen von Supabase und gilt ohne eigene Unterschrift (Organization settings → Legal Documents → View DPA); die Seite verweist auf Art. 28 DSGVO.
 
 **Albumphasen** (`phaseInfo` in `assets/core.js`)
 
@@ -156,7 +156,7 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 
 **Fanzählungen (Phase 2)**
 - [x] Supabase-Projekt `hyzgqwujbarpofctptmm` (Frankfurt) eingerichtet, `tabelle.sql` ausgeführt, Adresse und publishable key in `assets/supabase-config.js`. Zugriffsrechte am 17.10.2026 geprüft: Einreichen und Ansicht gehen, direkter Zugriff auf die Tabelle wird verweigert.
-- [ ] Vertrag zur Auftragsverarbeitung (DPA) mit Supabase abschließen (Organization settings → Legal Documents).
+- [x] Vertrag zur Auftragsverarbeitung (DPA): bei Supabase Teil der Nutzungsbedingungen, keine eigene Unterschrift nötig.
 - [ ] Formular auf dem Handy durchprobieren.
 
 **Optional**
