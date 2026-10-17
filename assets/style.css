@@ -139,6 +139,12 @@ body{font-variant-numeric:tabular-nums}
 .sb-top3 .y{display:block; font-size:13px; color:var(--ink-2)}
 .steckbrief .hint{margin:0}
 
+/* Fanzählungen */
+.hero-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.chip .fanN{margin-left:4px; font-size:11px; color:var(--muted)}
+.fanTot{color:var(--accent); font-weight:600}
+.zaehlmit{color:var(--accent); font-weight:600; font-size:12px; white-space:nowrap}
+
 /* Unterzeile, Zählerklärung, Über, Schluss */
 .subline{margin:8px 0 0; font-family:var(--display); font-size:clamp(17px, 2.4vw, 22px); color:var(--ink-2); line-height:1.25}
 .countnote{margin:0; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--ink-2); max-width:65ch}

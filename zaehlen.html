@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zähl mit · Schalalameter</title>
+<meta name="description" content="Zähl die Schalalas in einem Lied von Fortuna Ehrenfeld und schick deine Zahl ans Schalalameter.">
+<link rel="stylesheet" href="assets/style.css?v=202610170422">
+<style>
+.zm{display:flex; flex-direction:column; gap:22px; max-width:640px}
+.zm h1{font-family:var(--display); font-weight:400; font-size:clamp(34px, 7vw, 54px); line-height:1}
+.zm .lede{margin:6px 0 0}
+.regel{background:var(--accent-soft); border-radius:var(--r); padding:14px 16px; font-size:17px; line-height:1.45; color:var(--ink); font-weight:600}
+form#zf{display:flex; flex-direction:column; gap:16px}
+.zf-row{display:flex; flex-direction:column; gap:6px}
+.zf-row > .lab{font-size:12px; font-weight:600; color:var(--ink-2); letter-spacing:.02em}
+.zf-row select, .zf-row input[type=text]{border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:10px 12px; font-size:16px; width:100%}
+.stepper{display:flex; align-items:stretch; gap:8px}
+.stepper button{width:56px; min-height:52px; border:1px solid var(--line); background:var(--surface); border-radius:10px; font-size:26px; line-height:1; cursor:pointer; color:var(--ink)}
+.stepper button:hover{border-color:var(--ink-2)}
+.stepper input{width:110px; text-align:center; font-size:26px; font-weight:600; border:1px solid var(--line); background:var(--paper); border-radius:10px; font-variant-numeric:tabular-nums}
+.choice{display:flex; flex-wrap:wrap; gap:8px}
+.choice label{flex-direction:row; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:8px 14px; font-size:15px; color:var(--ink); cursor:pointer}
+.choice input{accent-color:var(--accent); margin:0}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.zf-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.zf-actions .btn.primary{padding:12px 22px; font-size:16px}
+.fehler{color:var(--danger); font-weight:600; font-size:14px; margin:0}
+.ergebnis{display:flex; flex-direction:column; gap:12px}
+.ergebnis h2{font-family:var(--display); font-weight:400; font-size:28px; line-height:1.1}
+.ergebnis .wert{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+.ergebnis .wert b{font-size:44px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
+.gesperrt-hinweis{background:var(--accent-soft); border-radius:var(--r); padding:12px 16px; font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <main class="zm">
+    <p><a href="./">← Zum Schalalameter</a></p>
+    <header>
+      <div class="eyebrow">Schalalameter</div>
+      <h1>Zähl mit</h1>
+      <p class="lede">Hör ein Lied, zähl ein Schalala und schick deine Zahl. Jede Zählung fließt in die Zahlen auf der Seite ein.</p>
+    </header>
+
+    <p class="regel">Eine Lautfolge ohne Pause zählt einmal. Nach einer Pause beginnt eine neue.</p>
+
+    <p class="gesperrt-hinweis" id="aus" hidden>Das Einreichen ist noch nicht freigeschaltet. Du kannst das Formular ansehen, aber noch nichts abschicken.</p>
+
+    <section class="panel" id="formular">
+      <form id="zf" autocomplete="off" novalidate>
+        <div class="zf-row">
+          <label class="lab" for="zf-lied">Lied</label>
+          <select id="zf-lied" required></select>
+        </div>
+        <div class="zf-row">
+          <label class="lab" for="zf-laut">Schalala</label>
+          <select id="zf-laut" required></select>
+        </div>
+        <div class="zf-row" id="zf-neu-row" hidden>
+          <label class="lab" for="zf-neu">Wie klingt der neue Laut?</label>
+          <input type="text" id="zf-neu" maxlength="60" placeholder="z. B. Peng peng">
+        </div>
+        <div class="zf-row">
+          <span class="lab" id="zf-anzahl-lab">Wie oft?</span>
+          <div class="stepper" role="group" aria-labelledby="zf-anzahl-lab">
+            <button type="button" id="zf-minus" aria-label="Eins weniger">−</button>
+            <input type="number" id="zf-anzahl" min="0" max="200" step="1" value="0" inputmode="numeric" aria-labelledby="zf-anzahl-lab">
+            <button type="button" id="zf-plus" aria-label="Eins mehr">+</button>
+          </div>
+        </div>
+        <div class="zf-row">
+          <span class="lab" id="zf-grund-lab">Gezählt nach</span>
+          <div class="choice" role="radiogroup" aria-labelledby="zf-grund-lab">
+            <label><input type="radio" name="grundlage" id="zf-gehoert" value="gehoert" checked> gehört</label>
+            <label><input type="radio" name="grundlage" id="zf-booklet" value="booklet"> Booklet</label>
+          </div>
+        </div>
+        <div class="zf-row">
+          <label class="lab" for="zf-name">Spitzname</label>
+          <input type="text" id="zf-name" maxlength="40" required placeholder="wird nicht veröffentlicht">
+        </div>
+        <div class="hp" aria-hidden="true"><label>Website <input type="text" id="zf-website" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="fehler" id="zf-fehler" role="alert" hidden></p>
+        <div class="zf-actions">
+          <button type="submit" class="btn primary" id="zf-senden">Zählung abschicken</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel ergebnis" id="ergebnis" aria-live="polite" hidden></section>
+  </main>
+  <footer class="site-foot"><a href="./">Schalalameter</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
+</div>
+<script src="assets/core.js?v=202610170422"></script>
+<script src="assets/supabase-config.js?v=202610170422"></script>
+<script src="assets/fans.js?v=202610170422"></script>
+<script src="assets/zaehlen.js?v=202610170422"></script>
+</body>
+</html>

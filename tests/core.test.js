@@ -254,6 +254,72 @@ test('kein sichtbarer Text enthält noch „Shalala“', () => {
   for (const t of sichtbar) assert.ok(!/shalala/i.test(t || ''), `sichtbarer Datentext enthält „Shalala“: ${t}`);
 });
 
+/* ---------- Fanzählungen ---------- */
+test('Konsens unter 3 Stimmen: Durchschnitt, aufgerundet', () => {
+  assert.strictEqual(SM.consensus([4]), 4);
+  assert.strictEqual(SM.consensus([4, 5]), 5);
+  assert.strictEqual(SM.consensus([2, 3]), 3);
+  assert.strictEqual(SM.consensus([0, 1]), 1);
+  assert.strictEqual(SM.consensus([]), null);
+});
+
+test('Konsens ab 3 Stimmen: häufigster Wert', () => {
+  assert.strictEqual(SM.consensus([9, 9, 3]), 9);
+  assert.strictEqual(SM.consensus([1, 16, 16, 16, 2]), 16);
+});
+
+test('Konsens bei Gleichstand: Median aller Stimmen, aufgerundet', () => {
+  assert.strictEqual(SM.consensus([1, 2, 3]), 2);
+  assert.strictEqual(SM.consensus([4, 4, 7, 7]), 6);
+  assert.strictEqual(SM.consensus([1, 1, 2, 2, 9]), 2);
+});
+
+const FANDATA = () => SM.normalize({
+  laute: [{id: 'a', name: 'A', status: 'freigegeben'}, {id: 'b', name: 'B', status: 'freigegeben'}],
+  lieder: [{id: 'l1', erstveroeffentlichung: '2020-01-01', typ: 'original'}, {id: 'l2', erstveroeffentlichung: '2020-01-01', typ: 'original'}],
+  zaehlungen: [
+    {lied_id: 'l1', grundlage: 'online_text', sicherheit: 'mittel', status: 'gezaehlt', werte: {a: 4, b: 1}},
+    {lied_id: 'l2', grundlage: 'online_text', status: 'kein_text_gefunden', werte: null},
+  ],
+});
+
+test('Fankonsens: Onlinezählung ist die erste Stimme, Laute ohne Fanstimme bleiben', () => {
+  const d = FANDATA();
+  const [z] = SM.fanZaehlungen(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 8}]);
+  assert.strictEqual(z.grundlage, 'fankonsens');
+  assert.deepStrictEqual(z.werte, {a: 6, b: 1});       // (4 + 8) / 2 = 6; b unverändert
+  assert.deepStrictEqual(z.fan, {a: 1});
+  const drei = SM.fanZaehlungen(d, [8, 8].map(n => ({lied_id: 'l1', laut_id: 'a', anzahl: n})))[0];
+  assert.strictEqual(drei.werte.a, 8);                   // Stimmen 4, 8, 8: häufigster Wert
+  assert.strictEqual(drei.sicherheit, 'hoch');
+  const ohneText = SM.fanZaehlungen(d, [{lied_id: 'l2', laut_id: 'b', anzahl: 3}])[0];
+  assert.deepStrictEqual(ohneText.werte, {a: 0, b: 3});  // ohne Onlinezählung keine Onlinestimme
+});
+
+test('Fankonsens: unbekannte IDs, Vorschläge und ungültige Anzahlen zählen nicht', () => {
+  const d = FANDATA();
+  const rows = [
+    {lied_id: 'gibts-nicht', laut_id: 'a', anzahl: 5},
+    {lied_id: 'l1', laut_id: 'gibts-nicht', anzahl: 5},
+    {lied_id: 'l1', laut_id: '', vorschlag: 'peng', anzahl: 2},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 500},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 2.5},
+  ];
+  assert.deepStrictEqual(SM.fanZaehlungen(d, rows), []);
+  assert.deepStrictEqual(SM.fanVorschlaege(d, rows).map(v => [v.ph, v.n]), [['peng', 1]]);
+});
+
+test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
+  const d = FANDATA();
+  const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);
+  const best = l => SM.bestOf(mitFans.zaehlungen.filter(z => z.lied_id === l));
+  assert.strictEqual(best('l1').grundlage, 'fankonsens');
+  assert.strictEqual(best('l1').werte.a, 7);
+  mitFans.zaehlungen.push({lied_id: 'l1', grundlage: 'booklet', sicherheit: 'niedrig', status: 'gezaehlt', werte: {a: 2, b: 0}});
+  assert.strictEqual(best('l1').grundlage, 'booklet');
+  assert.strictEqual(d.zaehlungen.length, 2, 'Datendatei bleibt unverändert');
+});
+
 test('veröffentlichte Datendatei ist gültig', () => {
   const d = SM.normalize(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'daten', 'shalalameter-daten.json'), 'utf8')));
   assert.ok(d, 'Datei hat lieder und zaehlungen');

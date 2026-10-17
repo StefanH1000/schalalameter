@@ -176,6 +176,32 @@ $('open-list').addEventListener('click', e => {
   $('cf-grund').focus({preventScroll: true});
 });
 
-function render(){ renderCands(); renderCountForm(); renderPhase(); renderOpen(); }
+/* ---------- Vorschläge von Fans (aus Supabase) ---------- */
+let fanRows = null;
+function renderFanCands(){
+  const box = $('fan-cands');
+  if (fanRows === null) {
+    box.innerHTML = `<li class="empty muted">${window.SchalalaFans && SchalalaFans.ready() ? 'Fanzählungen konnten nicht geladen werden.' : 'Supabase ist noch nicht eingerichtet (assets/supabase-config.js).'}</li>`;
+    return;
+  }
+  const known = new Set(SM.sounds(data).map(s => s.name.toLowerCase()));
+  const list = SM.fanVorschlaege(data, fanRows).filter(v => !known.has(v.ph.toLowerCase()));
+  const titel = id => (data.lieder.find(l => l.id === id) || {}).titel || id;
+  box.innerHTML = list.length ? list.map((v, i) => `<li>
+    <span><span class="ph">${esc(v.ph)}</span> <span class="tag">Fans</span><br><span class="ct">${v.n} ${v.n === 1 ? 'Vorschlag' : 'Vorschläge'}, zusammen ${v.total}× · ${[...v.songs].map(titel).map(esc).join(', ')}</span></span>
+    <span class="act"><button type="button" class="btn small" data-fan="${i}">Als Laut anlegen</button></span></li>`).join('')
+    : '<li class="empty muted">Keine offenen Vorschläge.</li>';
+  box._list = list;
+}
+$('fan-cands').addEventListener('click', e => {
+  const i = e.target.dataset.fan; if (i == null) return;
+  const v = $('fan-cands')._list[+i];
+  SM.approveCandidate(data, v.ph, '__neu');
+  saveDraft(); render();
+  $('cand-status').textContent = `„${v.ph}“ als Laut angelegt`;
+});
+if (window.SchalalaFans) SchalalaFans.load(5000).then(r => { fanRows = r; if (data) renderFanCands(); });
+
+function render(){ renderCands(); renderFanCands(); renderCountForm(); renderPhase(); renderOpen(); }
 init().catch(() => { $('draft-status').textContent = 'Die veröffentlichten Daten konnten nicht geladen werden. Lade eine Datei.'; data = {laute: [], lieder: [], zaehlungen: [], kandidaten_verworfen: []}; render(); });
 })();

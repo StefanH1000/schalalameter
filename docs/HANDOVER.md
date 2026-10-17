@@ -1,6 +1,6 @@
 # Übergabe: Fortuna Ehrenfeld Schalalameter
 
-Stand: 16.10.2026
+Stand: 17.10.2026
 
 ## Worum es geht
 
@@ -59,6 +59,16 @@ Auffällig: Schalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer
 
 Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würden sie bei mehreren Quellen doppelt gezählt.
 
+**Fanzählungen** (Supabase, Region Frankfurt)
+
+- Formular `zaehlen.html` („Zähl mit“): Lied (Lieder ohne Zählung oben, Vorauswahl per `zaehlen.html?lied=…`), Laut oder „anderer Laut“ mit Freitext, Anzahl mit Plus und Minus, Grundlage gehört oder Booklet, Spitzname (im Browser gemerkt), zufällige Geräte-Kennung im Browser, unsichtbares Feld gegen Bots. Der aktuelle Wert erscheint erst nach dem Absenden.
+- Konsens je Lied und Laut: Die bisherige beste Zählung aus der Datendatei (Onlinetext) ist die erste Stimme. Unter 3 Stimmen Durchschnitt aufgerundet, ab 3 der häufigste Wert, bei Gleichstand Median aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei, ohne Datendatei-Zählung 0. Rangfolge in `bestOf`: Booklet vor Fankonsens vor „nach Gehör“ (Werkstatt) vor Onlinetext.
+- Die Startseite zeigt „aus N Fanzählungen“ am Lied und „aus n“ am Laut, sobald der Fankonsens die angezeigte Zählung ist.
+- Datenbank (`supabase/tabelle.sql`): Tabelle `fan_zaehlungen` mit RLS und ohne Policies; anon darf nur `zaehlung_einreichen` ausführen (prüft, ersetzt je Gerät, Lied und Laut, höchstens 30 je Gerät und Stunde) und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne geraet_id und spitzname, ohne gesperrte). Ein Vorschlag hat eine leere laut_id; ein zweiter Vorschlag desselben Geräts zum selben Lied ersetzt deshalb den ersten.
+- Sperren: Table Editor, Spalte `gesperrt` auf true, oder `update public.fan_zaehlungen set gesperrt = true where id = …;`. Gesperrte Einträge bleiben auch bei erneuter Einreichung gesperrt.
+- Werkstatt: zeigt Vorschläge von Fans als Kandidaten, „Als Laut anlegen“ übernimmt sie in den Entwurf.
+- Datenschutz: Abschnitt zu Supabase. Mit Supabase sollte ein Vertrag zur Auftragsverarbeitung (DPA) abgeschlossen sein; die Seite verweist auf Art. 28 DSGVO.
+
 **Albumphasen** (`phaseInfo` in `assets/core.js`)
 
 Die x-Achse zeigt neun Albumphasen in Erscheinungsreihenfolge, gleichmäßig verteilt (nicht nach Datum skaliert): Coolness (2016), Hey Sexy (2017), Helm ab (2019), Rückkehr (2021), Solo I. (2022), Glitzerschwein (2023), Universum (2024), Himmelerdenblau (2025), Hollywood Bowl (2026, gilt als Studioalbum). Keine eigenen Phasen: „Debout pour ma prière“ (Übersetzungsalbum), „Das letzte Kommando“, „Solo Live“, „Solo Live im St. Pauli Theater“ (Livealben). Die Alben stehen in der Datendatei unter `alben` (id, titel, kurz, datum, reihenfolge).
@@ -96,9 +106,12 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `assets/core.js` | gemeinsame Logik (beste Zählung, Albumphasen, Familien, Vorzählen), auch in den Tests genutzt |
 | `assets/style.css`, `assets/fonts/` | Gestaltung; Schriften selbst gehostet (Shrikhand, Instrument Sans; JetBrains Mono nur für Code-Felder, SIL OFL) |
 | `daten/shalalameter-daten.json` | **die Daten**; alles, was die Seite zeigt |
-| `tests/core.test.js` | 26 Tests: Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
+| `tests/core.test.js` | 32 Tests: Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
 | `tools/alben-2026-10-16.js` | einmaliges Skript: Alben und Phasen-Überschreibungen angelegt (Dokumentation, nicht erneut ausführen) |
 | `tools/sprache-2026-10-16.js` | einmaliges Skript: Schreibweise „Schalala“, Anzeigenamen, Untertitel, Steckbriefe (Dokumentation, nicht erneut ausführen) |
+| `zaehlen.html`, `assets/zaehlen.js` | Formular „Zähl mit“ für Fanzählungen |
+| `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
+| `supabase/tabelle.sql` | Tabelle, Funktion, Ansicht und Freigaben; einmal im SQL Editor ausführen |
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
 | `tools/beispieldaten.js` | erzeugt erfundene Beispieldaten (nur für Tests ohne echte Daten) |
@@ -141,8 +154,10 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 
 Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` (liegt nicht im Repository).
 
-**Später: Community-Zählungen (Phase 2)**
-Das Datenformat ist dafür vorbereitet: Jede Zählung ist ein eigener Eintrag mit Grundlage, Quelle und Person, und die Seite wählt die verlässlichste. Es fehlen ein Einreichungsformular für Fans, ein Speicherort und eine Moderation. Vorschlag: Supabase (kostenlos, Server in der EU) mit dem Status „offen“ für Einreichungen und Freigabe durch Moderierende. Erst dann braucht das Projekt ein Backend.
+**Fanzählungen (Phase 2)**
+- [x] Supabase-Projekt `hyzgqwujbarpofctptmm` (Frankfurt) eingerichtet, `tabelle.sql` ausgeführt, Adresse und publishable key in `assets/supabase-config.js`. Zugriffsrechte am 17.10.2026 geprüft: Einreichen und Ansicht gehen, direkter Zugriff auf die Tabelle wird verweigert.
+- [ ] Vertrag zur Auftragsverarbeitung (DPA) mit Supabase abschließen (Organization settings → Legal Documents).
+- [ ] Formular auf dem Handy durchprobieren.
 
 **Optional**
 - Eigene Domain statt `stefanh1000.github.io` (z. B. shalalameter.de).
@@ -165,3 +180,4 @@ Das Datenformat ist dafür vorbereitet: Jede Zählung ist ein eigener Eintrag mi
 6. Alle Kandidaten freigegeben, Lautfamilien und Übersicht „Alle Laute“ ergänzt, Zoom in Familien (später ersetzt durch Ein/Aus und Lupe mit Detail).
 7. Endgültige Sprache: „Schalala“, Unterzeile, Familiennamen mit Steckbriefen, „Über das Schalalameter“, Schlusszeile „Laute gegen die Schwerkraft.“
 8. Familien ein/aus und Lupe mit Detail; Achse von Jahren auf neun Albumphasen umgestellt (Zuordnung in vier Regeln, acht Überschreibungen).
+9. Fanzählungen: Formular „Zähl mit“, Konsens aus Fanstimmen, Supabase als Speicher.

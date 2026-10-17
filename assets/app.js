@@ -56,13 +56,17 @@ async function loadData(){
       if (d) { showNotice('<span><strong>Vorschau.</strong> Diese Ansicht zeigt den Entwurf aus der Werkstatt in diesem Browser, nicht die veröffentlichten Daten.</span><a class="btn" href="./">Veröffentlichte Daten zeigen</a>'); return d; }
     } catch (e) {}
   }
+  // Datendatei und Fanzählungen parallel; ohne Antwort von Supabase nach 3 Sekunden nur die Datendatei.
+  const fans = window.SchalalaFans ? window.SchalalaFans.load(3000) : Promise.resolve(null);
   const res = await fetch('daten/shalalameter-daten.json', {cache: 'no-cache'});
   if (!res.ok) throw new Error('HTTP ' + res.status);
   const d = SM.normalize(await res.json());
   if (!d) throw new Error('Format');
   if (d.beispiel) showNotice('<span><strong>Beispieldaten.</strong> Titel und Zahlen sind erfunden. Die echte Auszählung folgt in Kürze.</span>');
-  return d;
+  const rows = await fans;
+  return rows && rows.length ? SM.withFans(d, rows) : d;
 }
+const zaehlLink = id => `zaehlen.html?lied=${encodeURIComponent(id)}`;
 function showNotice(html){ $('notice').innerHTML = html; $('notice').hidden = false; }
 
 /* ---------- Adresse: #phase, #phase/familie, #phase/familie/aus1,aus2 (familie „-“ = kein Detail) ---------- */
@@ -443,21 +447,26 @@ function renderPeriod(cols){
     const found = rs.filter(v => s.values[v.id] > 0);
     const link = SM.isHttp(b.quelle_url) ? `<a href="${esc(b.quelle_url)}" target="_blank" rel="noopener">Quelle</a>` : '';
     const gekuerzt = b.anzahl_aufgeloest && typeof b.anzahl_aufgeloest === 'object' && !aufl;
+    // Fanzählungen zählen nur, wenn der Fankonsens auch die angezeigte Zählung ist (Booklet sticht ihn).
+    const fz = b.grundlage === 'fankonsens' ? b : null;
+    const fanN = id => fz && fz.fan[id] ? `<span class="fanN">aus ${fz.fan[id]}</span>` : '';
     return `<li>
       <span class="pos">${i + 1}</span>
       <span><span class="t">${esc(s.l.titel)}</span> <span class="jahr">${s.year}</span><br><span class="m">${esc(datum(s.l.erstveroeffentlichung))}${s.l.veroeffentlichung ? ' · ' + esc(s.l.veroeffentlichung) : ''}</span></span>
       <span class="viz">
         <span class="bar" style="width:${(x.tot / maxTot) * 100}%">${segs.map(g => `<span style="flex:${g.v};background:${color(g.slot)}"></span>`).join('')}</span>
-        <span class="chips">${found.map(v => `<span class="chip"><i style="background:${color(v.slot)}"></i>${esc(v.name)} ${s.values[v.id]}</span>`).join('')}</span>
+        <span class="chips">${found.map(v => `<span class="chip"><i style="background:${color(v.slot)}"></i>${esc(v.name)} ${s.values[v.id]}${fanN(v.id)}</span>`).join('')}</span>
       </span>
       <span class="tot">${x.tot}</span>
       <span class="src">
         ${s.typ !== 'original' ? `<span class="badge typ">${SM.TYPE_LABEL[s.typ]}</span>` : ''}
         <span class="badge ${esc(b.sicherheit)}">${esc(b.sicherheit || '?')}</span>
         <span>${esc(SM.GRUND_LABEL[b.grundlage] || b.grundlage)}${b.quelle_art ? ' · ' + esc(b.quelle_art) : ''}</span>
+        ${fz ? `<span class="fanTot">aus ${fz.fan_anzahl} ${fz.fan_anzahl === 1 ? 'Fanzählung' : 'Fanzählungen'}</span>` : ''}
         ${link}
         ${gekuerzt ? '<span class="muted">Refrain im Text gekürzt</span>' : ''}
         ${b.notiz ? `<span class="muted">${esc(b.notiz)}</span>` : ''}
+        <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>
       </span>
       ${s.all.length > 1 ? `<details><summary>${s.all.length} Zählungen vergleichen</summary><div class="counts"><table><thead><tr><th>Grundlage</th><th>Sicherheit</th><th style="text-align:left">Schalalas</th><th style="text-align:left">Quelle</th></tr></thead><tbody>${s.all.map(countRow).join('')}</tbody></table></div></details>` : ''}
     </li>`;
@@ -465,9 +474,9 @@ function renderPeriod(cols){
   const rest = c.songs.filter(s => !s.counted);
   const lines = [];
   const titleYear = s => `${esc(s.l.titel)} <span class="muted">${s.year}</span>`;
-  if (silent.length) lines.push(`<b>${f ? 'Ohne Schalalas dieser Familie' : 'Ohne Schalalas'}:</b> ` + silent.map(x => titleYear(x.s)).join(' · '));
+  if (silent.length) lines.push(`<b>${f ? 'Ohne Schalalas dieser Familie' : 'Ohne Schalalas'}:</b> ` + silent.map(x => `${titleYear(x.s)} <a class="zaehlmit" href="${zaehlLink(x.s.l.id)}">Zähl mit</a>`).join(' · '));
   if (rest.length) lines.push('<b>Ohne Zählung:</b> ' + rest.map(s =>
-    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span>`).join(' · '));
+    `${titleYear(s)} <span class="muted">(${s.lowConf ? 'unter Sicherheitsschwelle' : 'kein Text gefunden'})</span> <a class="zaehlmit" href="${zaehlLink(s.l.id)}">Zähl mit</a>`).join(' · '));
   uc.hidden = !lines.length;
   uc.innerHTML = lines.join('<br>');
 }

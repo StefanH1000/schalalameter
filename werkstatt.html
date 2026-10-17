@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Schalalameter Werkstatt</title>
-<link rel="stylesheet" href="assets/style.css?v=202610162040">
+<link rel="stylesheet" href="assets/style.css?v=202610170422">
 <style>
 .cands{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .cands li{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 12px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
 .cands li.empty{display:block}
 .cands .ph{font-family:var(--code); font-weight:600}
+.cands .tag{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-left:4px}
 .cands .ct{font-size:12px; color:var(--muted)}
 .cands .act{display:flex; flex-wrap:wrap; gap:6px; align-items:center; justify-content:flex-end}
 .cands select{border:1px solid var(--line); background:var(--paper); border-radius:999px; padding:4px 8px; font-size:13px}
@@ -69,6 +70,9 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
       <div class="panel-head"><h2>Neue Laute</h2><span class="status" id="cand-status" aria-live="polite"></span></div>
       <p>Weitere Laute, die beim Zählen aufgefallen sind. Als eigenen Laut freigeben, einem bestehenden zurechnen oder verwerfen. Bis dahin erscheinen sie nicht auf der Seite.</p>
       <ul class="cands" id="cands"></ul>
+      <h3 style="font-size:15px; margin:18px 0 4px">Vorschläge von Fans</h3>
+      <p class="hint" style="margin:0 0 6px">Eingereicht über „Zähl mit“ als „anderer Laut“. „Als Laut anlegen“ nimmt ihn in den Entwurf auf (Familie „Weitere Laute“); nach dem Veröffentlichen können Fans ihn direkt zählen. Sperren geht in Supabase.</p>
+      <ul class="cands" id="fan-cands"><li class="empty muted">Wird geladen …</li></ul>
     </div>
   </section>
 
@@ -110,7 +114,9 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
     <ul class="open-list" id="open-list"></ul>
   </section>
 </div>
-<script src="assets/core.js?v=202610162040"></script>
-<script src="assets/werkstatt.js?v=202610162040"></script>
+<script src="assets/core.js?v=202610170422"></script>
+<script src="assets/supabase-config.js?v=202610170422"></script>
+<script src="assets/fans.js?v=202610170422"></script>
+<script src="assets/werkstatt.js?v=202610170422"></script>
 </body>
 </html>

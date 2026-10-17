@@ -7,8 +7,10 @@
     {id: 'unklar', name: 'Unklar', on: false},
   ];
   const TYPE_LABEL = {original: 'Original', uebersetzung: 'Übersetzung', cover: 'Cover', unklar: 'unklar'};
-  const GRUND_RANK = {booklet: 3, gehoert: 2, online_text: 1};
-  const GRUND_LABEL = {booklet: 'Booklet', gehoert: 'nach Gehör', online_text: 'Online-Text'};
+  // Rangfolge der Grundlagen: Booklet vor Fankonsens vor Onlinetext.
+  // „gehoert“ (Einzelzählung aus der Werkstatt) liegt zwischen Fankonsens und Onlinetext.
+  const GRUND_RANK = {booklet: 4, fankonsens: 3, gehoert: 2, online_text: 1};
+  const GRUND_LABEL = {booklet: 'Booklet', fankonsens: 'Fankonsens', gehoert: 'nach Gehör', online_text: 'Online-Text'};
   const SICHER_RANK = {hoch: 3, mittel: 2, niedrig: 1};
   const MAX_SOUNDS = 8;
 
@@ -95,6 +97,85 @@
     if (aufl && a && typeof a === 'object' && Number.isFinite(+a[id])) return +a[id];
     const v = +z.werte[id];
     return Number.isFinite(v) ? v : 0;
+  }
+
+  /* ---------- Fanzählungen ---------- */
+  // Konsens je Lied und Laut aus allen Stimmen (ganze Zahlen):
+  // unter 3 Stimmen der Durchschnitt, aufgerundet; ab 3 der häufigste Wert,
+  // bei mehreren gleich häufigen Werten der Median aller Stimmen, aufgerundet.
+  function consensus(votes) {
+    const v = votes.filter(x => Number.isFinite(x));
+    if (!v.length) return null;
+    if (v.length < 3) return Math.ceil(v.reduce((t, x) => t + x, 0) / v.length);
+    const freq = new Map();
+    for (const x of v) freq.set(x, (freq.get(x) || 0) + 1);
+    const top = Math.max(...freq.values());
+    const modes = [...freq].filter(([, n]) => n === top).map(([x]) => x);
+    if (modes.length === 1) return modes[0];
+    const s = v.slice().sort((a, b) => a - b), m = s.length >> 1;
+    return Math.ceil(s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2);
+  }
+
+  // Baut aus den Fan-Einreichungen je Lied eine Zählung mit Grundlage „fankonsens“.
+  // Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt je Laut als erste Stimme mit.
+  // Laute ohne Fanstimme übernehmen den Wert dieser Zählung, ohne sie 0.
+  // Einreichungen mit unbekannter Lied- oder Laut-ID und Vorschläge (ohne Laut-ID) zählen nicht.
+  function fanZaehlungen(data, rows) {
+    const lieder = new Set(data.lieder.map(l => l.id));
+    const snds = sounds(data), laute = new Set(snds.map(s => s.id));
+    const byLied = new Map();
+    for (const r of Array.isArray(rows) ? rows : []) {
+      const n = Number(r && r.anzahl);
+      if (!r || !lieder.has(r.lied_id) || !laute.has(r.laut_id) || !Number.isInteger(n) || n < 0 || n > 200) continue;
+      if (!byLied.has(r.lied_id)) byLied.set(r.lied_id, new Map());
+      const m = byLied.get(r.lied_id);
+      if (!m.has(r.laut_id)) m.set(r.laut_id, []);
+      m.get(r.laut_id).push(n);
+    }
+    const out = [];
+    for (const [liedId, perLaut] of byLied) {
+      const base = bestOf(data.zaehlungen.filter(z => z.lied_id === liedId && z.grundlage !== 'booklet' && z.grundlage !== 'fankonsens'));
+      const werte = {}, stimmen = {};
+      let minStimmen = Infinity, fan = 0;
+      for (const s of snds) {
+        const fv = perLaut.get(s.id);
+        const online = base ? value(base, s.id, false) : null;
+        if (fv) {
+          const all = online == null ? fv : [online, ...fv];
+          werte[s.id] = consensus(all);
+          stimmen[s.id] = fv.length;
+          fan += fv.length;
+          minStimmen = Math.min(minStimmen, all.length);
+        } else {
+          werte[s.id] = online == null ? 0 : online;
+        }
+      }
+      out.push({
+        lied_id: liedId, grundlage: 'fankonsens', quelle_url: '', quelle_art: 'community', gezaehlt_von: 'Fans',
+        status: 'gezaehlt', werte, anzahl_aufgeloest: null, belege: {}, kandidaten: {},
+        sicherheit: minStimmen >= 3 ? 'hoch' : 'mittel', fan: stimmen, fan_anzahl: fan, notiz: '',
+      });
+    }
+    return out;
+  }
+  // Datendatei plus Fankonsens; die Datendatei selbst bleibt unverändert.
+  function withFans(data, rows) {
+    const extra = fanZaehlungen(data, rows);
+    return extra.length ? {...data, zaehlungen: [...data.zaehlungen, ...extra]} : data;
+  }
+  // Vorschläge für neue Laute aus den Einreichungen, nach Häufigkeit.
+  function fanVorschlaege(data, rows) {
+    const lieder = new Set(data.lieder.map(l => l.id));
+    const map = new Map();
+    for (const r of Array.isArray(rows) ? rows : []) {
+      const ph = String((r && r.vorschlag) || '').trim();
+      if (!ph || !lieder.has(r.lied_id)) continue;
+      const key = ph.toLowerCase();
+      const e = map.get(key) || {ph, total: 0, songs: new Set(), n: 0};
+      e.total += Number(r.anzahl) || 0; e.n++; e.songs.add(r.lied_id);
+      map.set(key, e);
+    }
+    return [...map.values()].sort((a, b) => b.n - a.n || b.total - a.total);
   }
 
   /* ---------- Albumphasen ---------- */
@@ -285,7 +366,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols,
+    esc, fmt, slug, isHttp, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };
