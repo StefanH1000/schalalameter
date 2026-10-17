@@ -2,7 +2,7 @@
 
 *Sprache von vor und nach der Sprache.*
 
-Wie oft singen Fortuna Ehrenfeld „piu piu“, „schalala“ und Co.? Die Seite zeigt die Laute aller Lieder als gestapelte Kurven über die Jahre. Ein Klick auf ein Jahr listet dessen Lieder, sortiert nach Anzahl der Laute.
+Wie oft singen Fortuna Ehrenfeld „piu piu“, „schalala“ und Co.? Die Seite zeigt die Laute aller Lieder als gestapelte Kurven über die zehn Albumphasen, wahlweise absolut oder relativ (je Album 100 %). Ein Klick auf ein Album listet dessen Lieder, sortiert nach Anzahl der Laute. Dazu kommen „Zähl mit“ für Fanzählungen und die Schalalalogie, ein Forum.
 
 Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zählungen, keine Liedtexte.
 
@@ -12,7 +12,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 |---|---|
 | `index.html`, `assets/app.js` | öffentliche Seite |
 | `werkstatt.html`, `assets/werkstatt.js` | interne Pflege: Daten laden, neue Laute freigeben, Zählungen erfassen |
-| `assets/core.js` | gemeinsame Logik (beste Zählung, Jahre, Muster fürs Vorzählen) |
+| `assets/core.js` | gemeinsame Logik (beste Zählung, Fankonsens, Albumphasen, Familien, sichere Beitragstexte, Muster fürs Vorzählen) |
 | `zaehlen.html`, `assets/zaehlen.js` | „Zähl mit“: Fanzählungen einreichen |
 | `schalalalogie.html`, `assets/schalalalogie.js` | Schalalalogie: Forum mit Liedthemen, freien Themen und Abstimmungen |
 | `assets/moderation.js` | Werkstatt, Bereich Moderation (Anmeldung über Supabase Auth) |
@@ -107,7 +107,7 @@ Grenzwerte stehen an einer Stelle, in der Tabelle `grenzwerte` (Standard: 30 Zä
 
 Die Rechte setzt die Datenbank durch: Angemeldete dürfen nur lesen und die Spalten `gesperrt`, `geschlossen`, `name_ausgeblendet` und `erledigt` ändern, und nur, wenn ihre Nutzer-ID in `moderation` steht. Löschen geht über die Data API gar nicht. Im Browser liegt nur das Zugangstoken der angemeldeten Person (für den Tab), nie ein service_role-Schlüssel.
 
-Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Gehör vor Booklet vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
+Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Gehör vor Booklet vor Fankonsens vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
 
 Zählregel: Gezählt wird, was kein Wort mehr schafft. Eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („schalala, schalala“ = 2). Das Vorzählen erkennt beide Schreibweisen (Shalala, Schalala, Sha la la, Scha la la) als denselben Laut.
 
