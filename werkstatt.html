@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Schalalameter Werkstatt</title>
-<link rel="stylesheet" href="assets/style.css?v=202610170811">
+<link rel="stylesheet" href="assets/style.css?v=202610171139">
 <style>
 .cands{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .cands li{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 12px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
@@ -78,7 +78,7 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
 
   <section class="panel" id="erfassen">
     <div class="panel-head"><h2>Zählung erfassen</h2><span class="status" id="cf-status" aria-live="polite"></span></div>
-    <p>Eine weitere Zählung zu einem Lied, zum Beispiel nach Booklet oder nach Gehör. Sie wird zusätzlich gespeichert. Die Seite zeigt pro Lied die verlässlichste Zählung: Booklet vor Gehör vor Online-Text, dann nach Sicherheit.</p>
+    <p>Eine weitere Zählung zu einem Lied, zum Beispiel nach Booklet oder nach Gehör. Sie wird zusätzlich gespeichert. Die Seite zeigt pro Lied die verlässlichste Zählung: Gehör vor Booklet vor Fankonsens vor Online-Text, dann nach Sicherheit.</p>
     <form id="count-form" autocomplete="off">
       <div class="grid3">
         <label class="span2">Lied<select class="field" id="cf-lied" required></select></label>
@@ -114,9 +114,9 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
     <ul class="open-list" id="open-list"></ul>
   </section>
 </div>
-<script src="assets/core.js?v=202610170811"></script>
-<script src="assets/supabase-config.js?v=202610170811"></script>
-<script src="assets/fans.js?v=202610170811"></script>
-<script src="assets/werkstatt.js?v=202610170811"></script>
+<script src="assets/core.js?v=202610171139"></script>
+<script src="assets/supabase-config.js?v=202610171139"></script>
+<script src="assets/fans.js?v=202610171139"></script>
+<script src="assets/werkstatt.js?v=202610171139"></script>
 </body>
 </html>

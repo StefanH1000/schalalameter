@@ -25,7 +25,7 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 - **169 Lieder** nach Bereinigung: jedes Lied nur einmal, im Jahr seiner Erstveröffentlichung. Live-Fassungen und Radio Edits sind zusammengeführt.
 - Davon 145 eigene Lieder, 11 französische Übersetzungen, 10 Cover und 3 unklare Fälle. Die Startseite und „Zähl mit“ zeigen nur eigene Lieder; die Filterzeile (Liedtypen, Sicherheit, Refrains ausgeschrieben) gibt es seit 17.10.2026 nicht mehr. Die Werkstatt sieht weiterhin alle.
 - Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Keiner der bisherigen Laute kommt darin vor, dafür fünf neue, freigegeben am 17.10.2026: Dub-di-dub-di-dubb (5× in „Ausflug in den Club“), Kuruu-kuruu und Ram-tam-tam (je 1× in „Rabenflügel“), Tatütata (1× in „Cognac für die Huren“, als Nomen, aber reine Lautmalerei), alle in Täterätätä im Pyjama; Fiki hey (1× in „Die Polyintensiven“) in Daseinslaute. Nicht gezählt: „ey“, „Hurra“, „Halleluja“ (stehen als Wörter).
-- Ebenfalls am 17.10.2026 nach Booklet gezählt: alle 12 Lieder von „Live at the Hollywood Bowl“ und 11 von „Das Ende der Coolness Vol. 2“ (Seite 4 der Textbeilage, das Titellied fehlt). Abweichungen zum Online-Text: „Alles explodiert“ bumm 9→3, kawumm 3→1, olé 3→1 (das Booklet druckt den Block nur einmal); „Life at the Hollywood Bowl“ hey hey hey 2→0; „Ciao Kakao“ whoopie whoopie 4→3; „Internet zerf*cken“ neu 3× Uh, uh, uh. Gezählt wird, was im Booklet steht, auch wenn gesungen öfter wiederholt wird.
+- Ebenfalls am 17.10.2026 nach Booklet gezählt: alle 12 Lieder von „Live at the Hollywood Bowl“ und 11 von „Das Ende der Coolness Vol. 2“ (Seite 4 der Textbeilage, das Titellied fehlt). Abweichungen zum Online-Text: „Alles explodiert“ bumm 9→3, kawumm 3→1, olé 3→1 (das Booklet druckt den Block nur einmal; danach abgehört: bumm 7, kawumm 2, olé aus dem Booklet 1, gilt nach der Regel „Gehör vor Booklet“); „Life at the Hollywood Bowl“ hey hey hey 2→0, dafür 1× „uuuuh“, gezählt als Uh, uh, uh; „Ciao Kakao“ whoopie whoopie 4→3; „Internet zerf*cken“ neu 3× Uh, uh, uh. Gezählt wird, was im Booklet steht, auch wenn gesungen öfter wiederholt wird.
 - **105 Lieder gezählt, 54 ohne auffindbaren Text.** Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen und neun Titel von „Glitzerschwein“.
 - **34 Laute in 7 Familien**, alle freigegeben:
 
@@ -34,8 +34,8 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 | Spatzenlaser | Piu piu | Piu piu | 0 |
 | Schalalamente | Schalala | Schalala | 51 |
 | Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
-| Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 5 |
-| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 50 |
+| Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 10 |
+| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 51 |
 | Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata | 24 |
 | Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey | 10 |
 
@@ -53,7 +53,7 @@ Auffällig: Schalala hat seinen Gipfel 2021 (30, davon 16 in „Arschloch, Wixer
 - Ein Laut im Liedtitel zählt nicht.
 
 **Welche Zählung gilt, wenn es mehrere gibt** (`bestOf` in `assets/core.js`), in dieser Reihenfolge:
-1. Grundlage: Booklet vor Gehör vor Online-Text.
+1. Grundlage: Gehör vor Booklet vor Online-Text. Sorgfältig abgehört ist verlässlicher als das Booklet, das Wiederholungen oft nur einmal abdruckt (seit 17.10.2026; Beispiel „Alles explodiert“).
 2. Sicherheit: hoch vor mittel vor niedrig.
 3. Quellenart: offiziell vor lizenziert vor Community.
 4. Mehr Laute: zuerst feste Laute, dann notierte Kandidaten. Online-Texte kürzen Laute eher weg, als dass sie welche erfinden.
@@ -64,7 +64,7 @@ Neue Laute (Kandidaten) zählen nur aus der jeweils besten Zählung, sonst würd
 **Fanzählungen** (Supabase, Region Frankfurt)
 
 - Seite `zaehlen.html` („Zähl mit“): Unter 900 px Breite vier Schritte nacheinander (Lied, Schalala, Mitzählen, Prüfen und Abschicken; die Zurück-Taste des Handys geht einen Schritt zurück), ab 900 px drei Spalten nebeneinander. Nur eigene Lieder, mit Suche und Filter „Noch ohne Zählung / Alle“ (dazu ein Album über `?album=<id>`), nach Album mit Cover; Laute als farbige Knöpfe je Familie, dazu „Neuen Laut vorschlagen“; Mitzählen per großem Knopf oder Leertaste, „Einen zurück“, „Von vorn“, „Kommt nicht vor (0)“; Grundlage Gehör oder Booklet, Spitzname (im Browser gemerkt), zufällige Geräte-Kennung, unsichtbares Feld gegen Bots. Vorauswahl per `zaehlen.html?lied=…`. Der aktuelle Stand erscheint erst nach dem Absenden, danach „Noch ein Schalala in diesem Lied“ oder „Nächstes Lied ohne Zählung“. Entwurf: Design-Canvas https://claude.ai/artifact/5865AiNyciG9iNHs33QLHA.
-- Konsens je Lied und Laut: Die bisherige beste Zählung aus der Datendatei (Onlinetext) ist die erste Stimme. Unter 3 Stimmen Durchschnitt aufgerundet, ab 3 der häufigste Wert, bei Gleichstand Median aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei, ohne Datendatei-Zählung 0. Rangfolge in `bestOf`: Booklet vor Fankonsens vor „nach Gehör“ (Werkstatt) vor Onlinetext.
+- Konsens je Lied und Laut: Die bisherige beste Zählung aus der Datendatei (Onlinetext) ist die erste Stimme. Unter 3 Stimmen Durchschnitt aufgerundet, ab 3 der häufigste Wert, bei Gleichstand Median aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei, ohne Datendatei-Zählung 0. Rangfolge in `bestOf`: „nach Gehör“ (Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
 - Die Startseite zeigt „aus N Fanzählungen“ am Lied und „aus n“ am Laut, sobald der Fankonsens die angezeigte Zählung ist.
 - Datenbank (`supabase/tabelle.sql`): Tabelle `fan_zaehlungen` mit RLS und ohne Policies; anon darf nur `zaehlung_einreichen` ausführen (prüft, ersetzt je Gerät, Lied und Laut, höchstens 30 je Gerät und Stunde) und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne geraet_id und spitzname, ohne gesperrte). Ein Vorschlag hat eine leere laut_id und den Laut als Text in `vorschlag`; ein Gerät kann mehrere Vorschläge je Lied machen, derselbe Text (ohne Groß-/Kleinschreibung) ersetzt den früheren.
 - „Keine Schalalas in diesem Lied“ (Schritt 2, unter den Lauten): eine Einreichung mit `laut_id = 'keine'` und Anzahl 0 (`SM.KEINE`). Im Fankonsens ist sie eine Stimme 0 für jeden Laut des Lieds, zählt aber als eine Fanzählung. Das Lied gilt danach als gezählt und steht unter „Ohne Schalalas“. Ein echter Laut darf deshalb nie die ID `keine` bekommen.
@@ -122,6 +122,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `tools/serve.js` | lokaler Server (`npm start`, http://localhost:8080) |
 | `tools/freigabe-2026-10-16.js` | einmaliges Skript: Kandidaten freigegeben, Familien zugeordnet (Dokumentation, nicht erneut ausführen) |
 | `tools/booklet-hollywood-coolness-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für Hollywood Bowl und Coolness (Dokumentation, nicht erneut ausführen) |
+| `tools/gehoert-2026-10-17.js` | einmaliges Skript: abgehörte Zählung „Alles explodiert“, „uuuuh“ zu Uh, uh, uh (Dokumentation, nicht erneut ausführen) |
 | `tools/freigabe-2026-10-17.js` | einmaliges Skript: die fünf neuen Laute aus „Revolution!“ freigegeben (Dokumentation, nicht erneut ausführen) |
 | `tools/beispieldaten.js` | erzeugt erfundene Beispieldaten (nur für Tests ohne echte Daten) |
 | `impressum.html`, `datenschutz.html` | Pflichtseiten, minimal ausgefüllt (Stefan Hoch) |

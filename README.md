@@ -79,13 +79,13 @@ Gespeichert ist `phase` nur bei den festgelegten Überschreibungen: die Lieder d
 
 Über `zaehlen.html` („Zähl mit“, verlinkt auf der Startseite und an jedem Lied) reichen Fans ohne Anmeldung eine Zählung für ein Lied und einen Laut ein, oder schlagen einen neuen Laut vor. Die Einreichungen liegen in Supabase; die Startseite lädt sie beim Öffnen (höchstens 3 Sekunden, sonst nur die Datendatei) und rechnet sie ein. Die Datendatei bleibt unverändert.
 
-Konsens je Lied und Laut (`consensus` und `fanZaehlungen` in `assets/core.js`): Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt als erste Stimme. Unter 3 Stimmen gilt der Durchschnitt, aufgerundet; ab 3 der häufigste Wert, bei Gleichstand der Median aller Stimmen, aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei. Unbekannte Lied- oder Laut-IDs zählen nicht. Rangfolge in `bestOf`: Booklet vor Fankonsens vor „nach Gehör“ (Werkstatt) vor Onlinetext.
+Konsens je Lied und Laut (`consensus` und `fanZaehlungen` in `assets/core.js`): Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt als erste Stimme. Unter 3 Stimmen gilt der Durchschnitt, aufgerundet; ab 3 der häufigste Wert, bei Gleichstand der Median aller Stimmen, aufgerundet. Laute ohne Fanstimme behalten den Wert der Datendatei. Unbekannte Lied- oder Laut-IDs zählen nicht. Rangfolge in `bestOf`: „nach Gehör“ (Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
 
 Einrichtung: `supabase/tabelle.sql` einmal im SQL Editor ausführen, dann Projektadresse und öffentlichen Schlüssel (anon oder publishable, nie service_role) in `assets/supabase-config.js` eintragen. Die Rolle anon darf nur die Funktion `zaehlung_einreichen` ausführen und die Ansicht `fan_zaehlungen_oeffentlich` lesen (ohne Gerät und Spitzname, ohne gesperrte Einträge). Höchstens 30 Einreichungen je Gerät und Stunde.
 
 Sperren: in Supabase im Table Editor bei `fan_zaehlungen` die Spalte `gesperrt` auf `true` setzen, oder im SQL Editor `update public.fan_zaehlungen set gesperrt = true where id = 123;` (alle eines Spitznamens: `where spitzname = '…'`). Gesperrte Einträge verschwinden sofort aus der Ansicht und damit von der Seite.
 
-Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Booklet vor Gehör vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
+Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: Gehör vor Booklet vor Online-Text, dann Sicherheit, Quellenart, mehr Laute, dann die neueste.
 
 Zählregel: Gezählt wird, was kein Wort mehr schafft. Eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („schalala, schalala“ = 2). Das Vorzählen erkennt beide Schreibweisen (Shalala, Schalala, Sha la la, Scha la la) als denselben Laut.
 

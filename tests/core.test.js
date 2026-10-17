@@ -360,7 +360,7 @@ test('Fankonsens: „Keine Schalalas“ ist eine Stimme 0 für jeden Laut des Li
   assert.strictEqual(mit.fan_anzahl, 2);
 });
 
-test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
+test('Rangfolge: Gehör vor Booklet vor Fankonsens vor Onlinetext', () => {
   const d = FANDATA();
   const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);
   const best = l => SM.bestOf(mitFans.zaehlungen.filter(z => z.lied_id === l));
@@ -368,6 +368,8 @@ test('Rangfolge: Booklet vor Fankonsens vor Onlinetext', () => {
   assert.strictEqual(best('l1').werte.a, 7);
   mitFans.zaehlungen.push({lied_id: 'l1', grundlage: 'booklet', sicherheit: 'niedrig', status: 'gezaehlt', werte: {a: 2, b: 0}});
   assert.strictEqual(best('l1').grundlage, 'booklet');
+  mitFans.zaehlungen.push({lied_id: 'l1', grundlage: 'gehoert', sicherheit: 'niedrig', status: 'gezaehlt', werte: {a: 5, b: 0}});
+  assert.strictEqual(best('l1').grundlage, 'gehoert');
   assert.strictEqual(d.zaehlungen.length, 2, 'Datendatei bleibt unverändert');
 });
 

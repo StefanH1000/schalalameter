@@ -7,9 +7,9 @@
     {id: 'unklar', name: 'Unklar', on: false},
   ];
   const TYPE_LABEL = {original: 'Original', uebersetzung: 'Übersetzung', cover: 'Cover', unklar: 'unklar'};
-  // Rangfolge der Grundlagen: Booklet vor Fankonsens vor Onlinetext.
-  // „gehoert“ (Einzelzählung aus der Werkstatt) liegt zwischen Fankonsens und Onlinetext.
-  const GRUND_RANK = {booklet: 4, fankonsens: 3, gehoert: 2, online_text: 1};
+  // Rangfolge der Grundlagen: nach Gehör (sorgfältig abgehört, aus der Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
+  // Abgehört gewinnt, weil Booklets Wiederholungen oft nur einmal abdrucken.
+  const GRUND_RANK = {gehoert: 5, booklet: 4, fankonsens: 3, online_text: 1};
   const GRUND_LABEL = {booklet: 'Booklet', fankonsens: 'Fankonsens', gehoert: 'nach Gehör', online_text: 'Online-Text'};
   const SICHER_RANK = {hoch: 3, mittel: 2, niedrig: 1};
   const MAX_SOUNDS = 8;
