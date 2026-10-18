@@ -191,6 +191,17 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - Eigene Domain statt `stefanh1000.github.io` (z. B. schalalameter.de).
 - Vorschaubild für Social Media.
 
+## Sicherheit
+
+Stand 18.10.2026, nach einem Sicherheitscheck durch Codex (nur lesend; keine kritischen Befunde, keine XSS, keine Geheimnisse im Repository oder in der Historie, Moderation sauber getrennt).
+
+- **Ratenbegrenzung** (`aufruf_zaehlen` in `supabase/tabelle.sql`): Jeder Aufruf von `zaehlung_einreichen`, `thema_anlegen`, `beitrag_schreiben`, `abstimmen` und `melden` zählt, auch das Ändern einer bestehenden Zählung, und zwar je Gerät, je IP-Adresse und insgesamt je Stunde. Die Grenzen stehen in der Tabelle `grenzwerte` (`*_je_stunde`, `*_je_ip_stunde`, `*_gesamt_stunde`). Das Hochzählen ist atomar (`insert … on conflict` sperrt die Zählerzeile). Die IP stammt aus den Kopfzeilen der Data API (`cf-connecting-ip`, ersatzweise `x-real-ip`, `x-forwarded-for`) und wird nur als gesalzener MD5-Hash im Schlüssel der Tabelle `aufrufe` abgelegt; Einträge älter als drei Stunden werden gelöscht. Das Salz liegt in `geheimnis`. Kontrolle nach einer echten Einreichung: In `aufrufe` sollten Schlüssel mit `geraet:`, `ip:` und `alle:` stehen. Fehlt `ip:`, kommen die Kopfzeilen nicht an, dann greifen nur Gerät und Gesamt.
+- **Grenzen der Ratenbegrenzung:** Wer viele IP-Adressen hat, kann weiterhin manipulieren, bis die Gesamtgrenze greift. Ein CAPTCHA bräuchte einen eigenen Server (Edge Function) und ist für das Fanprojekt bewusst nicht umgesetzt.
+- **Öffentliche Rechte:** `anon` darf die fünf Schreibfunktionen ausführen und die vier `*_oeffentlich`-Ansichten lesen, sonst nichts. Das Forum gehört ausdrücklich dazu.
+- **Content-Security-Policy** als `<meta>` auf allen sechs Seiten: nur eigene Skripte, Bilder und Schriften, Datenabruf nur von hier und vom Supabase-Projekt. Inline-Styles sind erlaubt, Inline-Skripte und `on…`-Attribute nicht. **Ändert sich die Supabase-Adresse, muss sie auch in der CSP aller HTML-Seiten geändert werden.**
+- **Testserver** (`tools/serve.js`): nur `127.0.0.1`, keine versteckten Dateien (`.git` …), echte Prüfung der Verzeichnisgrenze.
+- **Git-Historie:** Commit `07c3dbc` enthält ein versehentlich committetes, leeres Chrome-Testprofil (`assets/cover/p6`, in `fc32a1d` entfernt). Laut Codex keine Zugangsdaten, Cookies oder Verlauf darin. Bewusst nicht aus der Historie entfernt.
+
 ## Bekannte Einschränkungen
 
 - **„Boom laboom“** steht bei 0. Der Laut kommt nur in einer Zweitquelle vor, die nicht als beste Zählung gewählt wird.

@@ -29,7 +29,18 @@ insert into public.grenzwerte (name, wert, bedeutung) values
   ('zaehlungen_je_stunde', 30, 'Einreichungen je Gerät und Stunde (Zähl mit)'),
   ('beitraege_je_stunde',  30, 'Beiträge je Gerät und Stunde (Schalalalogie)'),
   ('themen_je_stunde',     10, 'Neue Themen je Gerät und Stunde, Liedthemen und Abstimmungen eingeschlossen'),
-  ('meldungen_je_stunde',  30, 'Meldungen je Gerät und Stunde')
+  ('meldungen_je_stunde',  30, 'Meldungen je Gerät und Stunde'),
+  ('stimmen_je_stunde',    30, 'Abstimmungsaufrufe je Gerät und Stunde'),
+  -- Je IP-Adresse großzügiger als je Gerät: Auf einem Konzert teilen sich viele Fans ein WLAN.
+  ('zaehlungen_je_ip_stunde', 150, 'Einreichungen je IP-Adresse und Stunde'),
+  ('beitraege_je_ip_stunde',   60, 'Beiträge und neue Themen je IP-Adresse und Stunde'),
+  ('meldungen_je_ip_stunde',   60, 'Meldungen je IP-Adresse und Stunde'),
+  ('stimmen_je_ip_stunde',    150, 'Abstimmungsaufrufe je IP-Adresse und Stunde'),
+  -- Notbremse gegen Fluten mit wechselnden Geräten und Adressen.
+  ('zaehlungen_gesamt_stunde', 2000, 'Einreichungen insgesamt je Stunde'),
+  ('beitraege_gesamt_stunde',   400, 'Beiträge und neue Themen insgesamt je Stunde'),
+  ('meldungen_gesamt_stunde',   400, 'Meldungen insgesamt je Stunde'),
+  ('stimmen_gesamt_stunde',    2000, 'Abstimmungsaufrufe insgesamt je Stunde')
 on conflict (name) do nothing;
 alter table public.grenzwerte enable row level security;
 revoke all on table public.grenzwerte from anon, authenticated, public;
@@ -40,6 +51,84 @@ returns integer language sql stable security definer set search_path = public, p
   select coalesce((select wert from public.grenzwerte where name = p_name), p_ersatz);
 $$;
 revoke all on function public.grenze(text, integer) from public, anon, authenticated;
+
+-- ===========================================================================
+-- Aufrufzähler: jede schreibende Anfrage zählt, je Gerät, je IP-Adresse und insgesamt
+-- ===========================================================================
+-- Zählt Aufrufe, nicht Zeilen: Auch das wiederholte Ändern derselben Zählung verbraucht Kontingent.
+-- Die IP-Adresse wird nicht gespeichert, nur ein gesalzener Hash im Schlüssel. Einträge älter als
+-- drei Stunden werden laufend gelöscht.
+create table if not exists public.aufrufe (
+  schluessel text        not null,
+  stunde     timestamptz not null,
+  anzahl     integer     not null default 0,
+  primary key (schluessel, stunde)
+);
+alter table public.aufrufe enable row level security;
+revoke all on table public.aufrufe from anon, authenticated, public;
+
+-- Zufälliges Salz für den IP-Hash, einmal erzeugt, nie öffentlich.
+create table if not exists public.geheimnis (
+  id   boolean primary key default true check (id),
+  salz text    not null default (gen_random_uuid()::text || gen_random_uuid()::text)
+);
+insert into public.geheimnis (id) values (true) on conflict (id) do nothing;
+alter table public.geheimnis enable row level security;
+revoke all on table public.geheimnis from anon, authenticated, public;
+
+-- IP-Adresse der Anfrage aus den Kopfzeilen, die die Data API an Postgres weiterreicht.
+-- cf-connecting-ip setzt der vorgeschaltete Proxy selbst; x-forwarded-for nur als Ersatz.
+-- Ohne Kopfzeilen (SQL Editor) null: dann gelten nur die Grenzen je Gerät und insgesamt.
+create or replace function public.anfrage_ip()
+returns text language plpgsql stable set search_path = public, pg_temp as $$
+declare h json;
+begin
+  begin
+    h := nullif(current_setting('request.headers', true), '')::json;
+  exception when others then
+    return null;
+  end;
+  return nullif(btrim(coalesce(h->>'cf-connecting-ip', h->>'x-real-ip', split_part(h->>'x-forwarded-for', ',', 1))), '');
+end;
+$$;
+revoke all on function public.anfrage_ip() from public, anon, authenticated;
+
+-- Zählt einen Aufruf der Art p_art (zaehlungen, beitraege, meldungen, stimmen) und bricht ab, sobald eine
+-- Grenze überschritten ist. insert … on conflict sperrt die Zählerzeile: Parallele Anfragen warten
+-- aufeinander und können dasselbe Kontingent nicht doppelt nutzen. Bricht der Aufruf ab, wird auch
+-- das Hochzählen zurückgenommen.
+create or replace function public.aufruf_zaehlen(p_art text, p_geraet_id uuid)
+returns void language plpgsql security definer set search_path = public, pg_temp as $$
+declare
+  v_stunde timestamptz := date_trunc('hour', now());
+  v_ip     text := public.anfrage_ip();
+  v_n      integer;
+  v_text   text := 'Gerade kommen zu viele Einreichungen, bitte später noch einmal';
+begin
+  insert into public.aufrufe as a (schluessel, stunde, anzahl) values ('geraet:' || p_art || ':' || p_geraet_id, v_stunde, 1)
+  on conflict (schluessel, stunde) do update set anzahl = a.anzahl + 1 returning a.anzahl into v_n;
+  if v_n > public.grenze(p_art || '_je_stunde', 30) then
+    raise exception '%', v_text using errcode = 'P0001';
+  end if;
+  if v_ip is not null then
+    insert into public.aufrufe as a (schluessel, stunde, anzahl)
+    values ('ip:' || p_art || ':' || md5((select salz from public.geheimnis) || v_ip), v_stunde, 1)
+    on conflict (schluessel, stunde) do update set anzahl = a.anzahl + 1 returning a.anzahl into v_n;
+    if v_n > public.grenze(p_art || '_je_ip_stunde', 150) then
+      raise exception '%', v_text using errcode = 'P0001';
+    end if;
+  end if;
+  insert into public.aufrufe as a (schluessel, stunde, anzahl) values ('alle:' || p_art, v_stunde, 1)
+  on conflict (schluessel, stunde) do update set anzahl = a.anzahl + 1 returning a.anzahl into v_n;
+  if v_n > public.grenze(p_art || '_gesamt_stunde', 2000) then
+    raise exception '%', v_text using errcode = 'P0001';
+  end if;
+  if random() < 0.02 then
+    delete from public.aufrufe where stunde < now() - interval '3 hours';
+  end if;
+end;
+$$;
+revoke all on function public.aufruf_zaehlen(text, uuid) from public, anon, authenticated;
 
 -- ===========================================================================
 -- Fanzählungen
@@ -85,7 +174,7 @@ revoke all on sequence public.fan_zaehlungen_id_seq from anon, authenticated, pu
 -- security definer: läuft mit den Rechten des Eigentümers (postgres) und darf deshalb schreiben,
 -- obwohl anon selbst keine Tabellenrechte hat. Sie prüft alle Eingaben, ersetzt eine frühere
 -- Einreichung desselben Geräts (gleiches Lied, gleicher Laut bzw. gleicher Vorschlag) und begrenzt
--- die Einreichungen je Gerät und Stunde (grenzwerte: zaehlungen_je_stunde).
+-- die Aufrufe je Gerät, je IP-Adresse und insgesamt (aufruf_zaehlen, grenzwerte zaehlungen_*).
 -- Gesperrte Einträge bleiben gesperrt, auch wenn das Gerät erneut einreicht.
 create or replace function public.zaehlung_einreichen(
   p_lied_id   text,
@@ -104,7 +193,6 @@ declare
   v_laut      text := coalesce(btrim(p_laut_id), '');
   v_vorschlag text := coalesce(btrim(p_vorschlag), '');
   v_name      text := coalesce(btrim(p_spitzname), '');
-  v_anzahl_h  integer;
 begin
   if p_geraet_id is null then
     raise exception 'Geräte-Kennung fehlt' using errcode = '22023';
@@ -131,14 +219,8 @@ begin
     raise exception 'Grundlage muss gehört oder Booklet sein' using errcode = '22023';
   end if;
 
-  -- Ratenbegrenzung: Einreichungen dieses Geräts in der letzten Stunde.
-  select count(*) into v_anzahl_h
-    from public.fan_zaehlungen
-   where geraet_id = p_geraet_id
-     and aktualisiert > now() - interval '1 hour';
-  if v_anzahl_h >= public.grenze('zaehlungen_je_stunde', 30) then
-    raise exception 'Zu viele Einreichungen in kurzer Zeit, bitte später weiterzählen' using errcode = 'P0001';
-  end if;
+  -- Ratenbegrenzung: jeder Aufruf zählt, auch das Ändern einer bestehenden Zählung.
+  perform public.aufruf_zaehlen('zaehlungen', p_geraet_id);
 
   insert into public.fan_zaehlungen (lied_id, laut_id, anzahl, vorschlag, spitzname, grundlage, geraet_id)
   values (p_lied_id, v_laut, p_anzahl, v_vorschlag, v_name, p_grundlage, p_geraet_id)
@@ -344,6 +426,7 @@ declare
   v_a       text;
   i         integer := 0;
 begin
+  perform public.aufruf_zaehlen('beitraege', p_geraet_id);
   if p_art = 'lied' then
     if p_lied_id is null or p_lied_id !~ '^[a-z0-9-]{1,120}$' then
       raise exception 'Unbekanntes Lied' using errcode = '22023';
@@ -433,6 +516,7 @@ declare
   v_text    text := public.pruefe_text(p_text);
   v_beitrag bigint;
 begin
+  perform public.aufruf_zaehlen('beitraege', p_geraet_id);
   if not exists (select 1 from public.themen where id = p_thema_id and not gesperrt) then
     raise exception 'Dieses Thema gibt es nicht oder es ist gesperrt' using errcode = 'P0001';
   end if;
@@ -461,6 +545,7 @@ begin
   if p_geraet_id is null then
     raise exception 'Geräte-Kennung fehlt' using errcode = '22023';
   end if;
+  perform public.aufruf_zaehlen('stimmen', p_geraet_id);
   select * into v_thema from public.themen where id = p_thema_id;
   if not found or v_thema.gesperrt or v_thema.art <> 'abstimmung' then
     raise exception 'Diese Abstimmung gibt es nicht' using errcode = 'P0001';
@@ -503,10 +588,7 @@ begin
   if char_length(coalesce(p_grund, '')) > 300 then
     raise exception 'Grund zu lang (höchstens 300 Zeichen)' using errcode = '22023';
   end if;
-  if (select count(*) from public.meldungen where geraet_id = p_geraet_id and erstellt > now() - interval '1 hour')
-     >= public.grenze('meldungen_je_stunde', 30) then
-    raise exception 'Zu viele Meldungen in kurzer Zeit' using errcode = 'P0001';
-  end if;
+  perform public.aufruf_zaehlen('meldungen', p_geraet_id);
   insert into public.meldungen (beitrag_id, grund, geraet_id)
   values (p_beitrag_id, btrim(coalesce(p_grund, '')), p_geraet_id)
   on conflict (beitrag_id, geraet_id) do nothing;

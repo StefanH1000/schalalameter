@@ -11,7 +11,12 @@ const st = {lied: null, laut: null, neu: false, filter: 'offen', suche: '', schr
 
 const {store, geraetId} = SchalalaFans;
 const coverUrl = a => a ? (a.cover || `assets/cover/${a.id}.jpg`) : '';
-const coverImg = a => a ? `<img src="${esc(coverUrl(a))}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'ohne'}))">` : '<span class="ohne"></span>';
+const coverImg = a => a ? `<img src="${esc(coverUrl(a))}" alt="" data-cover>` : '<span class="ohne"></span>';
+// Fehlt ein Cover, tritt ein leeres Feld an seine Stelle. Ein Listener statt onerror-Attribut, das die CSP verbietet.
+document.addEventListener('error', e => {
+  const t = e.target;
+  if (t instanceof HTMLImageElement && t.hasAttribute('data-cover')) t.replaceWith(Object.assign(document.createElement('span'), {className: 'ohne'}));
+}, true);
 const jahr = l => String(l.erstveroeffentlichung || '').slice(0, 4);
 const plural = n => n === 1 ? 'Schalala' : 'Schalalas';
 
