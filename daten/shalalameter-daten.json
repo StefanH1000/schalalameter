@@ -335,7 +335,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "matrosen",
@@ -345,7 +346,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "alles-explodiert",
@@ -355,7 +357,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "bumsrepublik",
@@ -365,7 +368,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "coffee-keeps-me-busy",
@@ -375,7 +379,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "zwei-himmel",
@@ -388,7 +393,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "ein-analoges-madchen",
@@ -398,7 +404,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "das-heilige-kanonenrohr",
@@ -408,7 +415,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "rakete",
@@ -418,7 +426,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "der-tag",
@@ -428,7 +437,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "pizzablitz",
@@ -438,7 +448,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "pony",
@@ -451,7 +462,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "zuweitwegmadchen",
@@ -464,7 +476,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "der-puff-von-barcelona",
@@ -474,7 +487,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "bengalo",
@@ -484,7 +498,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "das-letzte-kommando",
@@ -498,7 +513,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "ey-andi",
@@ -508,7 +524,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "nach-diktat-verreist",
@@ -520,7 +537,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "gegen-die-vernunft",
@@ -533,7 +551,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "hundeherz",
@@ -545,7 +564,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "glitzerschwein",
@@ -557,7 +577,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Lied von 2017, nicht zu verwechseln mit dem gleichnamigen Album von 2023."
+      "notiz": "Lied von 2017, nicht zu verwechseln mit dem gleichnamigen Album von 2023.",
+      "track": 9
     },
     {
       "id": "penn-konn",
@@ -569,7 +590,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Schreibvarianten zusammengeführt (Studio und Live)."
+      "notiz": "Schreibvarianten zusammengeführt (Studio und Live).",
+      "track": 10
     },
     {
       "id": "endlos-weit-weg",
@@ -579,7 +601,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "irgendwann-der-sommer",
@@ -589,7 +612,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "arsch-am-meer",
@@ -612,7 +636,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "trust-me-i-m-an-alien",
@@ -702,7 +727,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "hor-endlich-auf-zu-jammern",
@@ -712,7 +738,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "bad-hair-day",
@@ -724,7 +751,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "das-ist-punk-das-raffst-du-nie",
@@ -734,7 +762,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "guten-morgen-ehrenfeld",
@@ -744,7 +773,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "der-ablativ-von-bumm",
@@ -754,7 +784,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "sanktpankpaul",
@@ -764,7 +795,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "tequila",
@@ -774,7 +806,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "salzblusenkreuz",
@@ -784,7 +817,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "die-umarmung-der-magneten",
@@ -797,7 +831,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Feat. Enno Bunger laut Shazam."
+      "notiz": "Feat. Enno Bunger laut Shazam.",
+      "track": 11
     },
     {
       "id": "die-welt-in-teile",
@@ -810,7 +845,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "„Welt in Teile“ (live) zusammengeführt."
+      "notiz": "„Welt in Teile“ (live) zusammengeführt.",
+      "track": 12
     },
     {
       "id": "herbstmeister-der-herzen",
@@ -820,7 +856,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 13
     },
     {
       "id": "debout-pour-ma-priere",
@@ -983,7 +1020,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "das-imperium-rudert-zuruck",
@@ -998,7 +1036,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Eintrag „Das Imperium schlägt zurück“ bei songtexte.com als Falschschreibung zugeordnet."
+      "notiz": "Eintrag „Das Imperium schlägt zurück“ bei songtexte.com als Falschschreibung zugeordnet.",
+      "track": 2
     },
     {
       "id": "anleitung-zum-sha-la-la",
@@ -1010,7 +1049,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "arschloch-wixer-hurensohn",
@@ -1022,7 +1062,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "die-durchnummerierten-im-irish",
@@ -1035,7 +1076,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "die-ruckkehr-zur-normalitat",
@@ -1047,7 +1089,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "knutschigrossstadtradio",
@@ -1057,7 +1100,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "glitzerfummel-moonboots",
@@ -1067,7 +1111,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Ein Titel; in der Vorlage durch das Komma wie zwei Lieder notiert."
+      "notiz": "Ein Titel; in der Vorlage durch das Komma wie zwei Lieder notiert.",
+      "track": 8
     },
     {
       "id": "grazie-de-la-kotze",
@@ -1080,7 +1125,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "accidental-orange",
@@ -1090,7 +1136,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "brusseler-platz",
@@ -1103,7 +1150,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "stimmung-gute-laune",
@@ -1115,7 +1163,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "ich-schreib-meine-gedanken",
@@ -1125,7 +1174,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "irgendwas-vom-jungen-dr-dre",
@@ -1135,7 +1185,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "sophie-2-0",
@@ -1145,7 +1196,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "and-it-takes-the-pain-away",
@@ -1157,7 +1209,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "pech-und-schwefel",
@@ -1167,7 +1220,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "perpetuum-rosemarie",
@@ -1179,7 +1233,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "stundenlang-am-wasser-stehn",
@@ -1191,7 +1246,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "bohemian-rhapsodie",
@@ -1201,7 +1257,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Titel spielt auf „Bohemian Rhapsody“ (Queen) an; laut Shazam von Martin Bechler geschrieben, daher als original geführt."
+      "notiz": "Titel spielt auf „Bohemian Rhapsody“ (Queen) an; laut Shazam von Martin Bechler geschrieben, daher als original geführt.",
+      "track": 10
     },
     {
       "id": "drei-tage-regen-danke-scheisskerl",
@@ -1213,7 +1270,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "eine-sage-fur-die-nerven",
@@ -1223,7 +1281,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "zwanzig-meter-klingeldraht",
@@ -1233,7 +1292,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 13
     },
     {
       "id": "paloubet-yoga",
@@ -1311,7 +1371,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "leck-mich-am-arsch-amore-mio",
@@ -1323,7 +1384,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "an-der-ecke-bellt-ein-hund",
@@ -1335,7 +1397,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "wir-propagieren-den-exzess",
@@ -1345,7 +1408,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "strassen-lang-wie-segeltau",
@@ -1357,7 +1421,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Schreibweisen „Straßen“/„Strassen“ zusammengeführt."
+      "notiz": "Schreibweisen „Straßen“/„Strassen“ zusammengeführt.",
+      "track": 5
     },
     {
       "id": "autobahn",
@@ -1367,7 +1432,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Gleichnamiges Kraftwerk-Lied existiert; als original geführt, Urheberschaft nicht geprüft."
+      "notiz": "Gleichnamiges Kraftwerk-Lied existiert; als original geführt, Urheberschaft nicht geprüft.",
+      "track": 6
     },
     {
       "id": "we-need-to-go-maraca",
@@ -1377,7 +1443,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "queen-of-f-cking-everything",
@@ -1390,7 +1457,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "revolution-no-9",
@@ -1400,7 +1468,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Titel wie ein Beatles-Stück; als original geführt, Urheberschaft nicht geprüft."
+      "notiz": "Titel wie ein Beatles-Stück; als original geführt, Urheberschaft nicht geprüft.",
+      "track": 9
     },
     {
       "id": "auf-m-park-and-ride-von-golgatha",
@@ -1410,7 +1479,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "wir-mussen-uns-bewegen",
@@ -1420,7 +1490,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "tragically-hip",
@@ -1432,7 +1503,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "fuck-it-up-round-christmas-time",
@@ -1516,7 +1588,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "san-francisco-candy-boy",
@@ -1528,7 +1601,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "wir-sitzen-hier-und-schlabbern-aperol",
@@ -1541,7 +1615,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 18
     },
     {
       "id": "atari-besenstiel",
@@ -1551,7 +1626,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "barfussmadchenseele",
@@ -1561,7 +1637,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "wie-die-ausgespuckten-funken-im-kamin",
@@ -1571,7 +1648,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "viva-la-vida",
@@ -1581,7 +1659,8 @@
       "auch_auf": [],
       "typ": "cover",
       "original_id": null,
-      "notiz": "Coldplay."
+      "notiz": "Coldplay.",
+      "track": 6
     },
     {
       "id": "hol-die-polizei",
@@ -1591,7 +1670,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "tulpen-aus-amsterdam",
@@ -1601,7 +1681,8 @@
       "auch_auf": [],
       "typ": "cover",
       "original_id": null,
-      "notiz": "Schlager."
+      "notiz": "Schlager.",
+      "track": 8
     },
     {
       "id": "das-leben-ist-so-heavy-heavy-tanzbar",
@@ -1611,7 +1692,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "turbulentes-indigo",
@@ -1623,7 +1705,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "wer-bringt-die-liebe-zuruck",
@@ -1633,7 +1716,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "laser-gun-vom-aldi",
@@ -1643,7 +1727,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "bring-back-the-noise",
@@ -1653,7 +1738,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 13
     },
     {
       "id": "astronautentod",
@@ -1663,7 +1749,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 14
     },
     {
       "id": "das-13-lied-aus-dem-jupiterring",
@@ -1673,7 +1760,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 15
     },
     {
       "id": "schatzilein",
@@ -1683,7 +1771,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 16
     },
     {
       "id": "fuzzi-fuzzi-cowboy",
@@ -1693,7 +1782,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 17
     },
     {
       "id": "the-creature-from-the-sea",
@@ -1703,7 +1793,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Reprise auf demselben Album zusammengeführt."
+      "notiz": "Reprise auf demselben Album zusammengeführt.",
+      "track": 19
     },
     {
       "id": "ich-hab-bei-den-wolfen-geschlafen",
@@ -1715,7 +1806,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 20
     },
     {
       "id": "der-tourist",
@@ -1725,7 +1817,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Apple Music führt außerdem „The Tourist“ von Romy Hausmann feat. Fortuna Ehrenfeld; Verhältnis ungeprüft."
+      "notiz": "Apple Music führt außerdem „The Tourist“ von Romy Hausmann feat. Fortuna Ehrenfeld; Verhältnis ungeprüft.",
+      "track": 21
     },
     {
       "id": "down-down-down",
@@ -1735,7 +1828,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 22
     },
     {
       "id": "die-bois-mit-der-let-s-go-maschine",
@@ -1745,7 +1839,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 23
     },
     {
       "id": "rotze-auf-hawaii",
@@ -1755,7 +1850,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 24
     },
     {
       "id": "ich-seh-dich-uberall",
@@ -1768,7 +1864,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 25
     },
     {
       "id": "moonoom",
@@ -1778,7 +1875,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 26
     },
     {
       "id": "nudeln-mit-tomatensosse",
@@ -1790,7 +1888,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 27
     },
     {
       "id": "zwischen-juni-jul-und-mai",
@@ -1800,7 +1899,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 28
     },
     {
       "id": "universum-prolog",
@@ -1810,7 +1910,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 30
     },
     {
       "id": "lullaby-fur-lowenherzen",
@@ -1820,7 +1921,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 31
     },
     {
       "id": "wilde-jahre",
@@ -1842,7 +1944,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "„Himmelerdenblau Reprise“ (Album 2025) zusammengeführt. Mitautorin Romy Hausmann laut Deezer; feat. Romy Hausmann."
+      "notiz": "„Himmelerdenblau Reprise“ (Album 2025) zusammengeführt. Mitautorin Romy Hausmann laut Deezer; feat. Romy Hausmann.",
+      "track": 6
     },
     {
       "id": "blood-sweat-fears",
@@ -1854,7 +1957,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Single mit Romy Hausmann (feat.)."
+      "notiz": "Single mit Romy Hausmann (feat.).",
+      "track": 21
     },
     {
       "id": "romy",
@@ -1864,7 +1968,8 @@
       "auch_auf": [],
       "typ": "unklar",
       "original_id": null,
-      "notiz": "Laufzeit 1:09, Autorin laut Deezer Romy Hausmann; möglicherweise gesprochener Text, nicht geprüft."
+      "notiz": "Laufzeit 1:09, Autorin laut Deezer Romy Hausmann; möglicherweise gesprochener Text, nicht geprüft.",
+      "track": 2
     },
     {
       "id": "liebe",
@@ -1874,7 +1979,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "tod",
@@ -1884,7 +1990,8 @@
       "auch_auf": [],
       "typ": "unklar",
       "original_id": null,
-      "notiz": "Laufzeit 0:30, Autorin laut Deezer Romy Hausmann; möglicherweise gesprochener Text, nicht geprüft."
+      "notiz": "Laufzeit 0:30, Autorin laut Deezer Romy Hausmann; möglicherweise gesprochener Text, nicht geprüft.",
+      "track": 4
     },
     {
       "id": "ein-grab",
@@ -1894,7 +2001,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 5
     },
     {
       "id": "vergessen",
@@ -1904,7 +2012,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "der-traum",
@@ -1914,7 +2023,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "ein-herz",
@@ -1924,7 +2034,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 9
     },
     {
       "id": "intubieren-du-arschgesicht",
@@ -1934,7 +2045,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "drei-tage-regen",
@@ -1944,7 +2056,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Nicht mit „Drei Tage Regen Danke Scheisskerl“ (2022) zusammengeführt: eigener Titel, kein Text zum Vergleich gefunden. Prüfen."
+      "notiz": "Nicht mit „Drei Tage Regen Danke Scheisskerl“ (2022) zusammengeführt: eigener Titel, kein Text zum Vergleich gefunden. Prüfen.",
+      "track": 11
     },
     {
       "id": "zeit-fur-den-strick",
@@ -1954,7 +2067,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "theos-theme",
@@ -1964,7 +2078,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 15
     },
     {
       "id": "der-blumenwalzer",
@@ -1974,7 +2089,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 16
     },
     {
       "id": "schlafen",
@@ -1984,7 +2100,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 17
     },
     {
       "id": "tabletten",
@@ -1994,7 +2111,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 18
     },
     {
       "id": "der-see",
@@ -2004,7 +2122,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 20
     },
     {
       "id": "vera-mein-herz",
@@ -2014,7 +2133,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 22
     },
     {
       "id": "life-at-the-hollywood-bowl",
@@ -2026,7 +2146,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 1
     },
     {
       "id": "internet-zerf-cken",
@@ -2038,7 +2159,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 2
     },
     {
       "id": "marklin",
@@ -2050,7 +2172,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 8
     },
     {
       "id": "ich-trag-so-viele-bilder",
@@ -2062,7 +2185,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Feat. Jenny Thiele laut Apple Music."
+      "notiz": "Feat. Jenny Thiele laut Apple Music.",
+      "track": 9
     },
     {
       "id": "ray-of-fukin-sunshine",
@@ -2074,7 +2198,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": "Text laut Discogs von Thomas Allan."
+      "notiz": "Text laut Discogs von Thomas Allan.",
+      "track": 5
     },
     {
       "id": "i-want-to-misbehave",
@@ -2086,7 +2211,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 7
     },
     {
       "id": "kleines-herz",
@@ -2098,7 +2224,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 11
     },
     {
       "id": "unfug-the-world",
@@ -2110,7 +2237,8 @@
       ],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 10
     },
     {
       "id": "ciao-kakao",
@@ -2120,7 +2248,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 3
     },
     {
       "id": "slowly-fades-away",
@@ -2130,7 +2259,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 4
     },
     {
       "id": "bosch-blau",
@@ -2140,7 +2270,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 6
     },
     {
       "id": "makelloses-fieber",
@@ -2150,7 +2281,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": ""
+      "notiz": "",
+      "track": 12
     },
     {
       "id": "rabenflugel",
@@ -2160,7 +2292,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 1
     },
     {
       "id": "me-fall-like-rain",
@@ -2170,7 +2303,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 2
     },
     {
       "id": "die-polyintensiven",
@@ -2180,7 +2314,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 3
     },
     {
       "id": "goppingen",
@@ -2190,7 +2325,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 4
     },
     {
       "id": "ich-bade-meine-angst",
@@ -2200,7 +2336,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 5
     },
     {
       "id": "kleiner-kapitan",
@@ -2210,7 +2347,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 7
     },
     {
       "id": "ausflug-in-den-club",
@@ -2220,7 +2358,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 8
     },
     {
       "id": "das-gerausch",
@@ -2230,7 +2369,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 9
     },
     {
       "id": "ich-bin-frei",
@@ -2240,7 +2380,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 10
     },
     {
       "id": "ich-mag-mich-fuhlen-wie-eine-taube",
@@ -2250,7 +2391,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 11
     },
     {
       "id": "cognac-fur-die-huren",
@@ -2260,7 +2402,8 @@
       "auch_auf": [],
       "typ": "original",
       "original_id": null,
-      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt."
+      "notiz": "Revolution! (Tonproduktion Records TPR069, Vinyl-LP, Limited Edition), Tracklist laut Discogs. Genaues Erscheinungsdatum unbekannt.",
+      "track": 12
     }
   ],
   "zaehlungen": [

@@ -283,6 +283,19 @@
     });
   }
 
+  // Reihenfolge der Lieder: nach Albumphase, darin zuerst die Lieder des Albums in Trackreihenfolge (Feld `track`),
+  // danach die übrigen der Phase zugeordneten Lieder (Singles, EPs, Live) nach Erscheinungsdatum.
+  function liedOrdnung(data) {
+    const pos = new Map();
+    const p = l => {
+      if (!pos.has(l.id)) { const i = phaseInfo(data, l); pos.set(l.id, i ? (i.album.reihenfolge ?? 99) : 99); }
+      return pos.get(l.id);
+    };
+    return (a, b) => p(a) - p(b) || (a.track == null) - (b.track == null) || (a.track ?? 0) - (b.track ?? 0)
+      || String(a.erstveroeffentlichung || '').localeCompare(String(b.erstveroeffentlichung || ''))
+      || String(a.titel).localeCompare(String(b.titel), 'de');
+  }
+
   // Eine Spalte je Albumphase in Erscheinungsreihenfolge, gleichmäßig verteilt, auch ohne Lieder.
   // Ohne `alben` in den Daten (ältere Dateien) wird jedes Jahr zu einer eigenen Phase.
   function phaseCols(data, songs, snds, mode) {
@@ -293,8 +306,9 @@
       const years = [...new Set(shown.map(s => s.year))].sort((a, b) => a - b);
       alb = years.map(y => ({id: String(y), titel: String(y), kurz: String(y), datum: `${y}-01-01`}));
     }
+    const ordnung = liedOrdnung(data);
     return alb.map(a => {
-      const inP = shown.filter(s => pseudo ? String(s.year) === a.id : s.phase === a.id);
+      const inP = shown.filter(s => pseudo ? String(s.year) === a.id : s.phase === a.id).sort((x, y) => ordnung(x.l, y.l));
       const counted = inP.filter(s => s.counted), counts = {};
       for (const snd of snds) {
         const sum = counted.reduce((t, s) => t + (s.values[snd.id] || 0), 0);
@@ -409,7 +423,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, textMitLinks, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
+    esc, fmt, slug, isHttp, textMitLinks, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, liedOrdnung, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };

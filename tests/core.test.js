@@ -179,6 +179,23 @@ test('Daten: jedes Lied gehört genau einer der zehn Albumphasen an', () => {
   assert.strictEqual(cols.reduce((t, c) => t + c.songs.length, 0), d.lieder.length, 'jedes Lied in genau einer Spalte');
 });
 
+test('Liedreihenfolge: Albumphase, dann Tracks des Albums, dann übrige nach Datum', () => {
+  const d = SM.normalize(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'daten', 'shalalameter-daten.json'), 'utf8')));
+  const ordnung = SM.liedOrdnung(d);
+  const titel = id => d.lieder.find(l => l.id === id);
+  const sortiert = ids => ids.map(titel).sort(ordnung).map(l => l.id);
+  // Glitzerschwein: Track 1, 2, 6, danach die Single von 2023-02-24
+  assert.deepStrictEqual(sortiert(['autobahn', 'schau-mein-bruderherz-ich-blute', 'leck-mich-am-arsch-amore-mio', 'an-der-ecke-bellt-ein-hund']),
+    ['an-der-ecke-bellt-ein-hund', 'leck-mich-am-arsch-amore-mio', 'autobahn', 'schau-mein-bruderherz-ich-blute']);
+  // Frühere Albumphase vor späterer, auch wenn das Alphabet anders sortieren würde
+  assert.deepStrictEqual(sortiert(['rabenflugel', 'pony']), ['pony', 'rabenflugel']);
+  // Jedes eigene Lied auf einem Studioalbum seiner Phase hat eine Tracknummer
+  for (const l of d.lieder.filter(l => l.typ === 'original')) {
+    const p = SM.phaseInfo(d, l);
+    if (p && l.veroeffentlichung === `${p.album.titel} (Album)`) assert.ok(Number.isInteger(l.track), `${l.titel} ohne Tracknummer`);
+  }
+});
+
 test('Kandidat freigeben überträgt die Zahlen', () => {
   const data = SM.normalize({
     laute: [{id: 'a', name: 'A', status: 'freigegeben'}], lieder: [{id: '1'}],

@@ -7,6 +7,7 @@ const F = SchalalaFans, api = F.forum;
 const $ = id => document.getElementById(id);
 const main = $('ansicht');
 let lieder = new Map();       // Lied-ID → Lied aus der Datendatei (Titel, Jahr, Veröffentlichung)
+let daten = null;             // die ganze Datendatei, für Albumphasen und Reihenfolge
 let filter = 'alle';
 
 const REGELN = 'Bleib freundlich, auch wenn jemand anders gezählt hat. Poste keine kompletten Liedtexte, ein, zwei Zeilen als Zitat reichen. Respektiere das Fortuna-Team und alle anderen Fans.';
@@ -84,8 +85,19 @@ async function senden(form, fn) {
 
 /* ---------- Neues Thema ---------- */
 function zeigeNeu(vorLied) {
-  const optionen = [...lieder.values()].sort((a, b) => a.titel.localeCompare(b.titel, 'de'))
-    .map(l => `<option value="${esc(l.id)}"${l.id === vorLied ? ' selected' : ''}>${esc(l.titel)} (${esc(String(l.erstveroeffentlichung || '').slice(0, 4))})</option>`).join('');
+  // Nach Albumphase gruppiert, darin in Trackreihenfolge (SM.liedOrdnung); ohne Datendatei alphabetisch.
+  const option = l => `<option value="${esc(l.id)}"${l.id === vorLied ? ' selected' : ''}>${esc(l.titel)} (${esc(String(l.erstveroeffentlichung || '').slice(0, 4))})</option>`;
+  let optionen;
+  if (daten) {
+    const gruppen = new Map();
+    for (const l of [...lieder.values()].sort(SM.liedOrdnung(daten))) {
+      const p = SM.phaseInfo(daten, l), titel = p ? p.album.titel : 'Weitere Lieder';
+      (gruppen.get(titel) || gruppen.set(titel, []).get(titel)).push(l);
+    }
+    optionen = [...gruppen].map(([t, ls]) => `<optgroup label="${esc(t)}">${ls.map(option).join('')}</optgroup>`).join('');
+  } else {
+    optionen = [...lieder.values()].sort((a, b) => a.titel.localeCompare(b.titel, 'de')).map(option).join('');
+  }
   main.innerHTML = `
     <div style="display:flex; flex-direction:column; gap:14px">
       <a class="zurueck" href="#">← Alle Themen</a>
@@ -266,6 +278,7 @@ function route() {
     const res = await fetch('daten/shalalameter-daten.json', {cache: 'no-cache'});
     const d = SM.normalize(await res.json());
     lieder = new Map(d.lieder.map(l => [l.id, l]));
+    daten = d;
   } catch (e) { /* ohne Datendatei zeigen Liedthemen ihren gespeicherten Titel */ }
   window.addEventListener('hashchange', route);
   route();

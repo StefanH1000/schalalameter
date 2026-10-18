@@ -80,6 +80,8 @@ Die Phase eines Lieds wird berechnet, Regeln in dieser Reihenfolge:
 
 Gespeichert ist `phase` nur bei den festgelegten Überschreibungen: die Lieder der Regenradar-EP und „Trust Me, I'm an Alien!“ (Helm ab zum Gebet) sowie „Weltuntergang“ (Die Rückkehr zur Normalität). In der Werkstatt lässt sich die Phase pro Lied ansehen und überschreiben.
 
+**Reihenfolge der Lieder** (`SM.liedOrdnung`, überall gleich): nach Albumphase, darin zuerst die Lieder des Albums nach `track` (Position auf dem Album, aus MusicBrainz, Revolution! aus Discogs), danach die übrigen der Phase zugeordneten Lieder nach Erscheinungsdatum. Steht ein Lied auf mehreren Alben, gilt die Position auf dem Album seiner Phase. Bei einem neuen Album die Tracknummern mit eintragen.
+
 ### Fanzählungen (Supabase)
 
 Über `zaehlen.html` („Zähl mit“, verlinkt auf der Startseite und an jedem Lied) reichen Fans ohne Anmeldung eine Zählung für ein Lied und einen Laut ein, oder schlagen einen neuen Laut vor. Die Einreichungen liegen in Supabase; die Startseite lädt sie beim Öffnen (höchstens 3 Sekunden, sonst nur die Datendatei) und rechnet sie ein. Die Datendatei bleibt unverändert.

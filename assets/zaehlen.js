@@ -60,8 +60,9 @@ function baueListe() {
     const best = SM.bestOf(byLied.get(l.id) || []);
     const p = SM.phaseInfo(data, l);
     return {l, album: p ? p.album : null, offen: !best, summe: best ? snds.reduce((t, s) => t + SM.value(best, s.id, false), 0) : 0};
-  }).sort((a, b) => ((a.album && a.album.reihenfolge) ?? 99) - ((b.album && b.album.reihenfolge) ?? 99)
-    || String(a.l.erstveroeffentlichung).localeCompare(String(b.l.erstveroeffentlichung)) || a.l.titel.localeCompare(b.l.titel, 'de'));
+  });
+  const ordnung = SM.liedOrdnung(data);
+  liste.sort((a, b) => ordnung(a.l, b.l));
 }
 const eintrag = id => liste.find(x => x.l.id === id);
 

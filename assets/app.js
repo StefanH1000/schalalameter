@@ -451,7 +451,8 @@ function renderPeriod(cols){
   const f = detailFam(), rs = rankSounds();
   // Balken: im Detail ein Segment je Laut, sonst eins je eingeblendeter Familie.
   const parts = f ? rs.map(s => ({slot: s.slot, ids: [s.id]})) : visFams().map(x => ({slot: x.slot, ids: membersOf(x).map(s => s.id)}));
-  const all = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || a.s.l.titel.localeCompare(b.s.l.titel, 'de'));
+  const ordnung = SM.liedOrdnung(data);
+  const all = c.counted.map(s => ({s, tot: total(s)})).sort((a, b) => b.tot - a.tot || ordnung(a.s.l, b.s.l));
   const list = all.filter(x => x.tot > 0), silent = all.filter(x => x.tot === 0);
   const sumAll = list.reduce((t, x) => t + x.tot, 0);
   const maxTot = Math.max(1, ...list.map(x => x.tot));
