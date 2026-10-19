@@ -22,7 +22,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 | `impressum.html`, `datenschutz.html` | Pflichtseiten; mit Kontaktadresse für Meldungen rechtswidriger Inhalte |
 | `tests/` | `npm test` |
 | `tools/serve.js` | lokaler Server: `npm start` → http://localhost:8080 |
-| `tools/build.js`, `wrangler.jsonc`, `_headers` | Veröffentlichung bei Cloudflare: `npm run build` legt `dist/` an (nur Seiten, `assets/`, `daten/`, `_headers`), Cloudflare lädt nur `dist/` hoch |
+| `tools/build.js`, `wrangler.jsonc`, `_headers` | Veröffentlichung bei Cloudflare: `npm run build` legt `dist/` an (nur Seiten, `assets/`, `daten/`, `_headers`, `favicon.ico`), Cloudflare lädt nur `dist/` hoch |
 
 ## Daten aktualisieren
 

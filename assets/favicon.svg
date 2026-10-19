@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Schalalameter: drei gestapelte Kurven wie im Diagramm (Schalala, Silbenhack, Oh Ah Uh) -->
+  <style>
+    .grund { fill: #f4f1f7 }
+    .linie { stroke: #f4f1f7 }
+    @media (prefers-color-scheme: dark) { .grund { fill: #1e1825 } .linie { stroke: #1e1825 } }
+  </style>
+  <rect class="grund" width="32" height="32" rx="7"/>
+  <g class="linie" stroke-width="1.2" stroke-linejoin="round">
+    <path fill="#e87ba4" d="M4 27 V19 C9 19 9.5 5.5 14.5 5.5 C20 5.5 21.5 17 28 17 V27 Z"/>
+    <path fill="#1baf7a" d="M4 27 V21.5 C9 21.5 10 12.5 14.5 12.5 C19.5 12.5 21.5 20 28 20 V27 Z"/>
+    <path fill="#eb6834" d="M4 27 V24 C9 24 10.5 18.5 14.5 18.5 C19 18.5 21.5 23 28 23 V27 Z"/>
+  </g>
+</svg>
