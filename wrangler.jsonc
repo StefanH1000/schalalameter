@@ -1,8 +1,10 @@
 // Cloudflare Worker mit statischen Dateien: liefert nur den Ordner dist/ aus, den `npm run build` erzeugt.
-// In Cloudflare: Build-Befehl `npm run build`, Deploy-Befehl `npx wrangler deploy`.
+// In Cloudflare genügt der Deploy-Befehl `npx wrangler deploy`; den Build startet Wrangler selbst (build.command).
 {
   "name": "schalalameter",
   "compatibility_date": "2026-10-19",
+  // Baut dist/ vor jedem Deploy selbst, auch wenn in Cloudflare kein Build-Befehl eingetragen ist.
+  "build": {"command": "npm run build"},
   "assets": {
     "directory": "./dist",
     // /zaehlen.html und /zaehlen liefern dieselbe Seite; ?lied=… und #… bleiben erhalten.

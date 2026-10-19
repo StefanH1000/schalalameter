@@ -15,7 +15,7 @@ Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffe
 | Live-Seite | Cloudflare Worker `schalalameter` (Adresse im Cloudflare-Dashboard, `…workers.dev` oder eigene Domain); bis das Repository privat ist, zusätzlich https://stefanh1000.github.io/schalalameter/ |
 | Werkstatt (intern, nicht verlinkt) | `/werkstatt.html` unter der Live-Adresse (Kopfzeile `X-Robots-Tag: noindex`) |
 | Repository | https://github.com/StefanH1000/schalalameter (öffentlich, Branch `main`) |
-| Hosting | Cloudflare (Worker mit statischen Dateien), baut bei jedem Push auf `main`: `npm run build`, dann `npx wrangler deploy` (nur `dist/`, siehe `wrangler.jsonc`, `_headers`) |
+| Hosting | Cloudflare (Worker mit statischen Dateien), baut bei jedem Push auf `main`: Deploy-Befehl `npx wrangler deploy`, der vorher selbst `npm run build` ausführt (nur `dist/`, siehe `wrangler.jsonc`, `_headers`) |
 | Lokaler Ordner | `C:\Users\hoch\shalalameter` |
 
 ## Stand der Daten
