@@ -178,6 +178,19 @@ $('open-list').addEventListener('click', e => {
 
 /* ---------- Vorschläge von Fans (aus Supabase) ---------- */
 let fanRows = null;
+// Familienfragen der Schalalalogie: Lautschlüssel → {thema_id, stimmen}; null, solange nicht geladen oder nicht vorhanden.
+let familienfragen = null;
+// Auswahl der Familie für einen Vorschlag: Stimmen aus der Familienfrage, die häufigste vorgewählt.
+function familienAuswahl(v, i) {
+  const frage = familienfragen && familienfragen.get(SM.slug(v.ph));
+  const wahl = SM.familienWahl(data, frage ? frage.stimmen : []);
+  const optionen = wahl.liste.map(f => `<option value="${esc(f.id)}"${f.id === wahl.vorschlag ? ' selected' : ''}>${esc(f.name)}${frage ? ` · ${f.stimmen} ${f.stimmen === 1 ? 'Stimme' : 'Stimmen'}` : ''}</option>`).join('')
+    + `<option value="weitere"${wahl.vorschlag ? '' : ' selected'}>Weitere Laute</option>`;
+  const info = frage
+    ? `<a href="schalalalogie.html#thema/${encodeURIComponent(frage.thema_id)}" target="_blank" rel="noopener">Familienfrage</a>${wahl.weissNicht ? ` · ${wahl.weissNicht}× „Weiß nicht“` : ''}`
+    : 'noch keine Familienfrage';
+  return `<label class="inline-familie">Familie <select data-fan-familie="${i}">${optionen}</select></label> <span class="ct">${info}</span>`;
+}
 function renderFanCands(){
   const box = $('fan-cands');
   if (fanRows === null) {
@@ -188,7 +201,7 @@ function renderFanCands(){
   const list = SM.fanVorschlaege(data, fanRows).filter(v => !known.has(v.ph.toLowerCase()));
   const titel = id => (data.lieder.find(l => l.id === id) || {}).titel || id;
   box.innerHTML = list.length ? list.map((v, i) => `<li>
-    <span><span class="ph">${esc(v.ph)}</span> <span class="tag">Fans</span><br><span class="ct">${v.n} ${v.n === 1 ? 'Vorschlag' : 'Vorschläge'}, zusammen ${v.total}× · ${[...v.songs].map(titel).map(esc).join(', ')}</span></span>
+    <span><span class="ph">${esc(v.ph)}</span> <span class="tag">Fans</span><br><span class="ct">${v.n} ${v.n === 1 ? 'Vorschlag' : 'Vorschläge'}, zusammen ${v.total}× · ${[...v.songs].map(titel).map(esc).join(', ')}</span><br>${familienAuswahl(v, i)}</span>
     <span class="act"><button type="button" class="btn small" data-fan="${i}">Als Laut anlegen</button></span></li>`).join('')
     : '<li class="empty muted">Keine offenen Vorschläge.</li>';
   box._list = list;
@@ -196,11 +209,15 @@ function renderFanCands(){
 $('fan-cands').addEventListener('click', e => {
   const i = e.target.dataset.fan; if (i == null) return;
   const v = $('fan-cands')._list[+i];
-  SM.approveCandidate(data, v.ph, '__neu');
+  const sel = $('fan-cands').querySelector(`[data-fan-familie="${i}"]`);
+  const familie = sel && sel.value !== 'weitere' ? sel.value : null;
+  SM.approveCandidate(data, v.ph, '__neu', familie);
   saveDraft(); render();
-  $('cand-status').textContent = `„${v.ph}“ als Laut angelegt`;
+  const f = familie && SM.families(data).find(x => x.id === familie);
+  $('cand-status').textContent = `„${v.ph}“ als Laut angelegt${f ? `, Familie ${f.untertitel || f.anzeigename}` : ''}`;
 });
 if (window.SchalalaFans) SchalalaFans.load(5000).then(r => { fanRows = r; if (data) renderFanCands(); });
+if (window.SchalalaFans && SchalalaFans.ready()) SchalalaFans.forum.familienfragen(5000).then(m => { familienfragen = m; if (data && fanRows) renderFanCands(); });
 
 function render(){ renderCands(); renderFanCands(); renderCountForm(); renderPhase(); renderOpen(); }
 init().catch(() => { $('draft-status').textContent = 'Die veröffentlichten Daten konnten nicht geladen werden. Lade eine Datei.'; data = {laute: [], lieder: [], zaehlungen: [], kandidaten_verworfen: []}; render(); });

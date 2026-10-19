@@ -7,7 +7,7 @@ const $ = id => document.getElementById(id);
 const breit = matchMedia('(min-width: 900px)');
 let data = null, rows = [], snds = [], fams = [];
 let liste = [];               // alle Lieder mit Album, Summe und Status, sortiert
-const st = {lied: null, laut: null, neu: false, filter: 'offen', suche: '', schritt: 1, album: null};
+const st = {lied: null, laut: null, neu: false, familie: '', filter: 'offen', suche: '', schritt: 1, album: null};
 
 const {store, geraetId} = SchalalaFans;
 const coverUrl = a => a ? (a.cover || `assets/cover/${a.id}.jpg`) : '';
@@ -31,6 +31,7 @@ async function init() {
   fams = SM.families(data);
   baueListe();
   renderLaute();
+  renderNeuFamilien();
   $('name').value = store('schalala-spitzname') || '';
   // Vorauswahl eines Albums (Link aus den Lücken auf der Startseite): nur dessen Lieder zeigen.
   const alb = new URLSearchParams(location.search).get('album');
@@ -120,6 +121,19 @@ function waehleLied(id) {
 }
 
 /* ---------- Schritt 2: Laut ---------- */
+// Familien zur Wahl beim neuen Laut, in derselben Reihenfolge und Farbe wie die Laute, dazu „Weiß nicht“.
+function renderNeuFamilien() {
+  $('neu-familien').innerHTML = fams.map(f => `<button type="button" class="chip" style="--fc:var(--c${f.slot})" data-familie="${esc(f.id)}" aria-pressed="false">${esc(f.untertitel || f.anzeigename)}</button>`).join('')
+    + `<button type="button" class="chip neu" data-familie="${SM.WEISS_NICHT}" aria-pressed="false">Weiß nicht</button>`;
+}
+$('neu-familien').addEventListener('click', e => {
+  const b = e.target.closest('[data-familie]');
+  if (!b) return;
+  st.familie = b.dataset.familie;
+  fehler('fehler-laut', '');
+  renderAuswahl();
+});
+
 function renderLaute() {
   $('familien').innerHTML = fams.map(f => `<div class="familie" style="--fc:var(--c${f.slot})">
     <div class="familie-kopf"><span class="sw" style="background:var(--c${f.slot})"></span><b>${esc(f.untertitel || f.anzeigename)}</b>${f.untertitel ? `<small>${esc(f.anzeigename)}</small>` : ''}</div>
@@ -160,6 +174,7 @@ function renderAuswahl() {
   const x = eintrag(st.lied);
   for (const b of $('familien').querySelectorAll('[data-laut]')) b.setAttribute('aria-pressed', !st.neu && b.dataset.laut === st.laut);
   $('neu-chip').setAttribute('aria-pressed', st.neu);
+  for (const b of $('neu-familien').querySelectorAll('[data-familie]')) b.setAttribute('aria-pressed', st.neu && b.dataset.familie === st.familie);
   $('keine-chip').setAttribute('aria-pressed', keine());
   $('anzahl-zeile').hidden = keine();
   $('zurueck-von-4').dataset.zu = keine() ? 2 : 3;
@@ -250,6 +265,7 @@ function pruefeBis(n) {
   if (n >= 2 && !st.lied) return 1;
   if (n >= 3 && !st.neu && !st.laut) return 2;
   if (n >= 3 && st.neu && !$('neu').value.trim()) { fehler('fehler-laut', 'Bitte schreib, wie der neue Laut klingt.'); return 2; }
+  if (n >= 3 && st.neu && !st.familie) { fehler('fehler-laut', 'Bitte wähl eine Familie oder „Weiß nicht“.'); return 2; }
   return n;
 }
 function geheZu(n, ausHistorie) {
@@ -285,6 +301,7 @@ $('zf').addEventListener('submit', async e => {
   if (!lied) return fehler('fehler', 'Bitte wähl ein Lied.');
   if (!st.neu && !st.laut) return fehler('fehler', 'Bitte wähl ein Schalala.');
   if (st.neu && !neu) return fehler('fehler', 'Bitte schreib, wie der neue Laut klingt.');
+  if (st.neu && !st.familie) return fehler('fehler', 'Bitte wähl eine Familie oder „Weiß nicht“.');
   if (!Number.isInteger(n) || n < 0 || n > 200) return fehler('fehler', 'Die Anzahl muss zwischen 0 und 200 liegen.');
   if (!name) { $('name').focus(); return fehler('fehler', 'Bitte gib einen Spitznamen an.'); }
   store('schalala-spitzname', name);
@@ -296,10 +313,14 @@ $('zf').addEventListener('submit', async e => {
   const btn = $('senden');
   btn.disabled = true; btn.textContent = 'Wird gesendet …';
   try {
-    await SchalalaFans.submit({
+    const antwort = await SchalalaFans.submit({
       lied_id: lied.l.id, laut_id: ohne ? SM.KEINE : sound ? sound.id : '', vorschlag: neu, anzahl: ohne ? 0 : n, spitzname: name,
       grundlage: document.querySelector('input[name="grundlage"]:checked').value, geraet_id: geraetId(),
+      familie: st.neu ? st.familie : '',
     });
+    // Die Familie zählt als Stimme in der Familienfrage; die Schalalalogie zeigt sie dann als eigene Stimme an.
+    if (antwort.familien_thema && antwort.familien_antwort) SchalalaFans.store('schalala-stimme-' + antwort.familien_thema, String(antwort.familien_antwort));
+    familienThema = antwort.familien_thema || null;
     rows = (await SchalalaFans.load(3000)) || rows;
     baueListe();
     zeigeErgebnis(eintrag(lied.l.id), sound, neu, n, ohne);
@@ -330,6 +351,7 @@ function naechstesOffenes() {
   const i = liste.findIndex(x => x.l.id === st.lied);
   return [...liste.slice(i + 1), ...liste.slice(0, Math.max(i, 0))].find(x => x.offen && x.l.id !== st.lied) || null;
 }
+let familienThema = null;   // Thema der Familienfrage nach einem Vorschlag, für den Link auf der Danke-Seite
 function zeigeErgebnis(x, sound, neu, eigene, ohne) {
   const box = $('ergebnis');
   let mitte;
@@ -349,7 +371,9 @@ function zeigeErgebnis(x, sound, neu, eigene, ohne) {
       <p>${wer} Ab drei Stimmen zählt der häufigste Wert.</p>`;
   } else {
     mitte = `<div class="vergleich"><div><small>Dein Vorschlag</small><span class="vorschlag-chip">${esc(neu)}</span></div><div><small>gezählt</small><b>${eigene}</b></div></div>
-      <p>${(a => a.length ? `Auch ${esc(SM.namenListe(a))} ${a.length === 1 ? 'hat' : 'haben'} „${esc(neu)}“ in diesem Lied gehört. ` : '')(andereNamen(r => !r.laut_id && SM.slug(r.vorschlag || '') === SM.slug(neu)))}Neue Laute werden erst geprüft. Sobald „${esc(neu)}“ freigegeben ist, erscheint er auf dem Schalalameter, mit deiner Zahl und allen anderen Zählungen dazu.</p>`;
+      <p>${(a => a.length ? `Auch ${esc(SM.namenListe(a))} ${a.length === 1 ? 'hat' : 'haben'} „${esc(neu)}“ in diesem Lied gehört. ` : '')(andereNamen(r => !r.laut_id && SM.slug(r.vorschlag || '') === SM.slug(neu)))}Neue Laute werden erst geprüft. Sobald „${esc(neu)}“ freigegeben ist, erscheint er auf dem Schalalameter, mit deiner Zahl und allen anderen Zählungen dazu.</p>
+      ${familienThema ? `<p>Zu welcher Familie gehört „${esc(neu)}“? Darüber stimmen alle in der Schalalalogie ab, deine Wahl zählt schon mit.</p>
+      <a class="gross hell" href="schalalalogie.html#thema/${encodeURIComponent(familienThema)}">Zur Familienfrage</a>` : ''}`;
   }
   const next = naechstesOffenes();
   box.innerHTML = `
@@ -373,7 +397,7 @@ function zeigeErgebnis(x, sound, neu, eigene, ohne) {
   if (next) $('naechstes').addEventListener('click', () => { zeigeFormular(); waehleLied(next.l.id); renderLieder(); geheZu(2); });
 }
 function zeigeFormular() {
-  st.laut = null; st.neu = false; $('neu').value = ''; setAnzahl(0);
+  st.laut = null; st.neu = false; st.familie = ''; familienThema = null; $('neu').value = ''; setAnzahl(0);
   renderFilter(); renderLieder(); renderAuswahl();
   $('ergebnis').hidden = true; $('zm-grid').hidden = false;
   document.querySelector('.zm-head').style.display = '';

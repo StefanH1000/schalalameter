@@ -49,7 +49,7 @@
     } catch (e) {
       throw new Error(NICHT_ERREICHBAR);
     }
-    if (!res.ok) throw new Error(await fehlerText(res, `Das hat nicht geklappt (Fehler ${res.status}).`));
+    if (!res.ok) { const e = new Error(await fehlerText(res, `Das hat nicht geklappt (Fehler ${res.status}).`)); e.status = res.status; throw e; }
     return res.json();
   }
 
@@ -75,14 +75,16 @@
     const ende = Date.now() + (timeoutMs || 3000);
     try {
       const rows = [], page = 1000;
-      // Ohne Spalte spitzname (tabelle.sql noch nicht neu ausgeführt) antwortet die Ansicht mit 400: dann ohne Namen laden.
-      let felder = 'lied_id,laut_id,anzahl,vorschlag,grundlage,spitzname';
+      // Spalten, die erst spätere Fassungen von tabelle.sql anlegen, stehen hinten. Fehlt eine (Ansicht antwortet
+      // mit 400), wird ohne die jeweils letzte weiter geladen: erst ohne familie, dann ohne spitzname.
+      const optional = ['spitzname', 'familie'];
       for (let from = 0; ; from += page) {
         let chunk;
         try {
-          chunk = await get('fan_zaehlungen_oeffentlich?select=' + felder, {range: `${from}-${from + page - 1}`, timeoutMs: Math.max(1, ende - Date.now())});
+          chunk = await get('fan_zaehlungen_oeffentlich?select=' + ['lied_id,laut_id,anzahl,vorschlag,grundlage,aktualisiert', ...optional].join(','),
+            {range: `${from}-${from + page - 1}`, timeoutMs: Math.max(1, ende - Date.now())});
         } catch (e) {
-          if (e.status === 400 && felder.endsWith(',spitzname')) { felder = felder.replace(',spitzname', ''); from -= page; continue; }
+          if (e.status === 400 && optional.length) { optional.pop(); from -= page; continue; }
           throw e;
         }
         rows.push(...chunk);
@@ -94,13 +96,23 @@
     }
   }
 
+  // Einreichen. Rückgabe: {familien_thema, familien_antwort} bei einem Vorschlag mit Familienfrage, sonst leer.
+  // Kennt die Datenbank p_familie noch nicht (tabelle.sql nicht neu ausgeführt, Antwort 404), wird ohne Familie eingereicht.
   async function submit(z) {
     if (!ready()) throw new Error('Das Einreichen ist noch nicht freigeschaltet.');
-    await rpc('zaehlung_einreichen', {
+    const body = {
       p_lied_id: z.lied_id, p_laut_id: z.laut_id || '', p_anzahl: z.anzahl, p_vorschlag: z.vorschlag || '',
       p_spitzname: z.spitzname, p_grundlage: z.grundlage, p_geraet_id: z.geraet_id,
-    });
-    return true;
+    };
+    if (z.familie) body.p_familie = z.familie;
+    try {
+      return (await rpc('zaehlung_einreichen', body)) || {};
+    } catch (e) {
+      if (e.status !== 404 || !body.p_familie) throw e;
+      delete body.p_familie;
+      await rpc('zaehlung_einreichen', body);
+      return {};
+    }
   }
 
   /* ---------- Schalalalogie ---------- */
@@ -120,6 +132,22 @@
     beitragSchreiben: b => rpc('beitrag_schreiben', {p_thema_id: b.thema_id, p_text: b.text, p_spitzname: b.spitzname, p_geraet_id: b.geraet_id}),
     abstimmen: s => rpc('abstimmen', {p_thema_id: s.thema_id, p_antwort_id: s.antwort_id, p_geraet_id: s.geraet_id}),
     melden: m => rpc('melden', {p_beitrag_id: m.beitrag_id, p_grund: m.grund || '', p_geraet_id: m.geraet_id}),
+    // Familienfragen mit Stimmen je Familie: Map Lautschlüssel → {thema_id, stimmen: [{wert, stimmen}]};
+    // null, wenn nicht erreichbar oder die Datenbank noch keine Familienfragen kennt.
+    async familienfragen(timeoutMs) {
+      try {
+        const themen = await get('themen_oeffentlich?select=id,laut_schluessel&art=eq.familie&limit=1000', {timeoutMs});
+        const map = new Map(themen.map(t => [t.laut_schluessel, {thema_id: t.id, stimmen: []}]));
+        if (themen.length) {
+          const antw = await get(`antworten_oeffentlich?select=thema_id,wert,stimmen&thema_id=in.(${themen.map(t => +t.id).join(',')})`, {timeoutMs});
+          const nachThema = new Map([...map.values()].map(f => [String(f.thema_id), f]));
+          for (const a of antw) { const f = nachThema.get(String(a.thema_id)); if (f && a.wert) f.stimmen.push({wert: a.wert, stimmen: +a.stimmen}); }
+        }
+        return map;
+      } catch (e) {
+        return null;
+      }
+    },
   };
 
   /* ---------- Anmeldung der Moderierenden (nur Werkstatt) ---------- */

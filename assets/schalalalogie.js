@@ -11,7 +11,9 @@ let daten = null;             // die ganze Datendatei, für Albumphasen und Reih
 let filter = 'alle';
 
 const REGELN = 'Bleib freundlich, auch wenn jemand anders gezählt hat. Poste keine kompletten Liedtexte, ein, zwei Zeilen als Zitat reichen. Respektiere das Fortuna-Team und alle anderen Fans.';
-const ART = {lied: 'Lied', frei: 'Thema', abstimmung: 'Abstimmung'};
+const ART = {lied: 'Lied', frei: 'Thema', abstimmung: 'Abstimmung', familie: 'Familienfrage'};
+// Abstimmungen und Familienfragen (zu einem vorgeschlagenen Laut, angelegt aus „Zähl mit“) haben Antworten und Stimmen.
+const MIT_STIMMEN = art => art === 'abstimmung' || art === 'familie';
 
 const zeit = t => new Date(t).toLocaleString('de-DE', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'});
 const tag = t => new Date(t).toLocaleDateString('de-DE', {day: 'numeric', month: 'long', year: 'numeric'});
@@ -28,7 +30,7 @@ async function zeigeListe() {
   main.innerHTML = '<p class="muted">Wird geladen …</p>';
   let themen;
   try { themen = await api.themen(); } catch (e) { return stoerung(); }
-  const zeig = themen.filter(t => filter === 'alle' || t.art === filter);
+  const zeig = themen.filter(t => filter === 'alle' || t.art === filter || (filter === 'abstimmung' && t.art === 'familie'));
   const pills = [['alle', 'Alle'], ['lied', 'Lieder'], ['frei', 'Freie Themen'], ['abstimmung', 'Abstimmungen']]
     .map(([k, l]) => `<button type="button" class="pill" data-f="${k}" aria-pressed="${filter === k}">${l}</button>`).join('');
   main.innerHTML = `
@@ -37,7 +39,7 @@ async function zeigeListe() {
       ${zeig.length ? `<ul class="themen">${zeig.map(t => `<li><a href="${t.art === 'lied' ? '#lied/' + encodeURIComponent(t.lied_id) : '#thema/' + t.id}">
         <span><span class="art">${ART[t.art]}</span><b>${esc(t.art === 'lied' ? liedTitel(t.lied_id, t.titel) : t.titel)}</b><br>
           <small>von ${esc(t.spitzname)} · ${esc(zeit(t.erstellt))}</small></span>
-        <span class="zahl">${plural(+t.beitraege, 'Beitrag', 'Beiträge')}${t.art === 'abstimmung' ? `<br>${plural(+t.stimmen, 'Stimme', 'Stimmen')} · ${t.geschlossen ? 'geschlossen' : 'offen'}` : ''}<br>zuletzt ${esc(zeit(t.letzte_aktivitaet))}</span>
+        <span class="zahl">${plural(+t.beitraege, 'Beitrag', 'Beiträge')}${MIT_STIMMEN(t.art) ? `<br>${plural(+t.stimmen, 'Stimme', 'Stimmen')} · ${t.geschlossen ? 'geschlossen' : 'offen'}` : ''}<br>zuletzt ${esc(zeit(t.letzte_aktivitaet))}</span>
       </a></li>`).join('')}</ul>`
       : `<div class="leer">${themen.length ? 'In dieser Auswahl gibt es noch nichts.' : 'Noch ist es still in der Fachschaft.'} <a href="#neu">Fang ein Thema an.</a></div>`}
     </div>`;
@@ -171,7 +173,7 @@ async function zeigeThema(id, liedId, neuerBeitrag) {
   let thema, beitraege = [], antworten = [];
   try {
     thema = liedId ? await api.liedthema(liedId) : await api.thema(id);
-    if (thema) [beitraege, antworten] = await Promise.all([api.beitraege(thema.id), thema.art === 'abstimmung' ? api.antworten(thema.id) : []]);
+    if (thema) [beitraege, antworten] = await Promise.all([api.beitraege(thema.id), MIT_STIMMEN(thema.art) ? api.antworten(thema.id) : []]);
   } catch (e) { return stoerung(null, () => zeigeThema(id, liedId)); }
   if (!thema && !liedId) {
     main.innerHTML = '<div style="display:flex; flex-direction:column; gap:14px"><a class="zurueck" href="#">← Alle Themen</a><div class="leer">Dieses Thema gibt es nicht (mehr).</div></div>';
@@ -183,16 +185,19 @@ async function zeigeThema(id, liedId, neuerBeitrag) {
     return;
   }
   const titel = l ? l.titel : thema.titel;
-  const offen = thema && thema.art === 'abstimmung' && !thema.geschlossen;
+  const offen = thema && MIT_STIMMEN(thema.art) && !thema.geschlossen;
   const meta = [];
   if (l) meta.push(`${esc(String(l.erstveroeffentlichung || '').slice(0, 4))}${l.veroeffentlichung ? ' · ' + esc(l.veroeffentlichung) : ''}`);
-  if (thema && thema.art !== 'lied') meta.push(`angelegt von ${esc(thema.spitzname)} · ${esc(zeit(thema.erstellt))}`);
-  if (thema && thema.art === 'abstimmung') meta.push(thema.geschlossen ? 'Abstimmung geschlossen' : thema.endet ? `läuft bis ${esc(tag(thema.endet))}` : 'Abstimmung offen');
+  if (thema && thema.art === 'familie') meta.push(`vorgeschlagen von ${esc(thema.spitzname)} · ${esc(zeit(thema.erstellt))}`);
+  else if (thema && thema.art !== 'lied') meta.push(`angelegt von ${esc(thema.spitzname)} · ${esc(zeit(thema.erstellt))}`);
+  if (thema && MIT_STIMMEN(thema.art)) meta.push(thema.geschlossen ? 'Abstimmung geschlossen' : thema.endet ? `läuft bis ${esc(tag(thema.endet))}` : 'Abstimmung offen');
   if (l) meta.push(`<a href="zaehlen.html?lied=${encodeURIComponent(l.id)}">Dieses Lied zählen</a>`);
 
   const meine = thema ? F.store('schalala-stimme-' + thema.id) : null;
   const summe = antworten.reduce((t, a) => t + +a.stimmen, 0);
-  const umfrage = thema && thema.art === 'abstimmung' ? `
+  const erklaerung = thema && thema.art === 'familie'
+    ? '<p class="regeln">Ein Fan hat diesen Laut beim Zählen vorgeschlagen. Zu welcher Familie gehört er? Die Wahl hilft bei der Prüfung, freigegeben wird der Laut von Hand.</p>' : '';
+  const umfrage = thema && MIT_STIMMEN(thema.art) ? `${erklaerung}
     <div class="umfrage" role="group" aria-label="Antworten">
       ${antworten.map(a => {
         const p = summe ? Math.round(+a.stimmen / summe * 100) : 0;

@@ -3,7 +3,8 @@
 -- Das Skript ist wiederholbar (if not exists / or replace / drop policy if exists).
 --
 -- Grundhaltung:
---   anon (öffentlicher Schlüssel der Website) darf nur die Funktionen ausführen und die Ansichten lesen:
+--   anon (öffentlicher Schlüssel der Website) darf nur die Funktionen ausführen und die Ansichten lesen
+--   (ein neuer Laut in zaehlung_einreichen legt dabei eine Familienfrage im Forum an):
 --     zaehlung_einreichen, thema_anlegen, beitrag_schreiben, abstimmen, melden
 --     fan_zaehlungen_oeffentlich, themen_oeffentlich, beitraege_oeffentlich, antworten_oeffentlich
 --   In den Tabellen selbst darf anon nichts lesen, ändern oder löschen.
@@ -161,6 +162,42 @@ create unique index if not exists fan_zaehlungen_eindeutig
 -- Spitzname ausblenden, die Zählung bleibt (für unpassende Namen). Bei Wiederholung nur ergänzt.
 alter table public.fan_zaehlungen add column if not exists name_ausgeblendet boolean not null default false;
 
+-- Familie, die ein Fan für seinen vorgeschlagenen Laut wählt (id aus public.familien); sonst leer.
+alter table public.fan_zaehlungen add column if not exists familie text not null default ''
+  check (familie = '' or familie ~ '^[a-z0-9-]{1,60}$');
+
+-- Familien, die bei einem neuen Laut zur Wahl stehen: die Antworten der Familienfrage im Forum.
+-- Muss zu den Familien in daten/shalalameter-daten.json passen (tests/core.test.js prüft das).
+-- Kommt eine Familie dazu, hier ergänzen und das Skript erneut ausführen; bestehende Familienfragen
+-- behalten ihre Antworten, neue bekommen die aktuelle Liste.
+create table if not exists public.familien (
+  id       text     primary key check (id ~ '^[a-z0-9-]{1,60}$'),
+  text     text     not null check (char_length(text) between 1 and 100),
+  position smallint not null
+);
+insert into public.familien (id, text, position) values
+  ('piu',         'Piu piu (Spatzenlaser)', 1),
+  ('shalala',     'Schalala (Schalalamente)', 2),
+  ('silben',      'La la, Da da und Co (Silbenhack)', 3),
+  ('knall',       'Bumm und Kawumm (Rummse)', 4),
+  ('rufe',        'Oh, Ah, Uh (DNA Elemente eines erfüllten Lebens)', 5),
+  ('instrumente', 'Dudeln und Tröten (Täterätätä im Pyjama)', 6),
+  ('jubel',       'Hey, Yeah, Olé (Daseinslaute)', 7),
+  ('weiss-nicht', 'Weiß nicht', 99)
+on conflict (id) do update set text = excluded.text, position = excluded.position;
+alter table public.familien enable row level security;
+revoke all on table public.familien from anon, authenticated, public;
+
+-- Schlüssel eines Lauttexts wie SM.slug in assets/core.js: klein, Umlaute und Akzente ohne Zeichen,
+-- alles außer a–z und 0–9 wird zu einem Bindestrich. „Peng peng“ und „peng-peng“ ergeben denselben Schlüssel.
+create or replace function public.laut_schluessel(p_text text)
+returns text language sql immutable set search_path = public, pg_temp as $$
+  select trim(both '-' from regexp_replace(
+    translate(lower(coalesce(p_text, '')), 'äöüáàâãåéèêëíìîïóòôõúùûçñý', 'aouaaaaaeeeeiiiioooouuucny'),
+    '[^a-z0-9]+', '-', 'g'));
+$$;
+revoke all on function public.laut_schluessel(text) from public, anon, authenticated;
+
 create index if not exists fan_zaehlungen_geraet_zeit on public.fan_zaehlungen (geraet_id, aktualisiert);
 
 -- RLS an: Über die Data API kommt niemand direkt an die Zeilen, außer über die Moderations-Policies unten.
@@ -176,6 +213,11 @@ revoke all on sequence public.fan_zaehlungen_id_seq from anon, authenticated, pu
 -- Einreichung desselben Geräts (gleiches Lied, gleicher Laut bzw. gleicher Vorschlag) und begrenzt
 -- die Aufrufe je Gerät, je IP-Adresse und insgesamt (aufruf_zaehlen, grenzwerte zaehlungen_*).
 -- Gesperrte Einträge bleiben gesperrt, auch wenn das Gerät erneut einreicht.
+-- Bei einem Vorschlag (neuer Laut) mit p_familie: legt beim ersten Vorschlag dieses Lauts die Familienfrage
+-- im Forum an und zählt die gewählte Familie als Stimme dieses Geräts (public.familienfrage).
+-- Rückgabe: {"ok": true, "familien_thema": id oder null, "familien_antwort": id oder null}
+-- Die frühere Fassung ohne p_familie wird ersetzt; Aufrufe ohne p_familie funktionieren weiter (Vorgabe '').
+drop function if exists public.zaehlung_einreichen(text, text, integer, text, text, text, uuid);
 create or replace function public.zaehlung_einreichen(
   p_lied_id   text,
   p_laut_id   text,
@@ -183,7 +225,8 @@ create or replace function public.zaehlung_einreichen(
   p_vorschlag text,
   p_spitzname text,
   p_grundlage text,
-  p_geraet_id uuid
+  p_geraet_id uuid,
+  p_familie   text default ''
 ) returns json
 language plpgsql
 security definer
@@ -193,6 +236,8 @@ declare
   v_laut      text := coalesce(btrim(p_laut_id), '');
   v_vorschlag text := coalesce(btrim(p_vorschlag), '');
   v_name      text := coalesce(btrim(p_spitzname), '');
+  v_familie   text := coalesce(btrim(p_familie), '');
+  v_frage     json;
 begin
   if p_geraet_id is null then
     raise exception 'Geräte-Kennung fehlt' using errcode = '22023';
@@ -218,27 +263,34 @@ begin
   if p_grundlage is null or p_grundlage not in ('gehoert', 'booklet') then
     raise exception 'Grundlage muss gehört oder Booklet sein' using errcode = '22023';
   end if;
+  if v_familie <> '' and (v_vorschlag = '' or not exists (select 1 from public.familien where id = v_familie)) then
+    raise exception 'Unbekannte Familie' using errcode = '22023';
+  end if;
 
   -- Ratenbegrenzung: jeder Aufruf zählt, auch das Ändern einer bestehenden Zählung.
   perform public.aufruf_zaehlen('zaehlungen', p_geraet_id);
 
-  insert into public.fan_zaehlungen (lied_id, laut_id, anzahl, vorschlag, spitzname, grundlage, geraet_id)
-  values (p_lied_id, v_laut, p_anzahl, v_vorschlag, v_name, p_grundlage, p_geraet_id)
+  insert into public.fan_zaehlungen (lied_id, laut_id, anzahl, vorschlag, spitzname, grundlage, geraet_id, familie)
+  values (p_lied_id, v_laut, p_anzahl, v_vorschlag, v_name, p_grundlage, p_geraet_id, v_familie)
   on conflict (geraet_id, lied_id, laut_id, lower(vorschlag)) do update
     set anzahl       = excluded.anzahl,
         vorschlag    = excluded.vorschlag,
         spitzname    = excluded.spitzname,
         grundlage    = excluded.grundlage,
+        familie      = excluded.familie,
         aktualisiert = now();
 
-  return json_build_object('ok', true);
+  if v_vorschlag <> '' then
+    v_frage := public.familienfrage(v_vorschlag, v_familie, v_name, p_geraet_id);
+  end if;
+  return json_build_object('ok', true, 'familien_thema', v_frage->'thema', 'familien_antwort', v_frage->'antwort');
 end;
 $$;
 
 -- Ausführen darf die Funktion nur anon (die Website). Standardmäßig hätte jede Rolle das Recht,
 -- deshalb zuerst allen entziehen.
-revoke all on function public.zaehlung_einreichen(text, text, integer, text, text, text, uuid) from public, authenticated;
-grant execute on function public.zaehlung_einreichen(text, text, integer, text, text, text, uuid) to anon;
+revoke all on function public.zaehlung_einreichen(text, text, integer, text, text, text, uuid, text) from public, authenticated;
+grant execute on function public.zaehlung_einreichen(text, text, integer, text, text, text, uuid, text) to anon;
 
 -- Lesen: nur über diese Ansicht.
 -- Die Ansicht läuft mit den Rechten ihres Eigentümers (security_invoker = false) und liest deshalb
@@ -247,7 +299,8 @@ grant execute on function public.zaehlung_einreichen(text, text, integer, text, 
 create or replace view public.fan_zaehlungen_oeffentlich
 with (security_invoker = false) as
 select lied_id, laut_id, anzahl, vorschlag, grundlage, aktualisiert,
-       case when name_ausgeblendet then '' else spitzname end as spitzname
+       case when name_ausgeblendet then '' else spitzname end as spitzname,
+       familie
   from public.fan_zaehlungen
  where not gesperrt;
 
@@ -259,10 +312,12 @@ grant select on table public.fan_zaehlungen_oeffentlich to anon;
 -- Schalalalogie: Tabellen
 -- ===========================================================================
 -- Themen: art 'lied' (eins je Lied, entsteht beim ersten Beitrag), 'frei' (Titel + erster Beitrag),
--- 'abstimmung' (Frage, 2 bis 6 Antworten, optionales Enddatum).
+-- 'abstimmung' (Frage, 2 bis 6 Antworten, optionales Enddatum),
+-- 'familie' (Familienfrage zu einem vorgeschlagenen Laut, eine je laut_schluessel, Antworten aus public.familien;
+-- entsteht nur über zaehlung_einreichen).
 create table if not exists public.themen (
   id                bigint generated always as identity primary key,
-  art               text        not null check (art in ('lied', 'frei', 'abstimmung')),
+  art               text        not null check (art in ('lied', 'frei', 'abstimmung', 'familie')),
   lied_id           text        check (lied_id is null or lied_id ~ '^[a-z0-9-]{1,120}$'),
   titel             text        not null check (char_length(titel) between 1 and 140),
   spitzname         text        not null check (char_length(spitzname) between 1 and 40),
@@ -275,6 +330,15 @@ create table if not exists public.themen (
   constraint lied_id_nur_bei_liedthema check ((art = 'lied') = (lied_id is not null))
 );
 create unique index if not exists themen_ein_liedthema on public.themen (lied_id) where art = 'lied';
+
+-- Familienfragen (bei Wiederholung ergänzt): Art erlauben, Schlüssel des Lauts, eine Frage je Schlüssel.
+alter table public.themen drop constraint if exists themen_art_check;
+alter table public.themen add constraint themen_art_check check (art in ('lied', 'frei', 'abstimmung', 'familie'));
+alter table public.themen add column if not exists laut_schluessel text;
+alter table public.themen drop constraint if exists laut_schluessel_nur_bei_familie;
+alter table public.themen add constraint laut_schluessel_nur_bei_familie
+  check ((art = 'familie') = (laut_schluessel is not null and laut_schluessel ~ '^[a-z0-9-]{1,120}$'));
+create unique index if not exists themen_eine_familienfrage on public.themen (laut_schluessel) where art = 'familie';
 create index if not exists themen_geraet_zeit on public.themen (geraet_id, erstellt);
 
 create table if not exists public.beitraege (
@@ -296,6 +360,8 @@ create table if not exists public.antworten (
   position smallint not null,
   unique (thema_id, position)
 );
+-- Bei Familienfragen die Familien-ID der Antwort (aus public.familien), sonst leer.
+alter table public.antworten add column if not exists wert text check (wert is null or wert ~ '^[a-z0-9-]{1,60}$');
 
 -- Eine Stimme je Gerät und Abstimmung (Primärschlüssel); eine neue Stimme ersetzt die alte.
 create table if not exists public.stimmen (
@@ -397,6 +463,49 @@ begin
 end;
 $$;
 revoke all on function public.pruefe_text(text) from public, anon, authenticated;
+
+-- Familienfrage zu einem vorgeschlagenen Laut. Nur intern (aus zaehlung_einreichen), nicht von außen aufrufbar.
+-- Legt beim ersten Vorschlag eines Lauts das Thema mit allen Familien als Antworten an; gleicher Schlüssel
+-- (laut_schluessel) landet im selben Thema. Mit p_familie zählt die Familie als Stimme dieses Geräts; eine
+-- spätere Wahl ersetzt sie, wie beim Abstimmen. Gesperrte oder geschlossene Fragen nehmen keine Stimme an.
+-- Rückgabe: {"thema": id, "antwort": id oder null}
+create or replace function public.familienfrage(p_vorschlag text, p_familie text, p_name text, p_geraet_id uuid)
+returns json language plpgsql security definer set search_path = public, pg_temp as $$
+declare
+  v_schluessel text := public.laut_schluessel(p_vorschlag);
+  v_thema      bigint;
+  v_antwort    bigint;
+begin
+  if v_schluessel !~ '^[a-z0-9-]{1,120}$' then
+    return json_build_object('thema', null, 'antwort', null);
+  end if;
+  select id into v_thema from public.themen where art = 'familie' and laut_schluessel = v_schluessel;
+  if v_thema is null then
+    insert into public.themen (art, titel, spitzname, geraet_id, laut_schluessel)
+    values ('familie', 'Neuer Laut „' || btrim(p_vorschlag) || '“: Welche Familie?', p_name, p_geraet_id, v_schluessel)
+    on conflict (laut_schluessel) where art = 'familie' do nothing
+    returning id into v_thema;
+    if v_thema is null then
+      select id into v_thema from public.themen where art = 'familie' and laut_schluessel = v_schluessel;
+    else
+      insert into public.antworten (thema_id, text, position, wert)
+      select v_thema, f.text, row_number() over (order by f.position, f.id), f.id from public.familien f;
+    end if;
+  end if;
+  if p_familie <> '' and exists (select 1 from public.themen where id = v_thema and not gesperrt and not geschlossen) then
+    select id into v_antwort from public.antworten where thema_id = v_thema and wert = p_familie;
+    if v_antwort is not null then
+      insert into public.stimmen (thema_id, geraet_id, antwort_id)
+      values (v_thema, p_geraet_id, v_antwort)
+      on conflict (thema_id, geraet_id) do update
+        set antwort_id = excluded.antwort_id, aktualisiert = now();
+    end if;
+  end if;
+  update public.themen set letzte_aktivitaet = now() where id = v_thema;
+  return json_build_object('thema', v_thema, 'antwort', v_antwort);
+end;
+$$;
+revoke all on function public.familienfrage(text, text, text, uuid) from public, anon, authenticated;
 
 -- Thema anlegen.
 --   lied:       p_lied_id und p_text (erster Beitrag). Gibt es das Liedthema schon, wird nur der Beitrag angehängt.
@@ -547,7 +656,7 @@ begin
   end if;
   perform public.aufruf_zaehlen('stimmen', p_geraet_id);
   select * into v_thema from public.themen where id = p_thema_id;
-  if not found or v_thema.gesperrt or v_thema.art <> 'abstimmung' then
+  if not found or v_thema.gesperrt or v_thema.art not in ('abstimmung', 'familie') then
     raise exception 'Diese Abstimmung gibt es nicht' using errcode = 'P0001';
   end if;
   if v_thema.geschlossen or (v_thema.endet is not null and v_thema.endet <= now()) then
@@ -608,7 +717,8 @@ with (security_invoker = false) as
 select t.id, t.art, t.lied_id, t.titel, t.spitzname, t.erstellt, t.letzte_aktivitaet, t.endet,
        (t.geschlossen or (t.endet is not null and t.endet <= now())) as geschlossen,
        (select count(*) from public.beitraege b where b.thema_id = t.id and not b.gesperrt) as beitraege,
-       (select count(*) from public.stimmen s where s.thema_id = t.id) as stimmen
+       (select count(*) from public.stimmen s where s.thema_id = t.id) as stimmen,
+       t.laut_schluessel
   from public.themen t
  where not t.gesperrt;
 
@@ -622,7 +732,8 @@ select b.id, b.thema_id, b.text, b.spitzname, b.erstellt
 create or replace view public.antworten_oeffentlich
 with (security_invoker = false) as
 select a.id, a.thema_id, a.text, a.position,
-       (select count(*) from public.stimmen s where s.antwort_id = a.id) as stimmen
+       (select count(*) from public.stimmen s where s.antwort_id = a.id) as stimmen,
+       a.wert
   from public.antworten a
   join public.themen t on t.id = a.thema_id
  where not t.gesperrt;

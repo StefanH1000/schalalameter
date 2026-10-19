@@ -390,6 +390,78 @@ test('Rangfolge: Gehör vor Booklet vor Fankonsens vor Onlinetext', () => {
   assert.strictEqual(d.zaehlungen.length, 2, 'Datendatei bleibt unverändert');
 });
 
+test('Familienfrage: Familien in tabelle.sql passen zur Datendatei', () => {
+  const sql = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'tabelle.sql'), 'utf8');
+  const block = sql.slice(sql.indexOf('insert into public.familien'), sql.indexOf('on conflict (id) do update set text'));
+  const zeilen = [...block.matchAll(/\('([a-z0-9-]+)',\s*'((?:[^']|'')*)',\s*(\d+)\)/g)].map(m => ({id: m[1], text: m[2].replace(/''/g, "'"), pos: +m[3]}));
+  const d = SM.normalize(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'daten', 'shalalameter-daten.json'), 'utf8')));
+  const erwartet = SM.families(d).map((f, i) => ({id: f.id, text: f.untertitel ? `${f.untertitel} (${f.anzeigename})` : f.anzeigename, pos: i + 1}));
+  assert.deepStrictEqual(zeilen.filter(z => z.id !== SM.WEISS_NICHT), erwartet);
+  assert.ok(zeilen.some(z => z.id === SM.WEISS_NICHT && z.text === 'Weiß nicht'), '„Weiß nicht“ fehlt');
+});
+
+test('Familienfrage: Lautschlüssel in SQL wie SM.slug', () => {
+  // Nachbau von public.laut_schluessel aus tabelle.sql
+  const sql = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'tabelle.sql'), 'utf8');
+  const m = /translate\(lower\(coalesce\(p_text, ''\)\), '([^']+)', '([^']+)'\)/.exec(sql);
+  assert.ok(m, 'laut_schluessel nicht gefunden');
+  const von = [...m[1]], nach = [...m[2]];
+  assert.strictEqual(von.length, nach.length);
+  const sqlSchluessel = s => [...s.toLowerCase()].map(c => { const i = von.indexOf(c); return i < 0 ? c : nach[i]; }).join('')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  for (const s of ['Peng peng', 'peng-peng', 'PÄNG, päng!', 'Olé olé', 'Tä-tä-rä', 'Hüh hüh', 'Soße', 'Crème', '  Wumm  ', 'Ça va', 'Ñam'])
+    assert.strictEqual(sqlSchluessel(s), SM.slug(s), s);
+});
+
+test('Familienfrage: Auswertung, häufigste Familie vorgewählt, „Weiß nicht“ zählt nicht mit', () => {
+  const d = SM.normalize({
+    familien: [{id: 'a', name: 'A', untertitel: 'Aa'}, {id: 'b', name: 'B'}, {id: 'c', name: 'C'}],
+    laute: [{id: 'x', name: 'X', status: 'freigegeben', familie: 'a'}, {id: 'y', name: 'Y', status: 'freigegeben', familie: 'b'},
+      {id: 'z', name: 'Z', status: 'freigegeben', familie: 'c'}],
+    lieder: [], zaehlungen: [],
+  });
+  const w = SM.familienWahl(d, [{wert: 'b', stimmen: 2}, {wert: 'c', stimmen: '2'}, {wert: 'weiss-nicht', stimmen: 5}]);
+  assert.deepStrictEqual(w.liste.map(f => [f.id, f.name, f.stimmen]), [['a', 'Aa', 0], ['b', 'B', 2], ['c', 'C', 2]]);
+  assert.strictEqual(w.vorschlag, 'b');                   // Gleichstand: die frühere Familie
+  assert.strictEqual(w.weissNicht, 5);                    // auch mit den meisten Stimmen kein Vorschlag
+  assert.strictEqual(SM.familienWahl(d, [{wert: 'weiss-nicht', stimmen: 3}]).vorschlag, null);
+  assert.strictEqual(SM.familienWahl(d, null).vorschlag, null);
+});
+
+test('Familienfrage: Freigabe in der gewählten Familie, sonst „Weitere Laute“', () => {
+  const neu = () => SM.normalize({familien: [{id: 'knall', name: 'Rummse'}], laute: [{id: 'bumm', name: 'Bumm', status: 'freigegeben', familie: 'knall'}], lieder: [], zaehlungen: []});
+  const d1 = neu();
+  SM.approveCandidate(d1, 'Peng peng', '__neu', 'knall');
+  assert.strictEqual(d1.laute.find(l => l.id === 'peng-peng').familie, 'knall');
+  const d2 = neu();
+  SM.approveCandidate(d2, 'Peng peng', '__neu', 'gibts-nicht');
+  assert.strictEqual(d2.laute.find(l => l.id === 'peng-peng').familie, 'weitere');
+});
+
+test('Zuletzt gezählt: neueste zehn, nur eigene Lieder und freigegebene Laute, „Keine Schalalas“', () => {
+  const d = SM.normalize({
+    laute: [{id: 'a', name: 'A', status: 'freigegeben'}, {id: 'peng-peng', name: 'Peng peng', status: 'freigegeben'}],
+    lieder: [{id: 'l1', titel: 'Eins', typ: 'original'}, {id: 'l2', titel: 'Zwei', typ: 'cover'}],
+    zaehlungen: [],
+  });
+  const t = m => `2026-10-18T10:${String(m).padStart(2, '0')}:00Z`;
+  const rows = [
+    {lied_id: 'l1', laut_id: 'a', anzahl: 3, spitzname: 'Kalle', aktualisiert: t(1)},
+    {lied_id: 'l1', laut_id: 'keine', anzahl: 0, spitzname: 'Taube', aktualisiert: t(5)},
+    {lied_id: 'l1', laut_id: '', vorschlag: 'peng-PENG', anzahl: 2, spitzname: '', aktualisiert: t(4)},  // freigegeben
+    {lied_id: 'l1', laut_id: '', vorschlag: 'Zisch', anzahl: 9, spitzname: 'X', aktualisiert: t(9)},     // nicht freigegeben
+    {lied_id: 'l2', laut_id: 'a', anzahl: 1, spitzname: 'X', aktualisiert: t(8)},                        // Cover
+    {lied_id: 'l1', laut_id: 'gibts-nicht', anzahl: 1, spitzname: 'X', aktualisiert: t(7)},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 1, spitzname: 'X'},                                           // ohne Zeit
+  ];
+  const z = SM.zuletztGezaehlt(d, rows);
+  assert.deepStrictEqual(z.map(x => [x.lied.id, x.laut ? x.laut.id : null, x.anzahl, x.spitzname]),
+    [['l1', null, 0, 'Taube'], ['l1', 'peng-peng', 2, ''], ['l1', 'a', 3, 'Kalle']]);
+  const viele = Array.from({length: 15}, (_, i) => ({lied_id: 'l1', laut_id: 'a', anzahl: i, aktualisiert: t(10 + i)}));
+  assert.deepStrictEqual(SM.zuletztGezaehlt(d, viele).map(x => x.anzahl), [14, 13, 12, 11, 10, 9, 8, 7, 6, 5]);
+  assert.deepStrictEqual(SM.zuletztGezaehlt(d, null), []);
+});
+
 test('veröffentlichte Datendatei ist gültig', () => {
   const d = SM.normalize(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'daten', 'shalalameter-daten.json'), 'utf8')));
   assert.ok(d, 'Datei hat lieder und zaehlungen');

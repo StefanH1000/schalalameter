@@ -73,9 +73,12 @@ async function loadData(){
   if (!d) throw new Error('Format');
   if (d.beispiel) showNotice('<span><strong>Beispieldaten.</strong> Titel und Zahlen sind erfunden. Die echte Auszählung folgt in Kürze.</span>');
   const rows = await fans;
+  fanZeilen = rows;
   return rows && rows.length ? SM.withFans(d, rows) : d;
 }
 const zaehlLink = id => `zaehlen.html?lied=${encodeURIComponent(id)}`;
+// Fanzählungen, wie sie aus Supabase kamen (für „Zuletzt gezählt“); null, wenn nicht erreichbar.
+let fanZeilen = null;
 // Beiträge je Liedthema (Lied-ID → Anzahl); null, solange nicht geladen oder Supabase nicht erreichbar.
 let diskussion = null;
 const diskLink = id => {
@@ -506,6 +509,28 @@ function renderTable(cols){
   }</tbody></table>`;
 }
 
+/* ---------- Zuletzt gezählt: die zehn neuesten Fanzählungen ---------- */
+// Ohne Verbindung zu Supabase oder ohne Zählungen bleibt der Kasten verborgen. Der Liedtitel führt zur Albumphase.
+function renderZuletzt(){
+  const box = $('zuletzt');
+  const liste = fanZeilen ? SM.zuletztGezaehlt(data, fanZeilen, 10) : [];
+  box.hidden = !liste.length;
+  if (!liste.length) { box.innerHTML = ''; return; }
+  const tag = t => new Date(t).toLocaleDateString('de-DE', {day: 'numeric', month: 'numeric', year: 'numeric'});
+  box.innerHTML = `<h2 id="zuletzt-h">Zuletzt gezählt</h2><ol>${liste.map(z => {
+    const p = SM.phaseInfo(data, z.lied);
+    const ziel = p ? '#' + encodeURIComponent(p.album.id) : zaehlLink(z.lied.id);
+    return `<li><a href="${ziel}">${esc(z.lied.titel)}</a>
+      <span class="laut">${z.laut ? `<span class="sw" style="background:${color(z.laut.slot)}"></span>${esc(z.laut.name)} <b>${z.anzahl}</b>` : 'Keine Schalalas'}</span>
+      <span class="wer">${z.spitzname ? esc(z.spitzname) + ' · ' : ''}<time datetime="${new Date(z.zeit).toISOString()}">${tag(z.zeit)}</time></span></li>`;
+  }).join('')}</ol>`;
+}
+// Ein Klick auf ein Lied wählt dessen Albumphase und springt zur Liste der Lieder.
+$('zuletzt').addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (a) setTimeout(() => document.querySelector('.period').scrollIntoView({block: 'start', behavior: reduceMotion() ? 'auto' : 'smooth'}), 60);
+});
+
 /* ---------- Gesamtrender ---------- */
 function render(){
   const songs = SM.derive(data, {typeOn, minSicher, aufl});
@@ -516,7 +541,7 @@ function render(){
     sel = best;
   }
   hoverIdx = null; $('tip').hidden = true;
-  renderStats(songs); renderZaehlMit(songs, cols); renderLegend(songs); renderSkala(); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
+  renderStats(songs); renderZaehlMit(songs, cols); renderZuletzt(); renderLegend(songs); renderSkala(); renderChart(cols); renderDetail(cols, songs); renderGrid(cols); renderPeriod(cols);
 }
 
 loadData().then(d => {

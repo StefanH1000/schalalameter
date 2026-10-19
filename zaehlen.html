@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Zähl mit · Schalalameter</title>
 <meta name="description" content="Zähl die Schalalas in einem Lied von Fortuna Ehrenfeld und schick deine Zahl ans Schalalameter.">
-<link rel="stylesheet" href="assets/style.css?v=202610180531">
+<link rel="stylesheet" href="assets/style.css?v=202610191103">
 <style>
 /* Zähl mit: auf schmalen Bildschirmen vier Schritte nacheinander, ab 900 px alles in drei Spalten */
 .zm{display:flex; flex-direction:column; gap:16px}
@@ -68,6 +68,7 @@
 .chip{min-height:44px; padding:0 14px; border-radius:999px; background:var(--surface); border:2px solid var(--fc, var(--line)); font-size:15px; font-weight:600; cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink); box-shadow:0 0 0 3px var(--fc, var(--accent))}
 .chip.neu{border-style:dashed; --fc:var(--muted); align-self:flex-start}
+.neu-feld{display:flex; flex-direction:column; gap:14px}
 .feld{display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600}
 .feld input[type=text]{border:1px solid var(--line); background:var(--surface); border-radius:12px; min-height:48px; padding:0 14px; font-size:16px; font-weight:400; width:100%}
 .feld small{font-weight:400; color:var(--ink-2); font-size:13px}
@@ -202,10 +203,17 @@
           <div class="familie-kopf"><b>Etwas anderes gehört?</b></div>
           <div class="lautchips" style="flex-direction:column; align-items:stretch">
             <button type="button" class="chip neu" id="neu-chip" aria-pressed="false">+ Neuen Laut vorschlagen</button>
-            <label class="feld" id="neu-feld" hidden>Wie klingt er?
-              <input type="text" id="neu" maxlength="60" placeholder="z. B. Peng peng">
-              <small>Neue Laute werden gespeichert und erscheinen nach der Prüfung auf dem Schalalameter.</small>
-            </label>
+            <div class="neu-feld" id="neu-feld" hidden>
+              <label class="feld">Wie klingt er?
+                <input type="text" id="neu" maxlength="60" placeholder="z. B. Peng peng">
+                <small>Neue Laute werden gespeichert und erscheinen nach der Prüfung auf dem Schalalameter.</small>
+              </label>
+              <div class="feld">
+                <span id="neu-familie-lab">Zu welcher Familie gehört er?</span>
+                <div class="lautchips" id="neu-familien" role="group" aria-labelledby="neu-familie-lab"></div>
+                <small>Deine Wahl zählt als Stimme in der Familienfrage der Schalalalogie.</small>
+              </div>
+            </div>
           </div>
         </div>
         <div class="familie">
@@ -292,9 +300,9 @@
   </main>
   <footer class="site-foot"><a href="./">Schalalameter</a><a href="schalalalogie.html">Schalalalogie</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></footer>
 </div>
-<script src="assets/core.js?v=202610180531"></script>
-<script src="assets/supabase-config.js?v=202610180531"></script>
-<script src="assets/fans.js?v=202610180531"></script>
-<script src="assets/zaehlen.js?v=202610180531"></script>
+<script src="assets/core.js?v=202610191103"></script>
+<script src="assets/supabase-config.js?v=202610191103"></script>
+<script src="assets/fans.js?v=202610191103"></script>
+<script src="assets/zaehlen.js?v=202610191103"></script>
 </body>
 </html>

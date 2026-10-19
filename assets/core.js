@@ -200,6 +200,40 @@
     if (rest > 0) return `${n.join(', ')} und ${rest === 1 ? 'einer weiteren Person' : rest + ' weiteren'}`;
     return n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n[n.length - 1]}` : (n[0] || '');
   }
+  // Familienfrage auswerten: stimmen = [{wert, stimmen}] aus antworten_oeffentlich.
+  // Ergebnis: alle Familien in ihrer Reihenfolge mit Stimmen, die Stimmen für „Weiß nicht“ und die
+  // vorgeschlagene Familie (die meisten Stimmen; bei Gleichstand die frühere Familie; ohne Stimmen null).
+  const WEISS_NICHT = 'weiss-nicht';
+  function familienWahl(data, stimmen) {
+    const n = new Map();
+    for (const s of Array.isArray(stimmen) ? stimmen : []) if (s && s.wert) n.set(s.wert, (n.get(s.wert) || 0) + (+s.stimmen || 0));
+    const liste = families(data).map(f => ({id: f.id, name: f.untertitel || f.anzeigename || f.name, stimmen: n.get(f.id) || 0}));
+    let vorschlag = null;
+    for (const f of liste) if (f.stimmen > 0 && (!vorschlag || f.stimmen > vorschlag.stimmen)) vorschlag = f;
+    return {liste, weissNicht: n.get(WEISS_NICHT) || 0, vorschlag: vorschlag ? vorschlag.id : null};
+  }
+
+  // Die neuesten Fanzählungen für „Zuletzt gezählt“: nur eigene Lieder, nur freigegebene Laute
+  // (ein Vorschlag erst, wenn ein Laut so heißt) und „Keine Schalalas“. Gesperrte Einträge liefert die Ansicht
+  // gar nicht, ausgeblendete Spitznamen kommen leer an. Ergebnis: [{lied, laut (null = keine), anzahl, spitzname, zeit}].
+  function zuletztGezaehlt(data, rows, n = 10) {
+    const lieder = new Map(data.lieder.filter(l => l.typ === 'original').map(l => [l.id, l]));
+    const snds = sounds(data).filter(s => s.id !== KEINE), nachId = new Map(snds.map(s => [s.id, s])), ausVorschlag = vorschlagsLaut(snds);
+    const out = [];
+    for (const r of Array.isArray(rows) ? rows : []) {
+      const lied = r && lieder.get(r.lied_id), zeit = r && Date.parse(r.aktualisiert);
+      if (!lied || !Number.isFinite(zeit)) continue;
+      let laut;
+      if (r.laut_id === KEINE) laut = null;
+      else {
+        laut = nachId.get(r.laut_id || ausVorschlag(r.vorschlag || ''));
+        if (!laut) continue;
+      }
+      out.push({lied, laut, anzahl: laut ? +r.anzahl || 0 : 0, spitzname: String(r.spitzname || '').trim(), zeit});
+    }
+    return out.sort((a, b) => b.zeit - a.zeit).slice(0, n);
+  }
+
   // Datendatei plus Fankonsens; die Datendatei selbst bleibt unverändert.
   function withFans(data, rows) {
     const extra = fanZaehlungen(data, rows);
@@ -345,14 +379,18 @@
   }
 
   // Kandidat einem Laut zuschlagen; target '__neu' legt einen neuen Laut an. Gibt die Laut-id zurück.
-  function approveCandidate(data, ph, target) {
+  // familie (optional): Familie des neuen Lauts, z. B. aus der Familienfrage; fehlt sie oder ist sie unbekannt,
+  // kommt der Laut wie bisher in „Weitere Laute“.
+  function approveCandidate(data, ph, target, familie) {
     let id = target;
+    const bekannt = familie && Array.isArray(data.familien) && data.familien.some(f => f.id === familie);
     if (target === '__neu') {
       // Steht der Kandidat schon in data.laute (Status „kandidat“), wird dieser Eintrag freigegeben.
       const known = candidateEntry(data, ph);
       if (known) {
         known.status = 'freigegeben';
         known.name = known.name.charAt(0).toUpperCase() + known.name.slice(1);
+        if (bekannt) known.familie = familie;
         id = known.id;
       } else {
         const base = slug(ph);
@@ -360,7 +398,9 @@
         let k = 2;
         while (data.laute.some(l => l.id === id)) id = base + '-' + k++;
         const neu = {id, name: ph.charAt(0).toUpperCase() + ph.slice(1), status: 'freigegeben'};
-        if (Array.isArray(data.familien) && data.familien.length) {
+        if (bekannt) {
+          neu.familie = familie;
+        } else if (Array.isArray(data.familien) && data.familien.length) {
           neu.familie = 'weitere';
           if (!data.familien.some(f => f.id === 'weitere')) data.familien.push({id: 'weitere', name: 'Weitere Laute'});
         }
@@ -423,7 +463,7 @@
 
   const SM = {
     TYPES, TYPE_LABEL, GRUND_RANK, GRUND_LABEL, SICHER_RANK, MAX_SOUNDS, PATTERNS,
-    esc, fmt, slug, isHttp, textMitLinks, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, liedOrdnung, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, withFans, fanVorschlaege,
+    esc, fmt, slug, isHttp, textMitLinks, normalize, families, sounds, yearOf, countable, bestOf, value, derive, albums, phaseInfo, liedOrdnung, phaseCols, consensus, fanZaehlungen, namenListe, KEINE, WEISS_NICHT, familienWahl, zuletztGezaehlt, withFans, fanVorschlaege,
     candidates, candidateEntry, approveCandidate, patternFor, countText, monotone, niceStep,
     DRAFT_KEY: 'shalalameter-entwurf',
   };
