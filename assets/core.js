@@ -214,7 +214,8 @@
   }
 
   // Die neuesten Fanzählungen für „Zuletzt gezählt“: nur eigene Lieder, nur freigegebene Laute
-  // (ein Vorschlag erst, wenn ein Laut so heißt) und „Keine Schalalas“. Gesperrte Einträge liefert die Ansicht
+  // (ein Vorschlag erst, wenn ein Laut so heißt) und „Keine Schalalas“. Eine 0 für einen einzelnen Laut fehlt
+  // in der Liste (im Fankonsens zählt sie weiter); gefiltert wird vor dem Begrenzen auf n. Gesperrte Einträge liefert die Ansicht
   // gar nicht, ausgeblendete Spitznamen kommen leer an. Ergebnis: [{lied, laut (null = keine), anzahl, spitzname, zeit}].
   function zuletztGezaehlt(data, rows, n = 10) {
     const lieder = new Map(data.lieder.filter(l => l.typ === 'original').map(l => [l.id, l]));
@@ -227,7 +228,7 @@
       if (r.laut_id === KEINE) laut = null;
       else {
         laut = nachId.get(r.laut_id || ausVorschlag(r.vorschlag || ''));
-        if (!laut) continue;
+        if (!laut || !(+r.anzahl > 0)) continue;
       }
       out.push({lied, laut, anzahl: laut ? +r.anzahl || 0 : 0, spitzname: String(r.spitzname || '').trim(), zeit});
     }
