@@ -7,6 +7,8 @@
   "build": {"command": "npm run build"},
   // Eigene Domain (Zone hoch.studio im selben Cloudflare-Konto): DNS-Eintrag und Zertifikat legt Cloudflare beim Deploy an.
   "routes": [{"pattern": "schalalameter.hoch.studio", "custom_domain": true}],
+  // Mit eigener Domain schaltet Wrangler workers.dev sonst ab; die Adresse bleibt als Ausweich erreichbar.
+  "workers_dev": true,
   "assets": {
     "directory": "./dist",
     // /zaehlen.html und /zaehlen liefern dieselbe Seite; ?lied=… und #… bleiben erhalten.
