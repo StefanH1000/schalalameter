@@ -197,6 +197,12 @@
       "familie": "knall"
     },
     {
+      "id": "klapp",
+      "name": "Klapp",
+      "status": "freigegeben",
+      "familie": "knall"
+    },
+    {
       "id": "ladi-dadi-dai",
       "name": "Ladi dadi dai",
       "status": "freigegeben",
@@ -324,6 +330,12 @@
       "status": "freigegeben",
       "familie": "jubel",
       "schreibweise_in_daten": "fiki hey"
+    },
+    {
+      "id": "juppidupiduh",
+      "name": "Juppidupiduh",
+      "status": "freigegeben",
+      "familie": "jubel"
     }
   ],
   "lieder": [
