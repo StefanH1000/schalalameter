@@ -521,7 +521,7 @@ function renderZuletzt(){
     const p = SM.phaseInfo(data, z.lied);
     const ziel = p ? '#' + encodeURIComponent(p.album.id) : zaehlLink(z.lied.id);
     return `<li><a href="${ziel}">${esc(z.lied.titel)}</a>
-      <span class="laut">${z.laut ? `<span class="sw" style="background:${color(z.laut.slot)}"></span>${esc(z.laut.name)} <b>${z.anzahl}</b>` : 'keine Schalalas gefunden'}</span>
+      <span class="laute">${z.laute.length ? z.laute.map(x => `<span class="laut"><span class="sw" style="background:${color(x.laut.slot)}"></span>${esc(x.laut.name)} <b>${x.anzahl}</b></span>`).join('') : 'keine Schalalas gefunden'}</span>
       <span class="wer">${z.spitzname ? esc(z.spitzname) + ' · ' : ''}<time datetime="${new Date(z.zeit).toISOString()}">${tag(z.zeit)}</time></span></li>`;
   }).join('')}</ol>`;
 }

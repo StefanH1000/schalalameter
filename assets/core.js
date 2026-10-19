@@ -216,11 +216,15 @@
   // Die neuesten Fanzählungen für „Zuletzt gezählt“: nur eigene Lieder, nur freigegebene Laute
   // (ein Vorschlag erst, wenn ein Laut so heißt) und „Keine Schalalas“. Eine 0 für einen einzelnen Laut fehlt
   // in der Liste (im Fankonsens zählt sie weiter); gefiltert wird vor dem Begrenzen auf n. Gesperrte Einträge liefert die Ansicht
-  // gar nicht, ausgeblendete Spitznamen kommen leer an. Ergebnis: [{lied, laut (null = keine), anzahl, spitzname, zeit}].
+  // gar nicht, ausgeblendete Spitznamen kommen leer an.
+  // Zählungen derselben Person (gleicher Spitzname) im selben Lied werden ein Eintrag mit allen ihren Lauten
+  // (in der Reihenfolge der Laute) und der neuesten Zeit; ohne Spitzname wird nicht zusammengefasst.
+  // „Keine Schalalas“ zählt nur, wenn die Person in dem Lied sonst nichts gezählt hat.
+  // Ergebnis: [{lied, laute: [{laut, anzahl}], keine, spitzname, zeit}], gruppiert vor dem Begrenzen auf n.
   function zuletztGezaehlt(data, rows, n = 10) {
     const lieder = new Map(data.lieder.filter(l => l.typ === 'original').map(l => [l.id, l]));
     const snds = sounds(data).filter(s => s.id !== KEINE), nachId = new Map(snds.map(s => [s.id, s])), ausVorschlag = vorschlagsLaut(snds);
-    const out = [];
+    const out = [], gruppen = new Map();
     for (const r of Array.isArray(rows) ? rows : []) {
       const lied = r && lieder.get(r.lied_id), zeit = r && Date.parse(r.aktualisiert);
       if (!lied || !Number.isFinite(zeit)) continue;
@@ -230,7 +234,22 @@
         laut = nachId.get(r.laut_id || ausVorschlag(r.vorschlag || ''));
         if (!laut || !(+r.anzahl > 0)) continue;
       }
-      out.push({lied, laut, anzahl: laut ? +r.anzahl || 0 : 0, spitzname: String(r.spitzname || '').trim(), zeit});
+      const spitzname = String(r.spitzname || '').trim();
+      const key = spitzname ? r.lied_id + '\u0000' + spitzname : null;
+      let e = key && gruppen.get(key);
+      if (!e) {
+        e = {lied, laute: [], keine: false, spitzname, zeit};
+        out.push(e);
+        if (key) gruppen.set(key, e);
+      }
+      e.zeit = Math.max(e.zeit, zeit);
+      if (laut) e.laute.push({laut, anzahl: +r.anzahl});
+      else e.keine = true;
+    }
+    const rang = new Map(snds.map((s, i) => [s.id, i]));
+    for (const e of out) {
+      e.laute.sort((a, b) => rang.get(a.laut.id) - rang.get(b.laut.id));
+      if (e.laute.length) e.keine = false;
     }
     return out.sort((a, b) => b.zeit - a.zeit).slice(0, n);
   }

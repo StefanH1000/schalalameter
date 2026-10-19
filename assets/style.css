@@ -165,6 +165,7 @@ body{font-variant-numeric:tabular-nums}
 .zuletzt li:first-child{border-top:0}
 .zuletzt li a{font-weight:600; color:var(--ink); text-decoration:none; overflow-wrap:anywhere}
 .zuletzt li a:hover{text-decoration:underline}
+.zuletzt .laute{display:inline-flex; flex-wrap:wrap; align-items:baseline; gap:2px 14px; min-width:0}
 .zuletzt .laut{display:inline-flex; align-items:center; gap:6px; overflow-wrap:anywhere}
 .zuletzt .laut b{font-variant-numeric:tabular-nums}
 .zuletzt .wer{margin-left:auto; color:var(--ink-2); font-size:13px; overflow-wrap:anywhere}

@@ -454,11 +454,12 @@ test('Zuletzt gezählt: neueste zehn, nur eigene Lieder und freigegebene Laute, 
     {lied_id: 'l1', laut_id: 'gibts-nicht', anzahl: 1, spitzname: 'X', aktualisiert: t(7)},
     {lied_id: 'l1', laut_id: 'a', anzahl: 1, spitzname: 'X'},                                           // ohne Zeit
   ];
+  // Kurzform je Eintrag: Lied, Laute mit Anzahl (oder „keine“), Spitzname
+  const kurz = liste => liste.map(x => [x.lied.id, x.laute.length ? x.laute.map(l => l.laut.id + ':' + l.anzahl).join(',') : (x.keine ? 'keine' : ''), x.spitzname]);
   const z = SM.zuletztGezaehlt(d, rows);
-  assert.deepStrictEqual(z.map(x => [x.lied.id, x.laut ? x.laut.id : null, x.anzahl, x.spitzname]),
-    [['l1', null, 0, 'Taube'], ['l1', 'peng-peng', 2, ''], ['l1', 'a', 3, 'Kalle']]);
+  assert.deepStrictEqual(kurz(z), [['l1', 'keine', 'Taube'], ['l1', 'peng-peng:2', ''], ['l1', 'a:3', 'Kalle']]);
   const viele = Array.from({length: 15}, (_, i) => ({lied_id: 'l1', laut_id: 'a', anzahl: i, aktualisiert: t(10 + i)}));
-  assert.deepStrictEqual(SM.zuletztGezaehlt(d, viele).map(x => x.anzahl), [14, 13, 12, 11, 10, 9, 8, 7, 6, 5]);
+  assert.deepStrictEqual(SM.zuletztGezaehlt(d, viele).map(x => x.laute[0].anzahl), [14, 13, 12, 11, 10, 9, 8, 7, 6, 5]);
   // Nullzählungen für einen Laut fehlen, „Keine Schalalas“ bleibt; gefiltert wird vor dem Begrenzen auf zehn
   const mitNullen = [
     ...Array.from({length: 12}, (_, i) => ({lied_id: 'l1', laut_id: 'a', anzahl: 0, aktualisiert: t(40 + i)})),
@@ -468,7 +469,20 @@ test('Zuletzt gezählt: neueste zehn, nur eigene Lieder und freigegebene Laute, 
   ];
   const z10 = SM.zuletztGezaehlt(d, mitNullen);
   assert.strictEqual(z10.length, 10);
-  assert.deepStrictEqual(z10.map(x => x.laut ? x.anzahl : 'keine'), ['keine', 10, 9, 8, 7, 6, 5, 4, 3, 2]);
+  assert.deepStrictEqual(z10.map(x => x.laute.length ? x.laute[0].anzahl : 'keine'), ['keine', 10, 9, 8, 7, 6, 5, 4, 3, 2]);
+  // Gleiches Lied, gleicher Spitzname: ein Eintrag mit allen Lauten in Lautreihenfolge und der neuesten Zeit.
+  // Ohne Spitzname wird nicht zusammengefasst; „keine“ fällt weg, sobald die Person im Lied etwas gezählt hat.
+  const gruppe = SM.zuletztGezaehlt(d, [
+    {lied_id: 'l1', laut_id: '', vorschlag: 'Peng peng', anzahl: 3, spitzname: 'Kalle', aktualisiert: t(1)},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 1, spitzname: 'Kalle', aktualisiert: t(3)},
+    {lied_id: 'l1', laut_id: 'keine', anzahl: 0, spitzname: 'Kalle', aktualisiert: t(2)},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 0, spitzname: 'Kalle', aktualisiert: t(9)},     // Null: fehlt, verschiebt die Zeit nicht
+    {lied_id: 'l1', laut_id: 'a', anzahl: 5, spitzname: '', aktualisiert: t(4)},
+    {lied_id: 'l1', laut_id: 'a', anzahl: 6, spitzname: '', aktualisiert: t(5)},
+    {lied_id: 'l1', laut_id: 'keine', anzahl: 0, spitzname: 'Taube', aktualisiert: t(6)},
+  ]);
+  assert.deepStrictEqual(kurz(gruppe), [['l1', 'keine', 'Taube'], ['l1', 'a:6', ''], ['l1', 'a:5', ''], ['l1', 'a:1,peng-peng:3', 'Kalle']]);
+  assert.strictEqual(gruppe[3].zeit, Date.parse(t(3)));
   // Im Fankonsens zählt die Null weiter als Stimme
   assert.strictEqual(SM.fanZaehlungen(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 0}])[0].fan.a, 1);
   assert.deepStrictEqual(SM.zuletztGezaehlt(d, null), []);
