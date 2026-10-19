@@ -1,6 +1,6 @@
 # Übergabe: Fortuna Ehrenfeld Schalalameter
 
-Stand: 17.10.2026
+Stand: 19.10.2026
 
 ## Worum es geht
 
@@ -27,16 +27,16 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 - Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach dem Booklet der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Keiner der bisherigen Laute kommt darin vor, dafür fünf neue, freigegeben am 17.10.2026: Dub-di-dub-di-dubb (5× in „Ausflug in den Club“), Kuruu-kuruu und Ram-tam-tam (je 1× in „Rabenflügel“), Tatütata (1× in „Cognac für die Huren“, als Nomen, aber reine Lautmalerei), alle in Täterätätä im Pyjama; Fiki hey (1× in „Die Polyintensiven“) in Daseinslaute. Nicht gezählt: „ey“, „Hurra“, „Halleluja“ (stehen als Wörter).
 - Ebenfalls am 17.10.2026 nach Booklet gezählt: alle 12 Lieder von „Live at the Hollywood Bowl“ und 11 von „Das Ende der Coolness Vol. 2“ (Seite 4 der Textbeilage, das Titellied fehlt). Abweichungen zum Online-Text: „Alles explodiert“ bumm 9→3, kawumm 3→1, olé 3→1 (das Booklet druckt den Block nur einmal; danach abgehört: bumm 7, kawumm 2, olé 1 wie im Booklet, gilt nach der Regel „Gehör vor Booklet“); „Life at the Hollywood Bowl“ hey hey hey 2→0, dafür 1× „uuuuh“, gezählt als Uh, uh, uh; „Ciao Kakao“ whoopie whoopie 4→3; „Internet zerf*cken“ neu 3× Uh, uh, uh. Gezählt wird, was im Booklet steht, auch wenn gesungen öfter wiederholt wird.
 - **115 von 180 Liedern gezählt** (Stand Datendatei 17.10.2026, ohne Fanzählungen): 33 nach Booklet (Revolution!, Live at the Hollywood Bowl, Das Ende der Coolness Vol. 2), 1 nach Gehör („Alles explodiert“), 81 nach Online-Text. 65 ohne Zählung. Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen, elf Titel von „Glitzerschwein“ und „Göppingen“ (Revolution!, ohne Text im Booklet).
-- **34 Laute in 7 Familien**, alle freigegeben:
+- **36 Laute in 7 Familien**, alle freigegeben (Pa-pa-pa und Duh-dudu am 18.10.2026 aus Fanvorschlägen; Summen unten aus der Datendatei, ohne Fanzählungen):
 
 | Familie (Anzeigename) | Untertitel | Laute | Summe (eigene Lieder) |
 |---|---|---|---|
 | Spatzenlaser | Piu piu | Piu piu | 0 |
 | Schalalamente | Schalala | Schalala | 51 |
-| Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana | 73 |
+| Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana, Pa-pa-pa | 73 |
 | Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom | 10 |
 | DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 51 |
-| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata | 24 |
+| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata, Duh-dudu | 24 |
 | Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey | 10 |
 
 Jede Familie hat in der Datendatei `id` (fest), `name` (bisheriger Name, für die Werkstatt), `anzeigename`, `untertitel` und `steckbrief`.
@@ -124,7 +124,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 | `assets/core.js` | gemeinsame Logik (beste Zählung, Albumphasen, Familien, Vorzählen), auch in den Tests genutzt |
 | `assets/style.css`, `assets/fonts/` | Gestaltung; Schriften selbst gehostet (Shrikhand, Instrument Sans; JetBrains Mono nur für Code-Felder, SIL OFL) |
 | `daten/shalalameter-daten.json` | **die Daten**; alles, was die Seite zeigt |
-| `tests/core.test.js` | 38 Tests: sichere Ausgabe von Beitragstexten mit Links, Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
+| `tests/core.test.js` | 44 Tests: Familienfrage (Familien in SQL und Datendatei gleich, Lautschlüssel SQL wie JS, Auswertung, Freigabe mit Familie), „Zuletzt gezählt“ (Filter, Zusammenfassen, zehn Einträge), Liedreihenfolge mit Tracknummern, „Keine Schalalas“, Spitznamen, sichere Ausgabe von Beitragstexten mit Links, Konsensregel und Fankonsens, Zählregel, beide Schreibweisen, beste Zählung, Kandidaten, Familien mit Texten, kein „Shalala“ in sichtbaren Texten, alle vier Phasenregeln, Überschreibungen, jedes Lied in genau einer Phase, Gültigkeit der Datendatei |
 | `tools/alben-2026-10-16.js` | einmaliges Skript: Alben und Phasen-Überschreibungen angelegt (Dokumentation, nicht erneut ausführen) |
 | `tools/booklet-revolution-2026-10-17.js` | einmaliges Skript: Booklet-Zählungen für „Revolution!“ (Dokumentation, nicht erneut ausführen) |
 | `tools/sprache-2026-10-16.js` | einmaliges Skript: Schreibweise „Schalala“, Anzeigenamen, Untertitel, Steckbriefe (Dokumentation, nicht erneut ausführen) |
@@ -169,7 +169,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 
 **Inhaltlich mit dem Fortuna-Team klären**
 - [ ] **Piu piu:** steht bei 0. Weglassen, als bewusste 0 behalten oder nach Gehör nachzählen?
-- [ ] **Booklet-Texte** erbitten. Das wäre die verlässlichste Grundlage und würde die Lücken 2023 (4 von 15 gezählt) und 2025 (3 von 19) schließen.
+- [ ] **Booklet-Texte** erbitten. Das wäre die verlässlichste Grundlage und würde die Lücken Glitzerschwein (4 von 15 eigenen Liedern gezählt) und Himmelerdenblau (0 von 16, Stand Datendatei ohne Fanzählungen) schließen.
 - [ ] Sind „Drei Tage Regen“ (2025) und „Drei Tage Regen Danke Scheisskerl“ (2022) dasselbe Lied?
 - [ ] Gelten „Kommst Du?“, „Wer kann sich schon entscheiden“ und „Endspiel“ (Gisbert zu Knyphausen) als Cover?
 - [ ] Gehört „Wissenschaft ist eine Meinung“ (Rainald Grebe feat. Fortuna Ehrenfeld) dazu?
@@ -182,6 +182,8 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - [x] Supabase-Projekt `hyzgqwujbarpofctptmm` (Frankfurt) eingerichtet, `tabelle.sql` ausgeführt, Adresse und publishable key in `assets/supabase-config.js`. Zugriffsrechte am 17.10.2026 geprüft: Einreichen und Ansicht gehen, direkter Zugriff auf die Tabelle wird verweigert.
 - [x] Vertrag zur Auftragsverarbeitung (DPA): bei Supabase Teil der Nutzungsbedingungen, keine eigene Unterschrift nötig.
 - [ ] Formular auf dem Handy durchprobieren.
+- [ ] `tabelle.sql` nach dem Stand vom 19.10.2026 (Familienfrage) im SQL Editor ausführen und mit `select id, text from public.familien order by position;` prüfen.
+- [ ] Nach einer echten Einreichung in der Tabelle `aufrufe` nachsehen, ob Zeilen mit `ip:` entstehen (sonst kommt die IP-Adresse nicht an und es greifen nur die Grenzen je Gerät und insgesamt).
 
 **Schalalalogie**
 - [x] `supabase/tabelle.sql` neu im SQL Editor ausgeführt (17.10.2026).

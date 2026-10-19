@@ -14,7 +14,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 | `werkstatt.html`, `assets/werkstatt.js` | interne Pflege: Daten laden, neue Laute freigeben, Zählungen erfassen |
 | `assets/core.js` | gemeinsame Logik (beste Zählung, Fankonsens, Albumphasen, Familien, sichere Beitragstexte, Muster fürs Vorzählen) |
 | `zaehlen.html`, `assets/zaehlen.js` | „Zähl mit“: Fanzählungen einreichen |
-| `schalalalogie.html`, `assets/schalalalogie.js` | Schalalalogie: Forum mit Liedthemen, freien Themen und Abstimmungen |
+| `schalalalogie.html`, `assets/schalalalogie.js` | Schalalalogie: Forum mit Liedthemen, freien Themen, Abstimmungen und Familienfragen zu neuen Lauten |
 | `assets/moderation.js` | Werkstatt, Bereich Moderation (Anmeldung über Supabase Auth) |
 | `assets/fans.js`, `assets/supabase-config.js` | Zugriff auf Supabase per fetch (ohne Bibliothek); Adresse und öffentlicher Schlüssel |
 | `supabase/tabelle.sql` | Tabellen, Funktionen, Ansichten, Rechte und Grenzwerte; im SQL Editor ausführen |
@@ -102,7 +102,7 @@ Sperren: in der Werkstatt unter „Schalalalogie · Moderation“ (nach Anmeldun
 
 Datenbank: Tabellen `themen`, `beitraege`, `antworten`, `stimmen`, `meldungen`; Schreiben nur über die Funktionen `thema_anlegen`, `beitrag_schreiben`, `abstimmen`, `melden`; Lesen nur über `themen_oeffentlich`, `beitraege_oeffentlich`, `antworten_oeffentlich` (ohne Geräte-Kennung, ohne Gesperrtes).
 
-Grenzwerte stehen an einer Stelle, in der Tabelle `grenzwerte` (Standard: 30 Zählungen, 30 Beiträge, 10 neue Themen und 30 Meldungen je Gerät und Stunde). Ändern im Table Editor oder mit `update public.grenzwerte set wert = 50 where name = 'beitraege_je_stunde';`. Ein erneutes Ausführen von `tabelle.sql` überschreibt geänderte Werte nicht.
+Grenzwerte stehen an einer Stelle, in der Tabelle `grenzwerte`. Gezählt wird jeder Aufruf der Schreibfunktionen je Stunde, je Gerät (Standard: 30 Zählungen, 30 Beiträge, 10 neue Themen, 30 Meldungen, 30 Abstimmungsaufrufe), je IP-Adresse (`*_je_ip_stunde`, nur als gesalzener Hash, nach drei Stunden gelöscht) und insgesamt (`*_gesamt_stunde`). Ändern im Table Editor oder mit `update public.grenzwerte set wert = 50 where name = 'beitraege_je_stunde';`. Ein erneutes Ausführen von `tabelle.sql` überschreibt geänderte Werte nicht.
 
 ### Moderation
 
