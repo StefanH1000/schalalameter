@@ -5,6 +5,8 @@
   "compatibility_date": "2026-10-19",
   // Baut dist/ vor jedem Deploy selbst, auch wenn in Cloudflare kein Build-Befehl eingetragen ist.
   "build": {"command": "npm run build"},
+  // Eigene Domain (Zone hoch.studio im selben Cloudflare-Konto): DNS-Eintrag und Zertifikat legt Cloudflare beim Deploy an.
+  "routes": [{"pattern": "schalalameter.hoch.studio", "custom_domain": true}],
   "assets": {
     "directory": "./dist",
     // /zaehlen.html und /zaehlen liefern dieselbe Seite; ?lied=… und #… bleiben erhalten.

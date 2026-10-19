@@ -12,8 +12,8 @@ Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffe
 
 | | |
 |---|---|
-| Live-Seite | https://schalalameter.hoch.workers.dev/ (Cloudflare Worker `schalalameter`); bis das Repository privat ist, zusätzlich https://stefanh1000.github.io/schalalameter/ |
-| Werkstatt (intern, nicht verlinkt) | https://schalalameter.hoch.workers.dev/werkstatt (Kopfzeile `X-Robots-Tag: noindex`) |
+| Live-Seite | https://schalalameter.hoch.studio/ (Cloudflare Worker `schalalameter`, Domain in `wrangler.jsonc`); dieselbe Seite auch unter https://schalalameter.hoch.workers.dev/ und, bis das Repository privat ist, https://stefanh1000.github.io/schalalameter/ |
+| Werkstatt (intern, nicht verlinkt) | https://schalalameter.hoch.studio/werkstatt (Kopfzeile `X-Robots-Tag: noindex`) |
 | Repository | https://github.com/StefanH1000/schalalameter (öffentlich, Branch `main`) |
 | Hosting | Cloudflare (Worker mit statischen Dateien), baut bei jedem Push auf `main`: Deploy-Befehl `npx wrangler deploy`, der vorher selbst `npm run build` ausführt (nur `dist/`, siehe `wrangler.jsonc`, `_headers`) |
 | Lokaler Ordner | `C:\Users\hoch\shalalameter` |
@@ -192,7 +192,7 @@ Die vollständige Liste unsicherer Entscheidungen steht in Coworks `bericht.md` 
 - [ ] Nachweise gegen das echte Projekt mit curl (lokal mit PGlite und einem nachgebauten PostgREST geprüft, siehe Verlauf).
 
 **Optional**
-- Eigene Domain statt `stefanh1000.github.io` (z. B. schalalameter.de).
+- [x] Eigene Domain: schalalameter.hoch.studio (Domain hoch.studio bei Cloudflare, 19.10.2026).
 - Vorschaubild für Social Media.
 
 ## Sicherheit
