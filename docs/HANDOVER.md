@@ -12,10 +12,10 @@ Das Projekt ist ein Fanprojekt. **Das Fortuna-Team ist einverstanden.** Veröffe
 
 | | |
 |---|---|
-| Live-Seite | https://stefanh1000.github.io/schalalameter/ |
-| Werkstatt (intern, nicht verlinkt) | https://stefanh1000.github.io/schalalameter/werkstatt.html |
+| Live-Seite | Cloudflare Worker `schalalameter` (Adresse im Cloudflare-Dashboard, `…workers.dev` oder eigene Domain); bis das Repository privat ist, zusätzlich https://stefanh1000.github.io/schalalameter/ |
+| Werkstatt (intern, nicht verlinkt) | `/werkstatt.html` unter der Live-Adresse (Kopfzeile `X-Robots-Tag: noindex`) |
 | Repository | https://github.com/StefanH1000/schalalameter (öffentlich, Branch `main`) |
-| Hosting | GitHub Pages, baut automatisch bei jedem Push auf `main` |
+| Hosting | Cloudflare (Worker mit statischen Dateien), baut bei jedem Push auf `main`: `npm run build`, dann `npx wrangler deploy` (nur `dist/`, siehe `wrangler.jsonc`, `_headers`) |
 | Lokaler Ordner | `C:\Users\hoch\shalalameter` |
 
 ## Stand der Daten
@@ -157,7 +157,7 @@ Statische Website ohne Server und ohne Build-Schritt. Details zu Dateien und Dat
 
 - **Keine Liedtexte speichern oder anzeigen**, nur Zahlen und den Laut selbst als Beleg (Urheberrecht). Der Text zum Vorzählen in der Werkstatt wird nicht gespeichert.
 - **Schriften selbst gehostet**, damit keine Verbindung zu Google Fonts entsteht (DSGVO). Die Seite setzt keine Cookies und nutzt kein Tracking.
-- **GitHub Pages mit öffentlichem Repository**, weil das kostenlos ist. Das Repository enthält nur Zahlen und Code.
+- **Cloudflare statt GitHub Pages** (19.10.2026), damit das Repository privat sein kann; GitHub Pages ist im kostenlosen Plan nur mit öffentlichem Repository möglich. Ausgeliefert wird nur `dist/`, Dokumentation, SQL, Werkzeuge und Tests bleiben privat.
 - **Lautfamilien statt 29 einzelner Kurven:** Mehr als 8 Farben sind nicht unterscheidbar. Die Einteilung stammt von Claude und ist eine inhaltliche Setzung, die das Team anpassen kann.
 - **Cover, Übersetzungen und unklare Fälle** bleiben in den Daten, werden auf der Seite aber nicht gezeigt.
 

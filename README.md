@@ -22,6 +22,7 @@ Statische Website ohne Server und ohne Build-Schritt. Gespeichert werden nur Zä
 | `impressum.html`, `datenschutz.html` | Pflichtseiten; mit Kontaktadresse für Meldungen rechtswidriger Inhalte |
 | `tests/` | `npm test` |
 | `tools/serve.js` | lokaler Server: `npm start` → http://localhost:8080 |
+| `tools/build.js`, `wrangler.jsonc`, `_headers` | Veröffentlichung bei Cloudflare: `npm run build` legt `dist/` an (nur Seiten, `assets/`, `daten/`, `_headers`), Cloudflare lädt nur `dist/` hoch |
 
 ## Daten aktualisieren
 
@@ -117,8 +118,12 @@ Pro Lied kann es mehrere Zählungen geben. Angezeigt wird die verlässlichste: G
 
 Zählregel: Gezählt wird, was kein Wort mehr schafft. Eine Lautfolge zählt einmal („piu piu piu“ = 1). Komma und Zeilenumbruch trennen Lautfolgen („schalala, schalala“ = 2). Das Vorzählen erkennt beide Schreibweisen (Shalala, Schalala, Sha la la, Scha la la) als denselben Laut.
 
-Schreibweise: sichtbar immer „Schalala“. Repository und URL heißen `schalalameter` (https://stefanh1000.github.io/schalalameter/), interne Kennungen und Dateinamen weiter `shalala` bzw. `shalalameter`.
+Schreibweise: sichtbar immer „Schalala“. Repository und Cloudflare-Projekt heißen `schalalameter`, interne Kennungen und Dateinamen weiter `shalala` bzw. `shalalameter`.
 
 ## Schriften
 
 Shrikhand, Instrument Sans und JetBrains Mono, selbst gehostet (SIL Open Font License), damit keine Verbindung zu Google Fonts entsteht.
+
+## Veröffentlichen (Cloudflare)
+
+Die Seite läuft als Cloudflare Worker mit statischen Dateien (Projekt `schalalameter`), verbunden mit dem GitHub-Repository: Jeder Push auf `main` baut und veröffentlicht automatisch. Einstellungen in Cloudflare unter Workers & Pages → schalalameter → Settings → Build: Build-Befehl `npm run build`, Deploy-Befehl `npx wrangler deploy`. Was ausgeliefert wird, legt `wrangler.jsonc` fest (nur `dist/`); Sicherheits-Kopfzeilen stehen in `_headers`. Vor dem Push wie bisher `npm test` und `npm run cachebust`.

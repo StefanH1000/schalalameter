@@ -1,0 +1,13 @@
+# Kopfzeilen für Cloudflare (statische Dateien). Die CSP steht zusätzlich als <meta> in jeder Seite;
+# nur als Kopfzeile wirkt frame-ancestors: Die Seite lässt sich nicht in fremde Seiten einbetten.
+# Ändert sich die Supabase-Adresse, hier und in den <meta>-Tags aller HTML-Seiten anpassen.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://hyzgqwujbarpofctptmm.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+/werkstatt.html
+  X-Robots-Tag: noindex, nofollow
+/werkstatt
+  X-Robots-Tag: noindex, nofollow
