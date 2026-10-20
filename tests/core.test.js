@@ -512,6 +512,22 @@ test('veröffentlichte Datendatei ist gültig', () => {
   assert.ok(SM.sounds(d).length > 0, 'mindestens ein freigegebener Laut');
 });
 
+test('kein sichtbarer Text enthält „Booklet“ (heißt Plattenbeilage)', () => {
+  const root = path.join(__dirname, '..');
+  // Kommentare sind nicht sichtbar; der interne Wert booklet (Feld grundlage) bleibt und ist kleingeschrieben.
+  const ohneKommentare = t => t.replace(/<!--[\s\S]*?-->/g, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"])\/\/.*$/gm, '$1');
+  const dateien = ['index.html', 'zaehlen.html', 'schalalalogie.html', 'werkstatt.html', 'impressum.html', 'datenschutz.html',
+    'assets/app.js', 'assets/zaehlen.js', 'assets/werkstatt.js', 'assets/schalalalogie.js', 'assets/moderation.js', 'assets/core.js', 'assets/fans.js'];
+  for (const f of dateien) {
+    const txt = ohneKommentare(fs.readFileSync(path.join(root, f), 'utf8'));
+    assert.ok(!/Booklet/.test(txt), `${f} enthält „Booklet“`);
+    // klein nur als interner Wert in Anführungszeichen oder als Schlüssel, nie als Wort im Text
+    const rest = txt.replace(/(['"])booklet\1/g, '').replace(/\bbooklet:/g, '');
+    assert.ok(!/booklet/i.test(rest), `${f} enthält „booklet“ außerhalb des internen Werts`);
+  }
+  assert.strictEqual(SM.GRUND_LABEL.booklet, 'Plattenbeilage');
+});
+
 test('Beitragstext: HTML wird sichtbarer Text', () => {
   const html = SM.textMitLinks('Hallo <script>alert("x")</script> & <img src=x onerror=alert(1)>');
   assert.ok(!/<script|<img/i.test(html), 'kein HTML aus dem Beitrag');

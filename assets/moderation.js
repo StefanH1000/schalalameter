@@ -98,7 +98,7 @@ async function laden() {
         <span class="act">${t.art === 'abstimmung' || t.art === 'familie' ? knopf('themen', t.id, 'geschlossen', t.geschlossen, 'Schließen', 'Wieder öffnen') : ''}${knopf('themen', t.id, 'gesperrt', t.gesperrt, 'Sperren', 'Freigeben')}</span></li>`).join('') || '<li class="empty muted">Noch keine Themen.</li>'}</ul></details>
     <details style="margin-top:10px"><summary style="cursor:pointer; font-weight:600">Fanzählungen (neueste ${zaehlungen.length})</summary>
       <ul class="cands">${zaehlungen.map(z => `<li><span><b>${esc(lieder.get(z.lied_id) || z.lied_id)}</b> · ${z.laut_id ? esc(z.laut_id) : `Vorschlag „${esc(z.vorschlag)}“`} · ${z.anzahl}×${gesperrtTag(z.gesperrt)}<br>
-        <span class="ct">${esc(z.spitzname)}${z.name_ausgeblendet ? ' (Name ausgeblendet)' : ''} · ${z.grundlage === 'booklet' ? 'Booklet' : 'Gehör'} · ${esc(zeit(z.aktualisiert))}</span></span>
+        <span class="ct">${esc(z.spitzname)}${z.name_ausgeblendet ? ' (Name ausgeblendet)' : ''} · ${z.grundlage === 'booklet' ? 'Plattenbeilage' : 'Gehör'} · ${esc(zeit(z.aktualisiert))}</span></span>
         <span class="act">${knopf('fan_zaehlungen', z.id, 'name_ausgeblendet', z.name_ausgeblendet, 'Name ausblenden', 'Name zeigen')}${knopf('fan_zaehlungen', z.id, 'gesperrt', z.gesperrt, 'Sperren', 'Freigeben')}</span></li>`).join('') || '<li class="empty muted">Noch keine Zählungen.</li>'}</ul></details>`;
   box.querySelectorAll('details').forEach((d, i) => { d.open = !!offen[i]; });
   status('');

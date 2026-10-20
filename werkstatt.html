@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="robots" content="noindex, nofollow">
 <title>Schalalameter Werkstatt</title>
-<link rel="stylesheet" href="assets/style.css?v=202610200253">
+<link rel="stylesheet" href="assets/style.css?v=202610200828">
 <style>
 .cands{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .cands li{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 12px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
@@ -85,16 +85,16 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
 
   <section class="panel" id="erfassen">
     <div class="panel-head"><h2>Zählung erfassen</h2><span class="status" id="cf-status" aria-live="polite"></span></div>
-    <p>Eine weitere Zählung zu einem Lied, zum Beispiel nach Booklet oder nach Gehör. Sie wird zusätzlich gespeichert. Die Seite zeigt pro Lied die verlässlichste Zählung: Gehör vor Booklet vor Fankonsens vor Online-Text, dann nach Sicherheit.</p>
+    <p>Eine weitere Zählung zu einem Lied, zum Beispiel nach der Plattenbeilage oder nach Gehör. Sie wird zusätzlich gespeichert. Die Seite zeigt pro Lied die verlässlichste Zählung: Gehör und Fankonsens vor Plattenbeilage vor Online-Text, dann nach Sicherheit.</p>
     <form id="count-form" autocomplete="off">
       <div class="grid3">
         <label class="span2">Lied<select class="field" id="cf-lied" required></select></label>
         <label>Grundlage<select class="field" id="cf-grund">
-          <option value="booklet">Booklet</option>
+          <option value="booklet">Plattenbeilage</option>
           <option value="gehoert">nach Gehör</option>
           <option value="online_text">Online-Text</option>
         </select></label>
-        <label class="span2">Quelle (Link oder Beschreibung)<input type="text" id="cf-quelle" placeholder="z. B. Booklet „Universum“, S. 4"></label>
+        <label class="span2">Quelle (Link oder Beschreibung)<input type="text" id="cf-quelle" placeholder="z. B. Plattenbeilage „Universum“, S. 4"></label>
         <label>Sicherheit<select class="field" id="cf-sicher">
           <option value="hoch">hoch</option><option value="mittel" selected>mittel</option><option value="niedrig">niedrig</option>
         </select></label>
@@ -127,10 +127,10 @@ form#count-form{display:flex; flex-direction:column; gap:12px}
     <ul class="open-list" id="open-list"></ul>
   </section>
 </div>
-<script src="assets/core.js?v=202610200253"></script>
-<script src="assets/supabase-config.js?v=202610200253"></script>
-<script src="assets/fans.js?v=202610200253"></script>
-<script src="assets/werkstatt.js?v=202610200253"></script>
-<script src="assets/moderation.js?v=202610200253"></script>
+<script src="assets/core.js?v=202610200828"></script>
+<script src="assets/supabase-config.js?v=202610200828"></script>
+<script src="assets/fans.js?v=202610200828"></script>
+<script src="assets/werkstatt.js?v=202610200828"></script>
+<script src="assets/moderation.js?v=202610200828"></script>
 </body>
 </html>

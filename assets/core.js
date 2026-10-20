@@ -7,12 +7,12 @@
     {id: 'unklar', name: 'Unklar', on: false},
   ];
   const TYPE_LABEL = {original: 'Original', uebersetzung: 'Übersetzung', cover: 'Cover', unklar: 'unklar'};
-  // Rangfolge der Grundlagen: nach Gehör (sorgfältig abgehört, aus der Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
-  // Abgehört gewinnt, weil Booklets Wiederholungen oft nur einmal abdrucken.
-  // Gehör (Werkstatt) und Fankonsens sind gleichrangig und stehen vor dem Booklet; bei Gleichstand gewinnt der
+  // Rangfolge der Grundlagen (interner Wert booklet = Plattenbeilage). Abgehört gewinnt, weil Plattenbeilagen
+  // Wiederholungen oft nur einmal abdrucken und Ausrufe weglassen.
+  // Gehör (Werkstatt) und Fankonsens sind gleichrangig und stehen vor der Plattenbeilage; bei Gleichstand gewinnt der
   // Fankonsens, weil er die Gehör-Zählung der Werkstatt schon als eine Stimme enthält (bestOf, fanZaehlungen).
   const GRUND_RANK = {gehoert: 5, fankonsens: 5, booklet: 4, online_text: 1};
-  const GRUND_LABEL = {booklet: 'Booklet', fankonsens: 'Fankonsens', gehoert: 'nach Gehör', online_text: 'Online-Text'};
+  const GRUND_LABEL = {booklet: 'Plattenbeilage', fankonsens: 'Fankonsens', gehoert: 'nach Gehör', online_text: 'Online-Text'};
   const SICHER_RANK = {hoch: 3, mittel: 2, niedrig: 1};
   const MAX_SOUNDS = 8;
 
@@ -98,7 +98,7 @@
   function countable(z) {
     return z.status !== 'kein_text_gefunden' && !!z.werte && typeof z.werte === 'object';
   }
-  // Verlässlichste Zählung: Booklet > Gehör > Online-Text, dann Sicherheit, dann Quellenart.
+  // Verlässlichste Zählung nach GRUND_RANK, dann Sicherheit, dann Quellenart.
   // Bei Gleichstand gewinnt die Zählung mit mehr Lauten: Online-Texte kürzen Laute eher weg, als dass sie welche erfinden.
   const QUELLE_RANK = {offiziell: 3, lizenziert: 2, community: 1};
   function sumOf(z) {
@@ -141,9 +141,9 @@
 
   // Baut aus den Fan-Einreichungen je Lied eine Zählung mit Grundlage „fankonsens“.
   // Laute mit Fanstimmen: Die Fans zählen; die beste Zählung der Datendatei zählt je Laut, den sie enthält, als
-  // erste Stimme mit, wenn sie nach Gehör (Werkstatt) oder, ohne Booklet, nach Onlinetext ist. Ein Booklet
+  // erste Stimme mit, wenn sie nach Gehör (Werkstatt) oder, ohne Plattenbeilage, nach Onlinetext ist. Eine Plattenbeilage
   // stimmt nicht mit, Fans gehen ihm vor (es lässt Ausrufe oft weg).
-  // Laute ohne Fanstimme übernehmen den Wert der besten Zählung der Datendatei (auch aus dem Booklet), ohne sie 0.
+  // Laute ohne Fanstimme übernehmen den Wert der besten Zählung der Datendatei (auch aus der Plattenbeilage), ohne sie 0.
   // Einreichungen mit unbekannter Lied- oder Laut-ID zählen nicht. Ein Vorschlag (ohne Laut-ID) zählt erst,
   // wenn ein freigegebener Laut so heißt (Name, ID oder Feld `aliase`), also nach der Freigabe in der Werkstatt.
   function vorschlagsLaut(snds) {
