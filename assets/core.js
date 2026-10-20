@@ -9,7 +9,9 @@
   const TYPE_LABEL = {original: 'Original', uebersetzung: 'Übersetzung', cover: 'Cover', unklar: 'unklar'};
   // Rangfolge der Grundlagen: nach Gehör (sorgfältig abgehört, aus der Werkstatt) vor Booklet vor Fankonsens vor Onlinetext.
   // Abgehört gewinnt, weil Booklets Wiederholungen oft nur einmal abdrucken.
-  const GRUND_RANK = {gehoert: 5, booklet: 4, fankonsens: 3, online_text: 1};
+  // Gehör (Werkstatt) und Fankonsens sind gleichrangig und stehen vor dem Booklet; bei Gleichstand gewinnt der
+  // Fankonsens, weil er die Gehör-Zählung der Werkstatt schon als eine Stimme enthält (bestOf, fanZaehlungen).
+  const GRUND_RANK = {gehoert: 5, fankonsens: 5, booklet: 4, online_text: 1};
   const GRUND_LABEL = {booklet: 'Booklet', fankonsens: 'Fankonsens', gehoert: 'nach Gehör', online_text: 'Online-Text'};
   const SICHER_RANK = {hoch: 3, mittel: 2, niedrig: 1};
   const MAX_SOUNDS = 8;
@@ -107,6 +109,7 @@
   function bestOf(zs) {
     return zs.filter(countable).sort((a, b) =>
       (GRUND_RANK[b.grundlage] || 0) - (GRUND_RANK[a.grundlage] || 0) ||
+      (b.grundlage === 'fankonsens') - (a.grundlage === 'fankonsens') ||
       (SICHER_RANK[b.sicherheit] || 0) - (SICHER_RANK[a.sicherheit] || 0) ||
       (QUELLE_RANK[b.quelle_art] || 0) - (QUELLE_RANK[a.quelle_art] || 0) ||
       sumOf(b) - sumOf(a) ||
@@ -137,8 +140,10 @@
   }
 
   // Baut aus den Fan-Einreichungen je Lied eine Zählung mit Grundlage „fankonsens“.
-  // Die bisherige beste Zählung aus der Datendatei (ohne Booklet) zählt je Laut, den sie enthält, als erste Stimme mit.
-  // Laute ohne Fanstimme übernehmen den Wert dieser Zählung, ohne sie 0.
+  // Laute mit Fanstimmen: Die Fans zählen; die beste Zählung der Datendatei zählt je Laut, den sie enthält, als
+  // erste Stimme mit, wenn sie nach Gehör (Werkstatt) oder, ohne Booklet, nach Onlinetext ist. Ein Booklet
+  // stimmt nicht mit, Fans gehen ihm vor (es lässt Ausrufe oft weg).
+  // Laute ohne Fanstimme übernehmen den Wert der besten Zählung der Datendatei (auch aus dem Booklet), ohne sie 0.
   // Einreichungen mit unbekannter Lied- oder Laut-ID zählen nicht. Ein Vorschlag (ohne Laut-ID) zählt erst,
   // wenn ein freigegebener Laut so heißt (Name, ID oder Feld `aliase`), also nach der Freigabe in der Werkstatt.
   function vorschlagsLaut(snds) {
@@ -167,7 +172,8 @@
     }
     const out = [];
     for (const [liedId, perLaut] of byLied) {
-      const base = bestOf(data.zaehlungen.filter(z => z.lied_id === liedId && z.grundlage !== 'booklet' && z.grundlage !== 'fankonsens'));
+      const daten = bestOf(data.zaehlungen.filter(z => z.lied_id === liedId && z.grundlage !== 'fankonsens'));
+      const base = daten && daten.grundlage !== 'booklet' ? daten : null;    // erste Stimme
       const werte = {}, stimmen = {}, nKeine = keine.get(liedId) || 0;
       let minStimmen = Infinity, fan = nKeine;
       for (const s of snds) {
@@ -182,7 +188,7 @@
           stimmen[s.id] = fv.length;
           minStimmen = Math.min(minStimmen, all.length);
         } else {
-          werte[s.id] = online == null ? 0 : online;
+          werte[s.id] = daten && daten.werte && s.id in daten.werte ? value(daten, s.id, false) : 0;
         }
       }
       out.push({

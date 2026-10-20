@@ -468,7 +468,7 @@ function renderPeriod(cols){
     const found = rs.filter(v => s.values[v.id] > 0);
     const link = SM.isHttp(b.quelle_url) ? `<a href="${esc(b.quelle_url)}" target="_blank" rel="noopener">Quelle</a>` : '';
     const gekuerzt = b.anzahl_aufgeloest && typeof b.anzahl_aufgeloest === 'object' && !aufl;
-    // Fanzählungen zählen nur, wenn der Fankonsens auch die angezeigte Zählung ist (Booklet sticht ihn).
+    // Fanzählungen zeigen sich, wenn der Fankonsens die angezeigte Zählung ist (vor Booklet; gleichrangig mit Gehör, das er als Stimme enthält).
     const fz = b.grundlage === 'fankonsens' ? b : null;
     const fanN = id => fz && fz.fan[id] ? `<span class="fanN">aus ${fz.fan[id]}</span>` : '';
     return `<li>

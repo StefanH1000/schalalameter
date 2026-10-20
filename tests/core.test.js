@@ -377,17 +377,31 @@ test('Fankonsens: „Keine Schalalas“ ist eine Stimme 0 für jeden Laut des Li
   assert.strictEqual(mit.fan_anzahl, 2);
 });
 
-test('Rangfolge: Gehör vor Booklet vor Fankonsens vor Onlinetext', () => {
-  const d = FANDATA();
-  const mitFans = SM.withFans(d, [{lied_id: 'l1', laut_id: 'a', anzahl: 10}]);
-  const best = l => SM.bestOf(mitFans.zaehlungen.filter(z => z.lied_id === l));
-  assert.strictEqual(best('l1').grundlage, 'fankonsens');
-  assert.strictEqual(best('l1').werte.a, 7);
-  mitFans.zaehlungen.push({lied_id: 'l1', grundlage: 'booklet', sicherheit: 'niedrig', status: 'gezaehlt', werte: {a: 2, b: 0}});
-  assert.strictEqual(best('l1').grundlage, 'booklet');
-  mitFans.zaehlungen.push({lied_id: 'l1', grundlage: 'gehoert', sicherheit: 'niedrig', status: 'gezaehlt', werte: {a: 5, b: 0}});
-  assert.strictEqual(best('l1').grundlage, 'gehoert');
-  assert.strictEqual(d.zaehlungen.length, 2, 'Datendatei bleibt unverändert');
+test('Rangfolge: Fankonsens und Gehör gleichrangig vor Booklet vor Onlinetext', () => {
+  const zahlen = (zusatz, rows) => {
+    const d = FANDATA();
+    d.zaehlungen.push(...zusatz);
+    const mit = SM.withFans(d, rows);
+    return SM.bestOf(mit.zaehlungen.filter(z => z.lied_id === 'l1'));
+  };
+  const fan = [{lied_id: 'l1', laut_id: 'a', anzahl: 10}];
+  // Nur Onlinetext (a 4, b 1): Fankonsens gewinnt, Onlinetext ist erste Stimme (4 und 10 → 7)
+  let b = zahlen([], fan);
+  assert.deepStrictEqual([b.grundlage, b.werte.a, b.werte.b], ['fankonsens', 7, 1]);
+  // Booklet (a 2, b 3): Fans gehen vor; Booklet stimmt nicht mit, auch der Onlinetext nicht mehr.
+  // Laute ohne Fanstimme behalten den Booklet-Wert.
+  const booklet = {lied_id: 'l1', grundlage: 'booklet', sicherheit: 'hoch', status: 'gezaehlt', werte: {a: 2, b: 3}};
+  b = zahlen([booklet], fan);
+  assert.deepStrictEqual([b.grundlage, b.werte.a, b.werte.b], ['fankonsens', 10, 3]);
+  // Ohne Fans gilt das Booklet
+  assert.strictEqual(zahlen([booklet], []).grundlage, 'booklet');
+  // Gehör aus der Werkstatt (a 6): gleichrangig, zählt als Stimme im Fankonsens (6 und 10 → 8)
+  const gehoert = {lied_id: 'l1', grundlage: 'gehoert', sicherheit: 'hoch', status: 'gezaehlt', werte: {a: 6, b: 0}};
+  b = zahlen([booklet, gehoert], fan);
+  assert.deepStrictEqual([b.grundlage, b.werte.a, b.werte.b], ['fankonsens', 8, 0]);
+  // Ohne Fans gilt Gehör vor Booklet
+  assert.strictEqual(zahlen([booklet, gehoert], []).grundlage, 'gehoert');
+  assert.strictEqual(FANDATA().zaehlungen.length, 2, 'Datendatei bleibt unverändert');
 });
 
 test('Familienfrage: Familien in tabelle.sql passen zur Datendatei', () => {
