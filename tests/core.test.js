@@ -526,6 +526,16 @@ test('kein sichtbarer Text enthält „Booklet“ (heißt Plattenbeilage)', () =
     assert.ok(!/booklet/i.test(rest), `${f} enthält „booklet“ außerhalb des internen Werts`);
   }
   assert.strictEqual(SM.GRUND_LABEL.booklet, 'Plattenbeilage');
+  // Daten: alles, was die Seite anzeigt (Namen, Steckbriefe, Notizen, Quellenangaben)
+  const d = JSON.parse(fs.readFileSync(path.join(root, 'daten', 'shalalameter-daten.json'), 'utf8'));
+  const sichtbar = [
+    ...d.laute.map(l => l.name),
+    ...d.familien.flatMap(f => [f.name, f.anzeigename, f.untertitel, f.steckbrief]),
+    ...d.alben.map(a => a.titel),
+    ...d.lieder.flatMap(l => [l.titel, l.notiz, l.veroeffentlichung]),
+    ...d.zaehlungen.flatMap(z => [z.notiz, SM.isHttp(z.quelle_url) ? '' : z.quelle_url]),
+  ];
+  for (const t of sichtbar) assert.ok(!/booklet/i.test(t || ''), `sichtbarer Datentext enthält „Booklet“: ${t}`);
 });
 
 test('Beitragstext: HTML wird sichtbarer Text', () => {
