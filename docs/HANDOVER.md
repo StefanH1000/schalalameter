@@ -27,7 +27,7 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 - Seit 17.10.2026 dazu 11 Lieder von „Revolution!“ (2026) (Startseite jetzt 156 eigene Lieder). Sie sind nach der Plattenbeilage der LP gezählt (Grundlage `booklet`), 10 von 11; „Göppingen“ steht nicht im Booklet, vermutlich instrumental. Keiner der bisherigen Laute kommt darin vor, dafür fünf neue, freigegeben am 17.10.2026: Dub-di-dub-di-dubb (5× in „Ausflug in den Club“), Kuruu-kuruu und Ram-tam-tam (je 1× in „Rabenflügel“), Tatütata (1× in „Cognac für die Huren“, als Nomen, aber reine Lautmalerei), alle in Täterätätä im Pyjama; Fiki hey (1× in „Die Polyintensiven“) in Daseinslaute. Nicht gezählt: „ey“, „Hurra“, „Halleluja“ (stehen als Wörter).
 - Ebenfalls am 17.10.2026 nach Plattenbeilage gezählt: alle 12 Lieder von „Live at the Hollywood Bowl“ und 11 von „Das Ende der Coolness Vol. 2“ (Seite 4 der Textbeilage, das Titellied fehlt). Abweichungen zum Online-Text: „Alles explodiert“ bumm 9→3, kawumm 3→1, olé 3→1 (die Plattenbeilage druckt den Block nur einmal; danach abgehört: bumm 7, kawumm 2, olé 1 wie in der Plattenbeilage, gilt nach der Regel „Gehör vor Plattenbeilage“); „Life at the Hollywood Bowl“ hey hey hey 2→0, dafür 1× „uuuuh“, gezählt als Uh, uh, uh; „Ciao Kakao“ whoopie whoopie 4→3; „Internet zerf*cken“ neu 3× Uh, uh, uh. Gezählt wird, was im Booklet steht, auch wenn gesungen öfter wiederholt wird.
 - **115 von 180 Liedern gezählt** (Stand Datendatei 17.10.2026, ohne Fanzählungen): 33 nach Plattenbeilage (Revolution!, Live at the Hollywood Bowl, Das Ende der Coolness Vol. 2), 1 nach Gehör („Alles explodiert“), 81 nach Online-Text. 65 ohne Zählung. Es fehlen fast das ganze Album „Himmelerdenblau“ (2025), alle französischen Fassungen, elf Titel von „Glitzerschwein“ und „Göppingen“ (Revolution!, ohne Text im Booklet).
-- **38 Laute in 7 Familien**, alle freigegeben (Pa-pa-pa und Duh-dudu am 18.10.2026, Klapp und Juppidupiduh am 19.10.2026 aus Fanvorschlägen; Summen unten aus der Datendatei, ohne Fanzählungen):
+- **40 Laute in 7 Familien**, alle freigegeben (Pa-pa-pa und Duh-dudu am 18.10.2026, Klapp und Juppidupiduh am 19.10.2026, Ha-ha und Klingeling am 20.10.2026 aus Fanvorschlägen; der Vorschlag „Uh“ ist als Schreibweise von „Uh, uh, uh“ eingetragen (`aliase`); Summen unten aus der Datendatei, ohne Fanzählungen):
 
 | Familie (Anzeigename) | Untertitel | Laute | Summe (eigene Lieder) |
 |---|---|---|---|
@@ -35,8 +35,8 @@ Grundlage ist eine Auszählung durch Claude Cowork vom 16.10.2026, nur nach onli
 | Schalalamente | Schalala | Schalala | 51 |
 | Silbenhack | La la, Da da und Co | Da-da, Lalala, Ba-ba-ba, Da-da-da, Ladi dadi dai, Lo-lo-lo, Nanana, Pa-pa-pa | 73 |
 | Rummse | Bumm und Kawumm | Bumm, Kawumm, Boom laboom, Klapp | 10 |
-| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh | 51 |
-| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata, Duh-dudu | 24 |
+| DNA Elemente eines erfüllten Lebens | Oh, Ah, Uh | Ah-ah-oh-ah-ah, Oh-oh-oh, Ah-uh, Ah-ah, Mh-mh-mh-hm, Ah-ah-ah, Uh, uh, uh, Ha-ha | 51 |
+| Täterätätä im Pyjama | Dudeln und Tröten | Dum-didi-dum, Tä-tä-rä-tä-tä, Fuzzi fuzzi fuzz, Humpe täterää, Dudeldudeldudel, Dub-di-dub-di-dubb, Kuruu-kuruu, Ram-tam-tam, Tatütata, Duh-dudu, Klingeling | 24 |
 | Daseinslaute | Hey, Yeah, Olé | Whoopie whoopie, Yeah yeah yeah, Olé, Hey hey hey, Hooray hooray, Fiki hey, Juppidupiduh | 10 |
 
 Jede Familie hat in der Datendatei `id` (fest), `name` (bisheriger Name, für die Werkstatt), `anzeigename`, `untertitel` und `steckbrief`.

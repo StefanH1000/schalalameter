@@ -268,6 +268,15 @@
         "ciao-kakao"
       ],
       "notiz": "Grenzfall: durch Kommas getrennt, daher nicht als ohoho gezählt.",
+      "familie": "rufe",
+      "aliase": [
+        "Uh"
+      ]
+    },
+    {
+      "id": "ha-ha",
+      "name": "Ha-ha",
+      "status": "freigegeben",
       "familie": "rufe"
     },
     {
@@ -321,6 +330,12 @@
     {
       "id": "duh-dudu",
       "name": "Duh-dudu",
+      "status": "freigegeben",
+      "familie": "instrumente"
+    },
+    {
+      "id": "klingeling",
+      "name": "Klingeling",
       "status": "freigegeben",
       "familie": "instrumente"
     },
